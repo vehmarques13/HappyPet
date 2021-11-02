@@ -23,7 +23,6 @@ export const HeaderTitle = styled.Text`
     font-weight: bold;
     font-size: 23px;
     color: #20283D;
-    padding-top: 7px;
 `;
 
 export const PageBody = styled.View`

@@ -16,6 +16,7 @@ export default () => {
 
     const [nameField, setNameField] = useState('');
     const [descriptionField, setDescriptionField] = useState('');
+    const [linkField, setLinkField] = useState('');
     const [yearField, setYearField] = useState('');
     const [localField, setLocalField] = useState('');
     const [refreshing, setRefreshing] = useState(false);
@@ -80,7 +81,7 @@ export default () => {
                                 </ExperienceOption>
                             </ExperienceArea>
 
-                            <InputText>Nome</InputText>
+                            <InputText>Título</InputText>
                             <SignInput
                                 value={nameField}
                                 onChangeText={o => setNameField(o)}
@@ -90,7 +91,12 @@ export default () => {
                             <SignInput
                                 value={descriptionField}
                                 onChangeText={o => setDescriptionField(o)}
-                                keyboardType={'email-address'}
+                            />
+
+                            <InputText>Link</InputText>
+                            <SignInput
+                                value={linkField}
+                                onChangeText={o => setLinkField(o)}
                             />
 
                             <InputText>Ano</InputText>
@@ -107,23 +113,12 @@ export default () => {
                                 onChangeText={o => setLocalField(o)}
                             />
 
-                            <InputText>Anexos</InputText>
-                            <FlatList 
-                                // horizontal
-                                // pagingEnabled={true}
-                                // showsHorizontalScrollIndicator={false}
-                                // legacyImplementation={false}
-                                // data={this.state.feed}
-                                // keyExtractor={(item) => item.id}
-                                // renderItem={ ({item}) => <ButtonImage data={item}/>}
-                            />
-
                             <ButtonArea>
                                 <CustomButtonNo onPress={handleGoBackClick}>
                                     <CustomButtonTextNo>Cancelar</CustomButtonTextNo>
                                 </CustomButtonNo>
                                 <CustomButton onPress={handleSignClick}>
-                                    <CustomButtonText>Editar</CustomButtonText>
+                                    <CustomButtonText>Adicionar</CustomButtonText>
                                 </CustomButton>
                             </ButtonArea>
                         </Form>

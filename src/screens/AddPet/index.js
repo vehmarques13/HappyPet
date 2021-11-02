@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, Box, Title, Form, InputText, GenreArea, GenreOption, GenreText, ButtonArea, CustomButton, CustomButtonText, CustomButtonNo, CustomButtonTextNo, BackButton } from './styles';
-import { RefreshControl, ImageBackground, FlatList } from 'react-native';
-import CheckBox from '@react-native-community/checkbox';
+import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, Box, Title, Form, InputText, ButtonArea, CustomButton, CustomButtonText, CustomButtonNo, CustomButtonTextNo, BackButton } from './styles';
+import { RefreshControl, ImageBackground, FlatList, Picker } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import BackIcon from '../../images/back.svg';
@@ -15,17 +14,24 @@ export default () => {
 
     const [nameField, setNameField] = useState('');
     const [breedField, setBreedField] = useState('');
-    const [sizeField, setSizeField] = useState('');
-    const [birthField, setBirthField] = useState('');
+    const [descriptionField, setDescriptionField] = useState('');
     const [refreshing, setRefreshing] = useState(false);
-    const [isSelectedFemea, setSelectedFemea] = useState(false);
-    const [isSelectedMacho, setSelectedMacho] = useState(false);
+    const [isSelectedSexo, setSelectedSexo] = useState('femea');
+    const [isSelectedTipoPet, setSelectedTipoPet] = useState(0); 
+    const [isSelectedPorte, setSelectedPorte] = useState('pequeno'); 
+    const [imageField, setImageField] = useState('');
 
     const handleSignClick = async () => {
-        if (nameField != '' && birthField != '') {
-            let json = await Api.signIn(nameField, birthField);
+        if (nameField != '' && descriptionField != '' && breedField != '') {
+            let json = await Api.postPets("usuario@gmail.com", imageField, nameField, isSelectedTipoPet, isSelectedPorte, isSelectedSexo, breedField, descriptionField);
+
+            if (json.data != null) {
+                console.log("DEU CERTO");
+            } else {
+                alert('Algo deu errado!');
+            }
         } else {
-            alert('Preencha os campos!');
+            alert('Preencha os campos corretamente!');
         }
     }
 
@@ -59,10 +65,16 @@ export default () => {
                         <Title>Adicionar Pet</Title>
 
                         <Form>
-                            <InputText>Nome *</InputText>
+                            <InputText>Nome</InputText>
                             <SignInput
                                 value={nameField}
                                 onChangeText={o => setNameField(o)}
+                            />
+
+                            <InputText>Descrição</InputText>
+                            <SignInput
+                                value={descriptionField}
+                                onChangeText={o => setDescriptionField(o)}
                             />
 
                             <InputText>Raça</InputText>
@@ -71,40 +83,40 @@ export default () => {
                                 onChangeText={o => setBreedField(o)}
                             />
 
+                            <InputText>Tipos de pets</InputText>
+                            <Picker
+                                selectedValue={isSelectedTipoPet}
+                                style={{ height: 30, width: '100%', marginTop: 8 }}
+                                onValueChange={(itemValue, itemIndex) => setSelectedTipoPet(itemValue)}
+                            >
+                                <Picker.Item label="Roedores" value={0} />
+                                <Picker.Item label="Pássaros" value={2} />
+                                <Picker.Item label="Felinos" value={3} />
+                                <Picker.Item label="Caninos" value={4} />
+                            </Picker>
+
+                            <InputText>Sexo</InputText>
+                            <Picker
+                                selectedValue={isSelectedSexo}
+                                style={{ height: 30, width: '100%', marginTop: 8 }}
+                                onValueChange={(itemValue, itemIndex) => setSelectedSexo(itemValue)}
+                            >
+                                <Picker.Item label="Fêmea" value="Fêmea" />
+                                <Picker.Item label="Macho" value="Macho" />
+                            </Picker>
+
                             <InputText>Porte</InputText>
-                            <SignInput
-                                value={sizeField}
-                                onChangeText={o => setSizeField(o)}
-                            />
+                            <Picker
+                                selectedValue={isSelectedPorte}
+                                style={{ height: 30, width: '100%', marginTop: 8 }}
+                                onValueChange={(itemValue, itemIndex) => setSelectedPorte(itemValue)}
+                            >
+                                <Picker.Item label="Pequeno" value="Pequeno" />
+                                <Picker.Item label="Médio" value="Médio" />
+                                <Picker.Item label="Grande" value="Grande" />
+                            </Picker>
 
-                            <InputText>Data de nascimento *</InputText>
-                            <SignInput
-                                value={birthField}
-                                onChangeText={o => setBirthField(o)}
-                                password={false}
-                                keyboardType={'numeric'}
-                            />
-
-                            <InputText>Sexo *</InputText>
-                            <GenreArea>
-                                <GenreOption>
-                                    <CheckBox
-                                        value={isSelectedFemea}
-                                        onValueChange={setSelectedFemea}
-                                    />
-                                    <GenreText>Fêmea</GenreText>
-                                </GenreOption>
-
-                                <GenreOption>
-                                    <CheckBox
-                                        value={isSelectedMacho}
-                                        onValueChange={setSelectedMacho}
-                                    />
-                                    <GenreText>Macho</GenreText>
-                                </GenreOption>
-                            </GenreArea>
-
-                            <InputText>Anexos</InputText>
+                            {/* <InputText>Anexos</InputText>
                             <FlatList 
                                 // horizontal
                                 // pagingEnabled={true}
@@ -113,7 +125,7 @@ export default () => {
                                 // data={this.state.feed}
                                 // keyExtractor={(item) => item.id}
                                 // renderItem={ ({item}) => <ButtonImage data={item}/>}
-                            />
+                            /> */}
 
                             <ButtonArea>
                                 <CustomButtonNo onPress={handleGoBackClick}>

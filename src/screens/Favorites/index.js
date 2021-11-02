@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, SearchArea, SearchInput, SearchButton, LoadingIcon, ListArea, BackButton } from './styles';
-import { RefreshControl, Alert } from 'react-native';
+import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, SearchArea, SearchInput, SearchButton, LoadingIcon, ListArea } from './styles';
+import { RefreshControl } from 'react-native';
 
-import BackIcon from '../../images/back.svg';
 import SearchIcon from '../../images/search.svg';
 
 import Api from '../../Api';
-import WorkerItem from '../../components/WorkerItem';
+import FavoriteWorkerItem from '../../components/FavoriteWorkerItem';
 import Filter from '../../components/Filter';
 
 export default () => {
@@ -17,18 +16,10 @@ export default () => {
     const [refreshing, setRefreshing] = useState(false);
 
     const getWorkers = async () => {
-        setLoading(true);
         setList([]);
 
         let res = await Api.getWorkers();
-        
-        if (res.error == '') {
-            setList(res.data);
-        } else {
-            Alert('Erro: ' + res.error);
-        }
-
-        setLoading(false);
+        res == null ? setList([]) : setList(res);
     }
 
     useEffect(() => {
@@ -39,19 +30,12 @@ export default () => {
         setRefreshing(true); 
     }
 
-    const handleGoBackButton = () => {
-        navigation.goBack();
-    }
-
     return (
         <Container>
             <Scroller refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }>
                 <HeaderArea>
-                    <BackButton onPress={handleGoBackButton}>
-                        <BackIcon width="40" height="40" fill="#1C263F" />
-                    </BackButton>
                     <HeaderTitle>HAPPY PET</HeaderTitle>
                 </HeaderArea>
 
@@ -69,20 +53,19 @@ export default () => {
 
                     <Filter />
 
-                    {/* {loading &&
+                    {loading &&
                         <LoadingIcon 
                             size='large'
                             color='#20283D'
                         />
-                    } */}
+                    }
 
                     <ListArea>
-                        {/* {list.map((item) => (
-                            <WorkerItem key={i} data={item} />
-                        ))}; */}
-
-                        <WorkerItem></WorkerItem>
+                        {list.map((item, k) => (
+                            <FavoriteWorkerItem key={k} data={item} />
+                        ))}
                     </ListArea>
+                    
                 </PageBody>
             </Scroller>
         </Container>

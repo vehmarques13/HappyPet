@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { ImageBackground, FlatList } from 'react-native';
-import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, UserInfoArea, UserInfo, Avatar, UserInfoName, UserInfoState, UserInfoBirth, UserButton, LoadingIcon, ServiceArea, ServiceTitle, OrganizationArea, ButtonArea, BackButton } from './styles';
+import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, UserInfoArea, UserInfo, Avatar, UserInfoName, UserInfoState, UserInfoBirth, UserButton, LoadingIcon, PetArea, PetTitle, OrganizationArea, ButtonArea, BackButton } from './styles';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
+
 import Api from '../../../Api';
 
 import Pets from '../../../components/Pets';
@@ -11,15 +13,6 @@ import BackIcon from '../../../images/back.svg';
 import AddIcon from '../../../images/add2.svg';
 
 export default () => {
-    this.state = {
-      feed:[
-        {id: 1, nome: 'Joseffe', idade: 32, email: 'joseffe@gmail.com'},
-        {id: 2, nome: 'João', idade: 17, email: 'joao@gmail.com'},
-        {id: 3, nome: 'Maria', idade: 22, email: 'maria@gmail.com'},
-        {id: 4, nome: 'Joaquim', idade: 42, email: 'joaquim@gmail.com'},
-        {id: 5, nome: 'Paulo', idade: 36, email: 'paulo@gmail.com'},
-      ]
-    } 
 
     const navigation = useNavigation();
     // const route = useRoute();
@@ -31,40 +24,37 @@ export default () => {
     //     stars: route.params.stars
     // });
 
+    const [userInfo, setUserInfo] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        const getWorkerInfo = async () => {
-            setLoading(true);
+    const getUserInfo = async () => {
+        setLoading(true);
 
-            let json = await Api.getWorker(userInfo.id);
+        let email = await AsyncStorage.getItem('email');
+        let res = await Api.getUser(email);
 
-            if (json.error != '')
-                alert(json.error);
-            else 
-                setUserInfo(json.data);
+        if (res.error == undefined) 
+            setUserInfo(res);
+        else 
+            Alert('Erro: ' + res.error);
 
-            setLoading(false);
-        }
-        getWorkerInfo();
-    }, []);
-
-    const handleGoBackButton = () => {
-        navigation.goBack();
+        setLoading(false);
     }
+
+    useEffect(() => {
+        getUserInfo();
+    }, []);
 
     const handleClick = () => {
         navigation.navigate('AddPet');
     }
 
+    let date = new Date(userInfo.nascimento);
+
     return (
         <Container>
-            {/* <Text>{userInfo.name}</Text> */}
             <Scroller>
                 <HeaderArea>
-                    <BackButton onPress={handleGoBackButton}>
-                        <BackIcon width="40" height="40" fill="#1C263F" />
-                    </BackButton>
                     <HeaderTitle>HAPPY PET</HeaderTitle>
                 </HeaderArea>
 
@@ -76,20 +66,23 @@ export default () => {
 
                 <PageBody>
                     <UserInfoArea>
-                        <Avatar source={require('../../../images/avatar.jpg')} />
+                        {userInfo.genero == "Masculino" ?
+                            <Avatar source={require('../../../images/avatar.jpg')} />
+                        : <Avatar source={require('../../../images/avatarMulher.jpg')} />
+                        }
                         <UserInfo>
-                            <UserInfoName>Bruno Sampaio de Morais</UserInfoName>
-                            <UserInfoState>São Vicente, São Paulo</UserInfoState>
-                            <UserInfoBirth>25/07/2001</UserInfoBirth>
+                            <UserInfoName>{userInfo.nome}</UserInfoName>
+                            <UserInfoState>{userInfo.cidade}, {userInfo.estado}</UserInfoState>
+                            <UserInfoBirth>{date.getUTCDate()}/{date.getMonth() + 1}/{date.getUTCFullYear()}</UserInfoBirth>
                         </UserInfo>
                         <UserButton>
                             <ChatIcon width="20" height="20" fill="#00B1E1" />
                         </UserButton>
                     </UserInfoArea>
 
-                    <ServiceArea>
+                    <PetArea>
                         <OrganizationArea>
-                            <ServiceTitle>Pets</ServiceTitle>
+                            <PetTitle>Pets</PetTitle>
                             <ButtonArea onPress={handleClick}>
                                 <AddIcon width="28" height="28" fill="#00B1E1" />
                             </ButtonArea>
@@ -99,12 +92,12 @@ export default () => {
                             pagingEnabled={true}
                             showsHorizontalScrollIndicator={false}
                             legacyImplementation={false}
-                            data={this.state.feed}
+                            data={userInfo.pets}
                             keyExtractor={(item) => item.id}
                             renderItem={ ({item}) => <Pets data={item}/>}
                         />
 
-                    </ServiceArea>
+                    </PetArea>
 
                     {loading &&   
                         <LoadingIcon 

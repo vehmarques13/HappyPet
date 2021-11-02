@@ -8,7 +8,7 @@ export const SignInput = styled.TextInput`
     border-bottom-color: #E6E6E6;
 `;
 
-export default ({value, onChangeText, password, keyboardType, type}) => {
+export default ({value, onChangeText, password, keyboardType, type, placeholder}) => {
     return (
         <SignInput
             value={value}
@@ -16,6 +16,7 @@ export default ({value, onChangeText, password, keyboardType, type}) => {
             secureTextEntry={password}
             keyboardType={keyboardType}
             type={type}
+            placeholder={placeholder}
         >
         </SignInput>
     );

@@ -15,12 +15,13 @@ import AddService from '../screens/AddService';
 import EditAccount from '../screens/EditAccount';
 import AddExperience from '../screens/AddExperience';
 import Rating from '../screens/Rating';
+import AccountId from '../screens/Account/Id';
 
 const Stack = createStackNavigator();
 
 export default () => (
     <Stack.Navigator
-        initialRouteName="MainTab"
+        initialRouteName="SignIn"
         screenOptions={{
             headerShown: false
         }}
@@ -39,5 +40,6 @@ export default () => (
         <Stack.Screen name="EditAccount" component={EditAccount} />
         <Stack.Screen name="AddExperience" component={AddExperience} />
         <Stack.Screen name="Rating" component={Rating} />
+        <Stack.Screen name="AccountId" component={AccountId} />
     </Stack.Navigator>
 );

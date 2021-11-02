@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, ImageBackground } from 'react-native';
+import { Text, ImageBackground, Picker } from 'react-native';
 import { Container, Scroller, Name, Box, Title, Subtitle, Form, InputText, CustomButton, CustomButtonText, SignMessageError } from './styles';
 import SignInput from '../../../components/SignInput';
 import Api from '../../../Api';
@@ -20,26 +20,21 @@ export default () => {
     const [stateField, setStateField] = useState('');
     const [cityField, setCityField] = useState('');
     const [cellphoneField, setCellphoneField] = useState('');
+    const [imageField, setImageField] = useState('');
+    const [isSelectedSexo, setSelectedSexo] = useState('Feminino');
+    const [informationField, setInformationField] = useState([]);
 
     const handleSignClick = async () => {
-        if (nameField != '' && emailField != '' && passwordField != '') {
-            let json = await Api.signIn(emailField, passwordField);
+        if (emailField != '' && passwordField != '' && nameField != '' && birthField != '', addressField != '' && stateField != '' && cityField != '' && cellphoneField != '') { 
 
-            if (json.token) {
-                await AsyncStorage.setItem('token', json.token);
+            let json = await Api.signUp(emailField, 2, imageField, nameField, passwordField, birthField, addressField, cellphoneField, isSelectedSexo, stateField, cityField, informationField);
 
-                userDispatch({
-                    type: 'setAvatar', 
-                    payload: {
-                        avatar: json.data.avatar
-                    }
-                });
-
+            if (json.data != null) {
                 navigation.reset({
                     routes: [{name: 'SupportServiceProvider'}]
                 });
             } else {
-                alert('Email e/ou senha inválido!');
+                alert('Algo deu errado!');
             }
         } else {
             alert('Preencha os campos!');
@@ -86,6 +81,17 @@ export default () => {
                             onChangeText={o => setPasswordField(o)}
                             password={true}
                         />
+
+                        <InputText>Gênero</InputText>
+                        <Picker
+                            selectedValue={isSelectedSexo}
+                            style={{ height: 30, width: '100%', marginTop: 8 }}
+                            onValueChange={(itemValue, itemIndex) => setSelectedSexo(itemValue)}
+                        >
+                            <Picker.Item label="Feminino" value="Feminino" />
+                            <Picker.Item label="Masculino" value="Masculino" />
+                            <Picker.Item label="Outros" value="Outros" />
+                        </Picker>
 
                         <InputText>Data de nascimento</InputText>
                         <SignInput

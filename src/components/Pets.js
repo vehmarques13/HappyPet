@@ -5,6 +5,10 @@ import styled from 'styled-components/native';
 import FemaleIcon from '../images/female.svg';
 import MaleIcon from '../images/male.svg';
 import DeleteIcon from '../images/delete.svg';
+import DogIcon from '../images/dog.svg';
+import CatIcon from '../images/cat.svg';
+import BirdIcon from '../images/bird.svg';
+import HamsterIcon from '../images/hamster.svg';
 
 const PetsArea = styled.View`
     flex-direction: row;
@@ -47,33 +51,84 @@ const PetAge = styled.Text`
     color: #414141;
 `;
 
-const PetImage = styled.Image`
-    width: 110px;
-    height: 110px;
+const FilterPet = styled.TouchableOpacity`
+    width: 112px;
+    border-radius: 15px; 
+    background-color: white;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px 0 4px 0;
 `;
 
-export default () => {
+const FilterPetSmall = styled.TouchableOpacity`
+    width: 85px;
+    border-radius: 15px; 
+    background-color: white;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px 0 4px 0;
+`;
+
+const FilterText = styled.Text`
+    color: #858585;
+    font-weight: 500;
+    font-size: 13px;
+    margin-left: 8px;
+`;
+
+export default ({data}) => {
+    const tipoPet = () => {
+        switch(data.tipoPet) {
+            case 0:
+                return "Roedor"
+            case 2:
+                return "Pássaro";
+            case 3:
+                return "Felino";
+            case 4:
+                return "Canino";
+            default:
+                return "Outros";
+        }
+    }
+
     return (
         <PetsArea>
             <PetsView>
-                <ImageBackground 
-                    source={require('../images/fundo2.png')} 
-                    resizeMode="cover" 
-                    style={{ width: '100%', borderRadius: 12, marginBottom: 10, alignItems: 'center' }} 
-                >
-                    <PetInfo>
-                        <OrganizationTitle>
-                            <OrganizationArea>
-                                <PetName>Luna</PetName>
+                <PetInfo>
+                    <OrganizationTitle>
+                        <OrganizationArea>
+                            <PetName>{data.nome}</PetName>
+                            {data.sexo == "Fêmea" ? 
                                 <FemaleIcon width="18" height="18" fill="#1C263F"/> 
-                            </OrganizationArea>
-                            <DeleteIcon width="15" height="15" fill="#00B1E1"/>
-                        </OrganizationTitle>
-                        <PetAge>1 ano e 5 meses</PetAge>
-                    </PetInfo>
-
-                    <PetImage source={require('../images/avatarPetFemea.jpg')}/>
-                </ImageBackground>
+                            : <MaleIcon width="18" height="18" fill="#1C263F"/> 
+                            }
+                        </OrganizationArea>
+                        <DeleteIcon width="15" height="15" fill="#00B1E1"/>
+                    </OrganizationTitle>
+                    <PetAge>{data.raca}</PetAge>
+                    {tipoPet() == "Roedor" ? 
+                        <FilterPet>
+                            <HamsterIcon width="22" height="22" fill="#1C263F" />
+                            <FilterText>Roedor</FilterText>
+                        </FilterPet>
+                    : tipoPet() == "Pássaro" ? 
+                        <FilterPet>
+                            <BirdIcon width="22" height="22" fill="#1C263F" />
+                            <FilterText>Passáro</FilterText>
+                        </FilterPet>
+                    : tipoPet() == "Felino" ?
+                        <FilterPetSmall>
+                            <CatIcon width="22" height="22" fill="#1C263F" />
+                            <FilterText>Felino</FilterText>
+                        </FilterPetSmall>
+                    : 
+                        <FilterPet>
+                            <DogIcon width="22" height="22" fill="#1C263F" />
+                            <FilterText>Canino</FilterText>
+                        </FilterPet>
+                    }
+                </PetInfo>
             </PetsView>
         </PetsArea>
     );

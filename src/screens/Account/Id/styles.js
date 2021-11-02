@@ -30,19 +30,19 @@ export const PageBody = styled.View`
     margin-top: -50px;
     height: 100%;
     border: 1px solid rgba(230, 230, 230, 0.6);
+    padding: 0 20px;
 `;
 
 export const UserInfoArea = styled.View`
     flex-direction: row;
     margin-top: -40px;
-    padding: 0 10px;
 `;
 
 export const Avatar = styled.Image`
     width: 112px;
     height: 135px;
     border-radius: 11px;
-    margin: 0 15px 0 8px;
+    margin: 0 15px 0 0;
     border: 1px solid rgba(230, 230, 230, 0.6);
 `;
 
@@ -78,14 +78,12 @@ export const UserButton = styled.TouchableOpacity`
     border: 1px solid rgba(230, 230, 230, 1);
     justify-content: center;
     align-items: center;
-    margin: 20px 2px 0 2px;
+    margin: 20px 0 0 2px;
 `;
 
-export const PetArea = styled.View`
-    padding: 25px 18px;
-`;
+export const ServiceArea = styled.View``;
 
-export const PetTitle = styled.Text`
+export const ServiceTitle = styled.Text`
     font-weight: bold;
     font-size: 18px;
     color: #1C263F;
@@ -95,9 +93,8 @@ export const PetTitle = styled.Text`
 export const OrganizationArea = styled.View`
     flex-direction: row;
     justify-content: space-between;
+    margin-top: 25px;
 `;
-
-export const ButtonArea = styled.TouchableOpacity``;
 
 export const LoadingIcon = styled.ActivityIndicator`
     margin-top: 50px;
@@ -107,4 +104,11 @@ export const BackButton = styled.TouchableOpacity`
     position: absolute;
     left: 0;
     z-index: 9;
+`;
+
+export const Line = styled.View`
+    width: 100%;
+    height: 1px;
+    background-color: rgba(230, 230, 230, 1);
+    margin: 10px 0;
 `;

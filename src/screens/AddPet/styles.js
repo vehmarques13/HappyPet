@@ -54,30 +54,7 @@ export const Form = styled.View`
 export const InputText = styled.Text`
     font-weight: bold;
     font-size: 15px;
-    margin: 32px 0 5px 0;
-    color: #A5A5A5;
-`;
-
-export const GenreArea = styled.View`
-    width: 100%;
-    justify-content: flex-start;
-    flex-direction: row;
-    flex-wrap: wrap;
-`;
-
-export const GenreOption = styled.View`
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    margin: 5px 15px 0 0;
-`;
-
-export const GenreText = styled.Text`
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 14px;
+    margin: 28px 0 5px 0;
     color: #A5A5A5;
 `;
 

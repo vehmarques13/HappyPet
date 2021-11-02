@@ -7,7 +7,7 @@ const ServicesArea = styled.View`
 `;
 
 const ServicesView = styled.View`
-    width: 115px;
+    width: 120px;
     background: #FFFFFF;
     border-radius: 12px;
     border: 1px solid rgba(230, 230, 230, 0.8);

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, SearchArea, SearchInput, SearchButton, LoadingIcon, ServiceArea, ServiceTitle, OrganizationArea, ButtonArea, Services } from './styles';
-import { RefreshControl, FlatList } from 'react-native';
+import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, SearchArea, SearchInput, SearchButton, LoadingIcon, ServiceArea, ServiceTitle, Services, ServicesArea, ServicesView, ServiceImage, ServiceName } from './styles';
+import { RefreshControl, FlatList, Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import SearchIcon from '../../../images/search.svg';
 import AddIcon from '../../../images/add2.svg';
@@ -9,51 +10,35 @@ import AddIcon from '../../../images/add2.svg';
 import Api from '../../../Api';
 import { Alert } from 'react-native';
 import Pets from '../../../components/Pets';
-import ServiceItem from '../../../components/ServiceItem';
 
 export default () => {
 
-    this.state = {
-        feed:[
-          {id: 1, nome: 'Joseffe', idade: 32, email: 'joseffe@gmail.com'},
-          {id: 2, nome: 'João', idade: 17, email: 'joao@gmail.com'},
-          {id: 3, nome: 'Maria', idade: 22, email: 'maria@gmail.com'},
-          {id: 4, nome: 'Joaquim', idade: 42, email: 'joaquim@gmail.com'},
-          {id: 5, nome: 'Paulo', idade: 36, email: 'paulo@gmail.com'},
-        ]
-    } 
-
-    const [searchText, setSearchText] = useState('');
     const [loading, setLoading] = useState(false);
-    const [list, setList] = useState([]);
+    const [listPets, setListPets] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
     const navigation = useNavigation();
 
-    const getWorkers = async () => {
+    const getPets = async () => {
         setLoading(true);
-        setList([]);
+        setListPets([]);
 
-        let res = await Api.getWorkers();
-        
-        if (res.error == '') {
-            setList(res.data);
-        } else {
+        let email = await AsyncStorage.getItem('email');
+        let res = await Api.getPetByEmail(email);
+
+        if (res.error == undefined) 
+            setListPets(res);
+        else 
             Alert('Erro: ' + res.error);
-        }
 
         setLoading(false);
     }
 
     useEffect(() => {
-        getWorkers();
+        getPets();
     }, []);
 
     const onRefresh = () => {
         setRefreshing(true); 
-    }
-
-    const handleClick = () => {
-        navigation.navigate('AddPet');
     }
 
     return (
@@ -66,7 +51,7 @@ export default () => {
                 </HeaderArea>
 
                 <PageBody>
-                    <SearchArea> 
+                    {/* <SearchArea> 
                         <SearchInput 
                             placeholder="Faça sua busca..."
                             value={searchText}
@@ -75,35 +60,69 @@ export default () => {
                         <SearchButton onPress={getWorkers}>
                             <SearchIcon width="24" height="24" fill="#6B6B6B" />
                         </SearchButton>
-                    </SearchArea>
+                    </SearchArea> */}
 
                     <ServiceArea>
-                        <OrganizationArea>
-                            <ServiceTitle>Pets</ServiceTitle>
-                            <ButtonArea onPress={handleClick}>
-                                <AddIcon width="28" height="28" fill="#00B1E1" />
-                            </ButtonArea>
-                        </OrganizationArea>
-                        <FlatList 
-                            horizontal
-                            pagingEnabled={true}
-                            showsHorizontalScrollIndicator={false}
-                            legacyImplementation={false}
-                            data={this.state.feed}
-                            keyExtractor={(item) => item.id}
-                            renderItem={ ({item}) => <Pets data={item}/>}
-                        />
+                        <ServiceTitle>Pets</ServiceTitle>
+                        {listPets.length != 0 ? 
+                            <FlatList 
+                                style={{marginTop: -8}}
+                                horizontal
+                                pagingEnabled={true}
+                                showsHorizontalScrollIndicator={false}
+                                legacyImplementation={false}
+                                data={listPets}
+                                keyExtractor={(item) => item.id}
+                                renderItem={ ({item}) => <Pets data={item}/>}
+                            /> 
+                        : <Text>Não há pets cadastrados.</Text>
+                        }
                     </ServiceArea>
 
                     <ServiceArea>
                         <ServiceTitle>Serviços</ServiceTitle>
                         <Services>
-                            <ServiceItem />
-                            <ServiceItem />
-                            <ServiceItem />
-                            <ServiceItem />
-                            <ServiceItem />
-                            <ServiceItem />
+                            <ServicesArea>
+                                <ServicesView>
+                                    <ServiceImage source={require('../../../images/veterinario.jpg')}/>
+                                    <ServiceName>Veterinário</ServiceName>
+                                </ServicesView>
+                            </ServicesArea>
+
+                            <ServicesArea>
+                                <ServicesView>
+                                    <ServiceImage source={require('../../../images/banho.jpg')}/>
+                                    <ServiceName>Banho e Tosa</ServiceName>
+                                </ServicesView>
+                            </ServicesArea>
+
+                            <ServicesArea>
+                                <ServicesView>
+                                    <ServiceImage source={require('../../../images/passeio.jpg')}/>
+                                    <ServiceName>Passeio</ServiceName>
+                                </ServicesView>
+                            </ServicesArea>
+
+                            <ServicesArea>
+                                <ServicesView>
+                                    <ServiceImage source={require('../../../images/adestramento.jpg')}/>
+                                    <ServiceName>Adestramento</ServiceName>
+                                </ServicesView>
+                            </ServicesArea>
+
+                            <ServicesArea>
+                                <ServicesView>
+                                    <ServiceImage source={require('../../../images/petsitter.jpg')}/>
+                                    <ServiceName>Pet Sitter</ServiceName>
+                                </ServicesView>
+                            </ServicesArea>
+
+                            <ServicesArea>
+                                <ServicesView>
+                                    <ServiceImage source={require('../../../images/hospedagem.jpg')}/>
+                                    <ServiceName>Hospedagem</ServiceName>
+                                </ServicesView>
+                            </ServicesArea>
                         </Services>
                     </ServiceArea>
 

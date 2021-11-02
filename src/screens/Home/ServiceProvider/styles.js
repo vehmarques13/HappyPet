@@ -74,10 +74,37 @@ export const Services = styled.View`
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+    margin-bottom: 15px;
 `;
 
 export const LoadingIcon = styled.ActivityIndicator`
     margin-top: 50px;
+`;
+
+export const ServicesArea = styled.View`
+    flex-direction: row;
+    margin-top: 10px;
+`;
+
+export const ServicesView = styled.View`
+    width: 118px;
+    background: #FFFFFF;
+    border-radius: 12px;
+    border: 1px solid rgba(230, 230, 230, 0.8);
+    justify-content: center;
+    align-items: center;
+    padding: 5px 0 15px 0;
+`;
+
+export const ServiceName = styled.Text`
+    font-weight: bold;
+    font-size: 16px;
+    color: #1C263F;
+`;
+
+export const ServiceImage = styled.Image`
+    width: 100px;
+    height: 100px;
 `;
 
 

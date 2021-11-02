@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Text, ImageBackground } from 'react-native';
+import { Text, ImageBackground, Picker } from 'react-native';
 import { Container, Scroller, Name, Box, Title, Subtitle, Form, InputText, CustomButton, CustomButtonText, SignMessageError } from './styles';
 import SignInput from '../../../components/SignInput';
 import Api from '../../../Api';
 import { useNavigation } from '@react-navigation/native';
 import { userContext } from '../../../contexts/UserContext';
 import AsyncStorage from '@react-native-community/async-storage';
+import DatePicker from 'react-native-datepicker';
 
 export default () => {
 
@@ -20,26 +21,20 @@ export default () => {
     const [stateField, setStateField] = useState('');
     const [cityField, setCityField] = useState('');
     const [cellphoneField, setCellphoneField] = useState('');
+    const [imageField, setImageField] = useState('');
+    const [isSelectedSexo, setSelectedSexo] = useState('Feminino');
+    const [informationField, setInformationField] = useState(null);
 
     const handleSignClick = async () => {
-        if (nameField != '' && emailField != '' && passwordField != '') {
-            let json = await Api.signIn(emailField, passwordField);
+        if (emailField != '' && passwordField != '' && nameField != '' && birthField != '', addressField != '' && stateField != '' && cityField != '' && cellphoneField != '') { 
+            let json = await Api.signUp(emailField, 1, imageField, nameField, passwordField, birthField, addressField, cellphoneField, isSelectedSexo, stateField, cityField, informationField);
 
-            if (json.token) {
-                await AsyncStorage.setItem('token', json.token);
-
-                userDispatch({
-                    type: 'setAvatar', 
-                    payload: {
-                        avatar: json.data.avatar
-                    }
-                });
-
+            if (json.data != null) {
                 navigation.reset({
                     routes: [{name: 'SupportTutor'}]
                 });
             } else {
-                alert('Email e/ou senha inválido!');
+                alert('Algo deu errado!');
             }
         } else {
             alert('Preencha os campos!');
@@ -87,12 +82,38 @@ export default () => {
                             password={true}
                         />
 
+                        <InputText>Gênero</InputText>
+                        <Picker
+                            selectedValue={isSelectedSexo}
+                            style={{ height: 30, width: '100%', marginTop: 8 }}
+                            onValueChange={(itemValue, itemIndex) => setSelectedSexo(itemValue)}
+                        >
+                            <Picker.Item label="Feminino" value="Feminino" />
+                            <Picker.Item label="Masculino" value="Masculino" />
+                            <Picker.Item label="Outros" value="Outros" />
+                        </Picker>
+
                         <InputText>Data de nascimento</InputText>
-                        <SignInput
-                            value={birthField}
-                            onChangeText={o => setBirthField(o)}
-                            password={true}
-                            keyboardType={'numeric'}
+                        <DatePicker
+                            style={{width: 200}}
+                            date={birthField}
+                            mode="date"
+                            placeholder="Selecione uma data"
+                            format="YYYY-MM-DD"
+                            confirmBtnText="Confirm"
+                            cancelBtnText="Cancel"
+                            customStyles={{
+                                dateIcon: {
+                                    position: 'absolute',
+                                    right: 0,
+                                    top: 4,
+                                    marginRight: 0
+                                },
+                                dateInput: {
+                                    marginRight: 36
+                                }
+                            }}
+                            onDateChange={(date) => {setBirthField(date)}}
                         />
 
                         <InputText>Endereço</InputText>

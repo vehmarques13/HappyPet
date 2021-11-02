@@ -1,4 +1,5 @@
-import React from 'react';
+import { DrawerActions } from '@react-navigation/routers';
+import React, { useEffect } from 'react';
 import styled from 'styled-components/native';
 
 const ScheduleArea = styled.View`
@@ -45,13 +46,38 @@ const Time = styled.Text`
 `;
 
 export default ({data}) => {
+    let date = new Date(data.diaHora);
+
+    const fotoTipoServico = () => {
+        switch(data.tipoServico) {
+            case 1:
+                return require('../images/veterinario.jpg');
+            case 2:
+                return require('../images/banho.jpg');
+            case 3:
+                return require('../images/passeio.jpg');
+            case 4:
+                return require('../images/adestramento.jpg');
+            case 5:
+                return require('../images/petsitter.jpg');
+            case 6:
+                return require('../images/hospedagem.jpg');
+            default:
+                return require('../images/hospedagem.jpg');
+        }
+    }
+
+    useEffect(() => {
+        fotoTipoServico();
+    }, []);
+
     return (
         <ScheduleArea>
             <InfoArea>    
-                <UserName>Bruno</UserName>
+                <UserName>{data.nomeUsuario.substring(0, data.nomeUsuario.indexOf(' ') == -1 ? data.nomeUsuario.length : data.nomeUsuario.indexOf(' '))}</UserName>
                 <Line/>
-                <Service source={require('../images/banho.jpg')} />
-                <Time>11:30</Time>
+                <Service source={fotoTipoServico()} />
+                <Time>{date.toLocaleTimeString('pt-BR').substring(0, date.toLocaleTimeString('pt-BR').lastIndexOf(':'))}</Time>
             </InfoArea>
         </ScheduleArea>
     );

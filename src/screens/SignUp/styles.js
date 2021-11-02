@@ -38,7 +38,7 @@ export const Subtitle = styled.Text`
 export const Question = styled.Text`
     font-weight: bold;
     font-size: 18px;
-    margin-top: 40px;
+    margin-top: 35px;
     color: rgba(0, 177, 225, 0.7);
 `;
 

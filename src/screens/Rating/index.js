@@ -14,13 +14,20 @@ export default () => {
     const navigation = useNavigation();
 
     const [commentField, setCommentField] = useState('');
+    const [starsField, setStarsField] = useState(0);
     const [refreshing, setRefreshing] = useState(false);
 
     const handleSignClick = async () => {
-        if (nameField != '' && descriptionField != '') {
-            let json = await Api.signIn(nameField, descriptionField);
+        if (commentField != '' && (starsField >= 0 && starsField <= 5)) {
+            let json = await Api.postRating("usuario@gmail.com", "prestador@gmail.com", commentField, starsField);
+
+            if (json.data != null) {
+                console.log("DEU CERTO");
+            } else {
+                alert('Algo deu errado!');
+            }
         } else {
-            alert('Preencha os campos!');
+            alert('Preencha os campos corretamente!');
         }
     }
 
@@ -55,7 +62,12 @@ export default () => {
 
                         <Form>
                             <InputText>Estrelas</InputText>
-                            <Stars stars={2} size={38} />
+                            <SignInput
+                                value={starsField}
+                                onChangeText={o => setStarsField(o)}
+                                keyboardType={'numeric'}
+                                placeholder={'Entre 0 e 5'}
+                            />
 
                             <InputText>Comentário</InputText>
                             <SignInput
@@ -68,7 +80,7 @@ export default () => {
                                     <CustomButtonTextNo>Cancelar</CustomButtonTextNo>
                                 </CustomButtonNo>
                                 <CustomButton onPress={handleSignClick}>
-                                    <CustomButtonText>Editar</CustomButtonText>
+                                    <CustomButtonText>Enviar</CustomButtonText>
                                 </CustomButton>
                             </ButtonArea>
                         </Form>

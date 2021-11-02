@@ -55,7 +55,7 @@ export const Form = styled.View`
 export const InputText = styled.Text`
     font-weight: bold;
     font-size: 15px;
-    margin: 32px 0 5px 0;
+    margin: 28px 0 5px 0;
     color: #A5A5A5;
 `;
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, SearchArea, SearchInput, SearchButton, LoadingIcon, ListArea } from './styles';
-import { RefreshControl } from 'react-native';
-import { Alert } from 'react-native';
+import { RefreshControl, FlatList } from 'react-native';
+import { Alert, Text } from 'react-native';
 
 import SearchIcon from '../../images/search.svg';
 
@@ -17,18 +17,10 @@ export default () => {
     const [refreshing, setRefreshing] = useState(false);
 
     const getWorkers = async () => {
-        setLoading(true);
         setList([]);
 
         let res = await Api.getWorkers();
-        
-        if (res.error == '') {
-            setList(res.data);
-        } else {
-            Alert('Erro: ' + res.error);
-        }
-
-        setLoading(false);
+        res == null ? setList([]) : setList(res);
     }
 
     useEffect(() => {
@@ -70,12 +62,11 @@ export default () => {
                     }
 
                     <ListArea>
-                        {/* {list.map((item) => (
-                            <WorkerItem key={i} data={item} />
-                        ))}; */}
-
-                        <WorkerItem></WorkerItem>
+                        {list.map((item, k) => (
+                            <WorkerItem key={k} data={item} />
+                        ))}
                     </ListArea>
+                    
                 </PageBody>
             </Scroller>
         </Container>

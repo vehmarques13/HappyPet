@@ -4,40 +4,41 @@ import { Container, Name, Box, Title, Subtitle, Form, InputText, SignMessageButt
 import SignInput from '../../components/SignInput';
 import Api from '../../Api';
 import { useNavigation } from '@react-navigation/native';
-import { userContext } from '../../contexts/UserContext';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default () => {
-
-    // const { dispatch: userDispatch } = userContext(userContext);
     const navigation = useNavigation();
 
-    const [emailField, setEmailField] = useState('');
-    const [passwordField, setPasswordField] = useState('');
+    const [emailField, setEmailField] = useState('usuario@gmail.com');
+    const [passwordField, setPasswordField] = useState('123');
 
     const handleSignClick = async () => {
         if (emailField != '' && passwordField != '') {
-            navigation.reset({
-                routes: [{name: 'SupportTutor'}]
-            });
-
             let json = await Api.signIn(emailField, passwordField);
 
-            if (json.token) {
-                await AsyncStorage.setItem('token', json.token);
+            if (json.data != null) {
+                let tipoUsuario = await (json.data.tipoUsuario).toString();
 
-                userDispatch({
-                    type: 'setAvatar', 
-                    payload: {
-                        avatar: json.data.avatar
-                    }
-                });
+                await AsyncStorage.setItem('email', json.data.email);
+                await AsyncStorage.setItem('tipoUsuario', tipoUsuario);
 
-                navigation.reset({
-                    routes: [{name: 'MainTab'}]
-                });
+                switch (json.data.tipoUsuario) {
+                    case 1: 
+                        navigation.reset({
+                            routes: [{name: 'SupportTutor'}]
+                        });
+                        break;
+                    case 2: 
+                        navigation.reset({
+                            routes: [{name: 'SupportServiceProvider'}]
+                        });
+                        break;
+                    default: 
+                        alert('Usuário inválido!');
+                        break;
+                }
             } else {
-                alert('Email e/ou senha inválido!');
+                alert('Algo deu errado!');
             }
         } else {
             alert('Preencha os campos!');

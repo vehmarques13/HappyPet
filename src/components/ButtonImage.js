@@ -23,7 +23,7 @@ export const ImageArea = styled.View`
 `;
 
 const imagePickerCallBack = (data) => {
-    console.log(data);
+    return data;
 }
 
 export default () => {

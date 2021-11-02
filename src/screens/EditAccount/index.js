@@ -27,7 +27,7 @@ export default () => {
         if (nameField != '' && descriptionField != '') {
             let json = await Api.signIn(nameField, descriptionField);
         } else {
-            alert('Preencha os campos!');
+            alert('Preencha os campos corretamente!');
         }
     }
 
@@ -61,17 +61,6 @@ export default () => {
                         <Title>Editar Perfil</Title>
 
                         <Form>
-                            <InputText>Avatar</InputText>
-                            <FlatList 
-                                // horizontal
-                                // pagingEnabled={true}
-                                // showsHorizontalScrollIndicator={false}
-                                // legacyImplementation={false}
-                                // data={this.state.feed}
-                                // keyExtractor={(item) => item.id}
-                                // renderItem={ ({item}) => <ButtonImage data={item}/>}
-                            />
-
                             <InputText>Nome</InputText>
                             <SignInput
                                 value={nameField}

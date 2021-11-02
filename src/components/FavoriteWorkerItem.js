@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components/native';
 
 import Stars from '../components/Stars';
-import Animals from '../components/Animals';
 import Favorites from '../components/Favorites';
 
 import { useNavigation } from '@react-navigation/native';
@@ -57,7 +56,7 @@ export default ({data}) => {
     const navigation = useNavigation();
 
     const handleClick = () => {
-        navigation.navigate('Service');
+        navigation.navigate('AccountId');
         // navigation.navigate('Service', {
         //     id: data.id,
         //     avatar: data.avatar,
@@ -65,23 +64,6 @@ export default ({data}) => {
         //     stars: data.stars
         // }); 
     }
-
-    const tipoServico = () => {
-        switch(data.tipoServico) {
-            case 1:
-                return "Serviço 1";
-            case 2:
-                return "Serviço 2";
-            case 3:
-                return "Serviço 3";
-            default:
-                return "Serviço";
-        }
-    }
-
-    useEffect(() => {
-        tipoServico();
-    }, []);
 
     return (
         <Area onPress={handleClick}>
@@ -93,10 +75,9 @@ export default ({data}) => {
                     <Favorites favorites={1} />
                 </OrganizationArea>
                 <UserState>{data.cidade}, {data.estado}</UserState>
-                <UserServices>{tipoServico()}</UserServices>
+                <UserServices>{data.email}</UserServices>
                 <OrganizationArea style={{paddingBottom: 8}}>
                     <Stars stars={data.avaliacao} size={20} />
-                    <Animals animals={2} size={20} />
                 </OrganizationArea>
             </InfoArea>
         </Area>

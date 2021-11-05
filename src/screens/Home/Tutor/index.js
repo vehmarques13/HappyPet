@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, SearchArea, SearchInput, SearchButton, LoadingIcon, ServiceArea, ServiceTitle, Services, ServicesArea, ServicesView, ServiceImage, ServiceName } from './styles';
+import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, LoadingIcon, ServiceArea, ServiceTitle, Services, ServicesArea, ServicesView, ServiceImage, ServiceName, PetTitle, OrganizationArea, ButtonArea } from './styles';
 import { RefreshControl, FlatList, Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import SearchIcon from '../../../images/search.svg';
 import AddIcon from '../../../images/add2.svg';
 
 import Api from '../../../Api';
@@ -19,6 +18,7 @@ export default () => {
     const navigation = useNavigation();
 
     const getPets = async () => {
+        console.log("ENTREI");
         setLoading(true);
         setListPets([]);
 
@@ -39,6 +39,18 @@ export default () => {
 
     const onRefresh = () => {
         setRefreshing(true); 
+    }
+
+    const handleClick = () => {
+        navigation.reset({
+            routes: [{name: 'AddPet'}]
+        });
+    }
+
+    const handleServiceClick = async (id) => {
+        await AsyncStorage.setItem('tipoServico', id.toString());
+
+        navigation.navigate('Services');
     }
 
     return (
@@ -63,7 +75,12 @@ export default () => {
                     </SearchArea> */}
 
                     <ServiceArea>
-                        <ServiceTitle>Pets</ServiceTitle>
+                        <OrganizationArea>
+                            <PetTitle>Pets</PetTitle>
+                            <ButtonArea onPress={handleClick}>
+                                <AddIcon width="28" height="28" fill="#00B1E1" />
+                            </ButtonArea>
+                        </OrganizationArea>
                         {listPets.length != 0 ? 
                             <FlatList 
                                 style={{marginTop: -8}}
@@ -83,41 +100,41 @@ export default () => {
                         <ServiceTitle>Serviços</ServiceTitle>
                         <Services>
                             <ServicesArea>
-                                <ServicesView>
+                                <ServicesView onPress={() => handleServiceClick(1)}>
                                     <ServiceImage source={require('../../../images/veterinario.jpg')}/>
                                     <ServiceName>Veterinário</ServiceName>
                                 </ServicesView>
                             </ServicesArea>
 
-                            <ServicesArea>
+                            <ServicesArea onPress={() => handleServiceClick(2)}>
                                 <ServicesView>
                                     <ServiceImage source={require('../../../images/banho.jpg')}/>
                                     <ServiceName>Banho e Tosa</ServiceName>
                                 </ServicesView>
                             </ServicesArea>
 
-                            <ServicesArea>
+                            <ServicesArea onPress={() => handleServiceClick(3)}>
                                 <ServicesView>
                                     <ServiceImage source={require('../../../images/passeio.jpg')}/>
                                     <ServiceName>Passeio</ServiceName>
                                 </ServicesView>
                             </ServicesArea>
 
-                            <ServicesArea>
+                            <ServicesArea onPress={() => handleServiceClick(4)}>
                                 <ServicesView>
                                     <ServiceImage source={require('../../../images/adestramento.jpg')}/>
                                     <ServiceName>Adestramento</ServiceName>
                                 </ServicesView>
                             </ServicesArea>
 
-                            <ServicesArea>
+                            <ServicesArea onPress={() => handleServiceClick(5)}>
                                 <ServicesView>
                                     <ServiceImage source={require('../../../images/petsitter.jpg')}/>
                                     <ServiceName>Pet Sitter</ServiceName>
                                 </ServicesView>
                             </ServicesArea>
 
-                            <ServicesArea>
+                            <ServicesArea onPress={() => handleServiceClick(6)}>
                                 <ServicesView>
                                     <ServiceImage source={require('../../../images/hospedagem.jpg')}/>
                                     <ServiceName>Hospedagem</ServiceName>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ImageBackground, FlatList } from 'react-native';
-import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, UserInfoArea, UserInfo, Avatar, UserInfoName, UserInfoState, UserInfoBirth, UserButton, LoadingIcon, PetArea, PetTitle, OrganizationArea, ButtonArea, BackButton } from './styles';
+import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, UserInfoArea, UserInfo, Avatar, UserInfoName, UserInfoState, UserInfoBirth, UserButton, LoadingIcon, PetArea, PetTitle, OrganizationArea } from './styles';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -8,8 +8,7 @@ import Api from '../../../Api';
 
 import Pets from '../../../components/Pets';
 
-import ChatIcon from '../../../images/chat.svg';
-import BackIcon from '../../../images/back.svg';
+import EditIcon from '../../../images/edit.svg';
 import AddIcon from '../../../images/add2.svg';
 
 export default () => {
@@ -45,10 +44,6 @@ export default () => {
         getUserInfo();
     }, []);
 
-    const handleClick = () => {
-        navigation.navigate('AddPet');
-    }
-
     let date = new Date(userInfo.nascimento);
 
     return (
@@ -76,16 +71,13 @@ export default () => {
                             <UserInfoBirth>{date.getUTCDate()}/{date.getMonth() + 1}/{date.getUTCFullYear()}</UserInfoBirth>
                         </UserInfo>
                         <UserButton>
-                            <ChatIcon width="20" height="20" fill="#00B1E1" />
+                            <EditIcon width="30" height="30" fill="#00B1E1" />
                         </UserButton>
                     </UserInfoArea>
 
                     <PetArea>
                         <OrganizationArea>
                             <PetTitle>Pets</PetTitle>
-                            <ButtonArea onPress={handleClick}>
-                                <AddIcon width="28" height="28" fill="#00B1E1" />
-                            </ButtonArea>
                         </OrganizationArea>
                         <FlatList 
                             horizontal

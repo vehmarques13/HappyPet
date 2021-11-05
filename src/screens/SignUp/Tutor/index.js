@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text, ImageBackground, Picker } from 'react-native';
-import { Container, Scroller, Name, Box, Title, Subtitle, Form, InputText, CustomButton, CustomButtonText, SignMessageError } from './styles';
+import { Container, Scroller, Name, Box, Title, Subtitle, Form, InputText, CustomButton, CustomButtonText, ButtonArea, CustomButtonNo, CustomButtonTextNo } from './styles';
 import SignInput from '../../../components/SignInput';
 import Api from '../../../Api';
 import { useNavigation } from '@react-navigation/native';
@@ -41,9 +41,9 @@ export default () => {
         }
     }
 
-    const handleMessageButtonClick = () => {
+    const handleBackClick = () => {
         navigation.reset({
-            routes: [{name: 'SignUp'}]
+            routes: [{name: 'SignIn'}]
         });
     }
 
@@ -141,10 +141,14 @@ export default () => {
                             keyboardType={'phone-pad'}
                         />
 
-                        <CustomButton onPress={handleSignClick}>
-                            <CustomButtonText>Cadastro</CustomButtonText>
-                        </CustomButton>
-
+                        <ButtonArea>
+                            <CustomButtonNo onPress={handleBackClick}>
+                                <CustomButtonTextNo>Voltar</CustomButtonTextNo>
+                            </CustomButtonNo>
+                            <CustomButton onPress={handleSignClick}>
+                                <CustomButtonText>Cadastro</CustomButtonText>
+                            </CustomButton>
+                        </ButtonArea>
                         {/* <SignMessageError></SignMessageError> */}
                     </Form>
                 </Box>

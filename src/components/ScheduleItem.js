@@ -9,7 +9,7 @@ const ScheduleArea = styled.View`
     flex-direction: row;
     width: 130px;
     border: 1px solid rgba(230, 230, 230, 1);
-    margin: 15px 10px 0 0;
+    margin: 10px 10px 0 0;
 `;
 
 const InfoArea = styled.View`

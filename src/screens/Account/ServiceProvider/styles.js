@@ -81,6 +81,8 @@ export const UserButton = styled.TouchableOpacity`
     margin: 20px 0 0 2px;
 `;
 
+export const Button = styled.TouchableOpacity``;
+
 export const ServiceArea = styled.View``;
 
 export const ServiceTitle = styled.Text`

@@ -24,12 +24,6 @@ export default () => {
     const [isSelectedPequeno, setSelectedPequeno] = useState(false);
     const [isSelectedMedio, setSelectedMedio] = useState(false);
     const [isSelectedGrande, setSelectedGrande] = useState(false);
-    const [isSelectedSegunda, setSelectedSegunda] = useState(false);
-    const [isSelectedTerca, setSelectedTerca] = useState(false);
-    const [isSelectedQuarta, setSelectedQuarta] = useState(false); 
-    const [isSelectedQuinta, setSelectedQuinta] = useState(false);
-    const [isSelectedSexta, setSelectedSexta] = useState(false);
-    const [isSelectedSabado, setSelectedSabado] = useState(false);
     const [isSelectedFemea, setSelectedFemea] = useState(false);
     const [isSelectedMacho, setSelectedMacho] = useState(false);
     const [isSelectedRoedores, setSelectedRoedores] = useState(false);
@@ -57,7 +51,9 @@ export default () => {
     }
 
     const handleGoBackClick = () => {
-        navigation.goBack();
+        navigation.reset({
+            routes: [{name: 'MainTab'}]
+        });
     }
 
     const onRefresh = () => {
@@ -197,57 +193,6 @@ export default () => {
                                         onValueChange={setSelectedCaninos}
                                     />
                                     <CheckBoxText>Caninos</CheckBoxText>
-                                </CheckBoxOption>
-                            </CheckBoxArea>
-
-                            <InputText>Dias da semana</InputText>
-                            <CheckBoxArea>
-                                <CheckBoxOption>
-                                    <CheckBox
-                                        value={isSelectedSegunda}
-                                        onValueChange={setSelectedSegunda}
-                                    />
-                                    <CheckBoxText>Segunda-feira</CheckBoxText>
-                                </CheckBoxOption>
-
-                                <CheckBoxOption>
-                                    <CheckBox
-                                        value={isSelectedTerca}
-                                        onValueChange={setSelectedTerca}
-                                    />
-                                    <CheckBoxText>Terça-feira</CheckBoxText>
-                                </CheckBoxOption>
-
-                                <CheckBoxOption>
-                                    <CheckBox
-                                        value={isSelectedQuarta}
-                                        onValueChange={setSelectedQuarta}
-                                    />
-                                    <CheckBoxText>Quarta-feira</CheckBoxText>
-                                </CheckBoxOption>
-
-                                <CheckBoxOption>
-                                    <CheckBox
-                                        value={isSelectedQuinta}
-                                        onValueChange={setSelectedQuinta}
-                                    />
-                                    <CheckBoxText>Quinta-feira</CheckBoxText>
-                                </CheckBoxOption>
-
-                                <CheckBoxOption>
-                                    <CheckBox
-                                        value={isSelectedSexta}
-                                        onValueChange={setSelectedSexta}
-                                    />
-                                    <CheckBoxText>Sexta-feira</CheckBoxText>
-                                </CheckBoxOption>
-
-                                <CheckBoxOption>
-                                    <CheckBox
-                                        value={isSelectedSabado}
-                                        onValueChange={setSelectedSabado}
-                                    />
-                                    <CheckBoxText>Sábado</CheckBoxText>
                                 </CheckBoxOption>
                             </CheckBoxArea>
 

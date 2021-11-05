@@ -71,14 +71,12 @@ export const UserInfoBirth = styled.Text`
 `;
 
 export const UserButton = styled.TouchableOpacity`
-    width: 38px;
-    height: 38px;
-    background-color: white;
+    width: 30px;
+    height: 30px;
     border-radius: 20px;
-    border: 1px solid rgba(230, 230, 230, 1);
     justify-content: center;
     align-items: center;
-    margin: 20px 2px 0 2px;
+    margin: 25px 2px 0 2px;
 `;
 
 export const PetArea = styled.View`
@@ -96,8 +94,6 @@ export const OrganizationArea = styled.View`
     flex-direction: row;
     justify-content: space-between;
 `;
-
-export const ButtonArea = styled.TouchableOpacity``;
 
 export const LoadingIcon = styled.ActivityIndicator`
     margin-top: 50px;

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, SearchArea, SearchInput, SearchButton, LoadingIcon, ServiceArea, ServiceTitle, Services, ServicesArea, ServicesView, ServiceImage, ServiceName } from './styles';
+import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, LoadingIcon, ServiceArea, ServiceTitle, Services, ServicesArea, ServicesAreaEnable, ServicesView, ServiceImage, ServiceName, OrganizationArea, ButtonArea } from './styles';
 import { RefreshControl, FlatList, Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import SearchIcon from '../../../images/search.svg';
 import AddIcon from '../../../images/add2.svg';
 
 import Api from '../../../Api';
@@ -15,6 +14,7 @@ export default () => {
 
     const [loading, setLoading] = useState(false);
     const [listSchedule, setListSchedule] = useState([]);
+    const [listServices, setListServices] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
     const navigation = useNavigation();
 
@@ -33,12 +33,38 @@ export default () => {
         setLoading(false);
     }
 
+    const getServicesType = async () => {
+        setLoading(true);
+        setListServices([]);
+
+        let email = await AsyncStorage.getItem('email');
+        let res = await Api.getServicesType(email);
+
+        if (res.error == undefined) 
+            setListServices(res);
+        else 
+            Alert('Erro: ' + res.error);
+
+        setLoading(false);
+    }
+
     useEffect(() => {
         getScheduleToday();
+        getServicesType();
     }, []);
 
     const onRefresh = () => {
         setRefreshing(true); 
+    }
+
+    const handleClick = () => {
+        navigation.reset({
+            routes: [{name: 'AddService'}]
+        });
+    }
+    
+    function tipoServico(n) {
+        return listServices.find(x => x == n) == n;
     }
 
     return (
@@ -51,17 +77,6 @@ export default () => {
                 </HeaderArea>
 
                 <PageBody>
-                    {/* <SearchArea> 
-                        <SearchInput 
-                            placeholder="Faça sua busca..."
-                            value={searchText}
-                            onChangeText={o => setSearchText(o)}
-                        />
-                        <SearchButton onPress={getWorkers}>
-                            <SearchIcon width="24" height="24" fill="#6B6B6B" />
-                        </SearchButton>
-                    </SearchArea> */}
-
                     <ServiceArea>
                         <ServiceTitle>Agenda</ServiceTitle>
                         {listSchedule.length != 0 ? 
@@ -80,49 +95,97 @@ export default () => {
                     </ServiceArea>
 
                     <ServiceArea>
-                        <ServiceTitle>Serviços</ServiceTitle>
+                        <OrganizationArea>
+                            <ServiceTitle>Serviços</ServiceTitle>
+                            <ButtonArea onPress={handleClick}>
+                                <AddIcon width="28" height="28" fill="#00B1E1" />
+                            </ButtonArea>
+                        </OrganizationArea>
                         <Services>
-                            <ServicesArea>
-                                <ServicesView>
+                            {tipoServico(1) ?
+                                <ServicesArea>
+                                    <ServicesView>
+                                        <ServiceImage source={require('../../../images/veterinario.jpg')}/>
+                                        <ServiceName>Veterinário</ServiceName>
+                                    </ServicesView>
+                                </ServicesArea>
+                            : <ServicesAreaEnable>
+                                <ServicesView style={{tintColor: 'gray', opacity: 0.6}}> 
                                     <ServiceImage source={require('../../../images/veterinario.jpg')}/>
                                     <ServiceName>Veterinário</ServiceName>
                                 </ServicesView>
-                            </ServicesArea>
-
-                            <ServicesArea>
-                                <ServicesView>
+                              </ServicesAreaEnable>
+                            }
+                            {tipoServico(2) ?
+                                <ServicesArea>
+                                    <ServicesView>
+                                        <ServiceImage source={require('../../../images/banho.jpg')}/>
+                                        <ServiceName>Banho e Tosa</ServiceName>
+                                    </ServicesView>
+                                </ServicesArea>
+                            : <ServicesAreaEnable>
+                                <ServicesView style={{tintColor: 'gray', opacity: 0.6}}> 
                                     <ServiceImage source={require('../../../images/banho.jpg')}/>
                                     <ServiceName>Banho e Tosa</ServiceName>
                                 </ServicesView>
-                            </ServicesArea>
-
-                            <ServicesArea>
-                                <ServicesView>
+                              </ServicesAreaEnable>
+                            }
+                            {tipoServico(3) ?
+                                <ServicesArea>
+                                    <ServicesView>
+                                        <ServiceImage source={require('../../../images/passeio.jpg')}/>
+                                        <ServiceName>Passeio</ServiceName>
+                                    </ServicesView>
+                                </ServicesArea>
+                            : <ServicesAreaEnable>
+                                <ServicesView style={{tintColor: 'gray', opacity: 0.6}}> 
                                     <ServiceImage source={require('../../../images/passeio.jpg')}/>
                                     <ServiceName>Passeio</ServiceName>
                                 </ServicesView>
-                            </ServicesArea>
-
-                            <ServicesArea>
-                                <ServicesView>
+                              </ServicesAreaEnable>
+                            }
+                            {tipoServico(4) ?
+                                <ServicesArea>
+                                    <ServicesView>
+                                        <ServiceImage source={require('../../../images/adestramento.jpg')}/>
+                                        <ServiceName>Adestramento</ServiceName>
+                                    </ServicesView>
+                                </ServicesArea>
+                            : <ServicesAreaEnable>
+                                <ServicesView style={{tintColor: 'gray', opacity: 0.6}}> 
                                     <ServiceImage source={require('../../../images/adestramento.jpg')}/>
                                     <ServiceName>Adestramento</ServiceName>
                                 </ServicesView>
-                            </ServicesArea>
-
-                            <ServicesArea>
-                                <ServicesView>
+                              </ServicesAreaEnable>
+                            }
+                            {tipoServico(5) ?
+                                <ServicesArea>
+                                    <ServicesView>
+                                        <ServiceImage source={require('../../../images/petsitter.jpg')}/>
+                                        <ServiceName>Pet Sitter</ServiceName>
+                                    </ServicesView>
+                                </ServicesArea>
+                            : <ServicesAreaEnable>
+                                <ServicesView style={{tintColor: 'gray', opacity: 0.6}}> 
                                     <ServiceImage source={require('../../../images/petsitter.jpg')}/>
                                     <ServiceName>Pet Sitter</ServiceName>
                                 </ServicesView>
-                            </ServicesArea>
-
-                            <ServicesArea>
-                                <ServicesView>
+                              </ServicesAreaEnable>
+                            }
+                            {tipoServico(6) ?
+                                <ServicesArea>
+                                    <ServicesView>
+                                        <ServiceImage source={require('../../../images/hospedagem.jpg')}/>
+                                        <ServiceName>Hospedagem</ServiceName>
+                                    </ServicesView>
+                                </ServicesArea>
+                            : <ServicesAreaEnable>
+                                <ServicesView style={{tintColor: 'gray', opacity: 0.6}}> 
                                     <ServiceImage source={require('../../../images/hospedagem.jpg')}/>
                                     <ServiceName>Hospedagem</ServiceName>
                                 </ServicesView>
-                            </ServicesArea>
+                              </ServicesAreaEnable>
+                            }
                         </Services>
                     </ServiceArea>
 

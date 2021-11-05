@@ -62,6 +62,13 @@ export const ServiceTitle = styled.Text`
     margin-bottom: 6px;
 `;
 
+export const PetTitle = styled.Text`
+    font-weight: bold;
+    font-size: 18px;
+    color: #1C263F;
+    margin-bottom: 6px;
+`;
+
 export const OrganizationArea = styled.View`
     flex-direction: row;
     justify-content: space-between;
@@ -81,7 +88,7 @@ export const LoadingIcon = styled.ActivityIndicator`
     margin-top: 50px;
 `;
 
-export const ServicesArea = styled.View`
+export const ServicesArea = styled.TouchableOpacity`
     flex-direction: row;
     margin-top: 10px;
 `;

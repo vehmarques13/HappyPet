@@ -10,6 +10,7 @@ import MainTab from '../stacks/MainTab';
 import SupportTutor from '../screens/Support/Tutor';
 import SupportServiceProvider from '../screens/Support/ServiceProvider';
 import Service from '../screens/Service';
+import Services from '../screens/Services';
 import AddPet from '../screens/AddPet';
 import AddService from '../screens/AddService';
 import EditAccount from '../screens/EditAccount';
@@ -35,6 +36,7 @@ export default () => (
         <Stack.Screen name="SupportTutor" component={SupportTutor} />
         <Stack.Screen name="SupportServiceProvider" component={SupportServiceProvider} />
         <Stack.Screen name="Service" component={Service} />
+        <Stack.Screen name="Services" component={Services} />
         <Stack.Screen name="AddPet" component={AddPet} />
         <Stack.Screen name="AddService" component={AddService} />
         <Stack.Screen name="EditAccount" component={EditAccount} />

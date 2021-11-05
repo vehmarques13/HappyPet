@@ -10,7 +10,6 @@ import Filter from '../../components/Filter';
 
 export default () => {
 
-    const [searchText, setSearchText] = useState('');
     const [loading, setLoading] = useState(false);
     const [list, setList] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
@@ -40,17 +39,6 @@ export default () => {
                 </HeaderArea>
 
                 <PageBody>
-                    <SearchArea> 
-                        <SearchInput 
-                            placeholder="Faça sua busca..."
-                            value={searchText}
-                            onChangeText={o => setSearchText(o)}
-                        />
-                        <SearchButton onPress={getWorkers}>
-                            <SearchIcon width="24" height="24" fill="#6B6B6B" />
-                        </SearchButton>
-                    </SearchArea>
-
                     <Filter />
 
                     {loading &&

@@ -49,7 +49,7 @@ export const InputText = styled.Text`
     color: #A5A5A5;
 `;
 
-export const SignMessageButton = styled.TouchableOpacity`
+export const SignMessageButton = styled.View`
     margin: 25px 0 25px 0;
     color: #A5A5A5;
     flex-direction: row;
@@ -62,11 +62,7 @@ export const SignMessageButtonText = styled.Text`
     font-style: normal;
 `;
 
-export const SignMessageButtonTextBold = styled.Text`
-    font-size: 12.5px;
-    margin-left: 5px;
-    font-weight: bold;
-`;
+export const SignMessageButtonTextBold = styled.TouchableOpacity``;
 
 export const CustomButton = styled.TouchableOpacity`
     width: 100%;

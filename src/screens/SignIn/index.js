@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ImageBackground } from 'react-native';
+import { ImageBackground, Text } from 'react-native';
 import { Container, Name, Box, Title, Subtitle, Form, InputText, SignMessageButton, SignMessageButtonText, SignMessageButtonTextBold, CustomButton, CustomButtonText, SignMessageError } from './styles';
 import SignInput from '../../components/SignInput';
 import Api from '../../Api';
@@ -79,9 +79,11 @@ export default () => {
                         password={true}
                     />
 
-                    <SignMessageButton onPress={handleMessageButtonClick}>
+                    <SignMessageButton>
                         <SignMessageButtonText>Ainda não possui uma conta?</SignMessageButtonText>
-                        <SignMessageButtonTextBold>Cadastre-se.</SignMessageButtonTextBold>
+                        <SignMessageButtonTextBold onPress={handleMessageButtonClick}>
+                            <Text style={{ fontSize: 12.5, marginLeft: 5, fontWeight: 'bold'}}>Cadastre-se.</Text>
+                        </SignMessageButtonTextBold>
                     </SignMessageButton>
 
                     <CustomButton onPress={handleSignClick}>

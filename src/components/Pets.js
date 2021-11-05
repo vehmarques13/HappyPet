@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Text, ImageBackground } from 'react-native';
 import styled from 'styled-components/native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import FemaleIcon from '../images/female.svg';
 import MaleIcon from '../images/male.svg';
@@ -9,6 +10,8 @@ import DogIcon from '../images/dog.svg';
 import CatIcon from '../images/cat.svg';
 import BirdIcon from '../images/bird.svg';
 import HamsterIcon from '../images/hamster.svg';
+
+import Api from '../Api';
 
 const PetsArea = styled.View`
     flex-direction: row;
@@ -51,7 +54,7 @@ const PetAge = styled.Text`
     color: #414141;
 `;
 
-const FilterPet = styled.TouchableOpacity`
+const FilterPet = styled.View`
     width: 112px;
     border-radius: 15px; 
     background-color: white;
@@ -60,7 +63,7 @@ const FilterPet = styled.TouchableOpacity`
     margin: 10px 0 4px 0;
 `;
 
-const FilterPetSmall = styled.TouchableOpacity`
+const FilterPetSmall = styled.View`
     width: 85px;
     border-radius: 15px; 
     background-color: white;
@@ -75,6 +78,8 @@ const FilterText = styled.Text`
     font-size: 13px;
     margin-left: 8px;
 `;
+
+const ButtonArea = styled.TouchableOpacity``;
 
 export default ({data}) => {
     const tipoPet = () => {
@@ -92,6 +97,11 @@ export default ({data}) => {
         }
     }
 
+    const deletePet = async (id) => {
+        let email = await AsyncStorage.getItem('email');
+        let res = await Api.deletePets(email, id);
+    }
+
     return (
         <PetsArea>
             <PetsView>
@@ -104,7 +114,9 @@ export default ({data}) => {
                             : <MaleIcon width="18" height="18" fill="#1C263F"/> 
                             }
                         </OrganizationArea>
-                        <DeleteIcon width="15" height="15" fill="#00B1E1"/>
+                        <ButtonArea onPress={() => deletePet(data.id)}>
+                            <DeleteIcon width="15" height="15" fill="#00B1E1"/>
+                        </ButtonArea>
                     </OrganizationTitle>
                     <PetAge>{data.raca}</PetAge>
                     {tipoPet() == "Roedor" ? 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import Swiper from 'react-native-swiper';
 
@@ -79,7 +79,7 @@ export const SwipeImage = styled.Image`
     height: 200px;
 `;
 
-export default () => {
+export default (data) => {
     return (
         <ExperienceArea>
             <OrganizationArea>
@@ -87,11 +87,11 @@ export default () => {
                     <BigBall>
                         <SmallBall></SmallBall>
                     </BigBall>
-                    <ExperienceTitle>Veterinária de animais domésticos</ExperienceTitle>
+                    <ExperienceTitle>{data.data.titulo}</ExperienceTitle>
                 </OrganizationTitle>
                 <EditIcon width="24" height="24" fill="#00B1E1" />
             </OrganizationArea>
-            <ExperienceDescription>Universidade Metropolitana de Santos - UNIMES</ExperienceDescription>
+            <ExperienceDescription>{data.data.descricao}</ExperienceDescription>
             <Swiper
                 style={{height: 200}}
                 dot={<SwipeDot />}
@@ -105,13 +105,13 @@ export default () => {
                     </SwiperItem>
                 })} */}
 
-                    <SwipeItem>
-                        <SwipeImage source={require('../images/fundo.png')} resizeMode="cover" />
-                    </SwipeItem>
+                <SwipeItem>
+                    <SwipeImage source={require('../images/fundo.png')} resizeMode="cover" />
+                </SwipeItem>
 
-                    <SwipeItem>
-                        <SwipeImage source={require('../images/fundo.png')} resizeMode="cover" />
-                    </SwipeItem>
+                <SwipeItem>
+                    <SwipeImage source={require('../images/fundo.png')} resizeMode="cover" />
+                </SwipeItem>
             </Swiper>
         </ExperienceArea>
     );

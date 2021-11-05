@@ -30,27 +30,6 @@ export const PageBody = styled.View`
     justify-content: center;
 `;
 
-export const SearchArea = styled.View`
-    background-color: #FFFFFF;
-    height: 45px;
-    border-radius: 20px;
-    flex-direction: row;
-    align-items: center;
-    padding: 0 12px;
-    margin-top: 25px;
-    border: 1px solid rgba(230, 230, 230, 1);
-`;
-
-export const SearchInput = styled.TextInput`
-    flex: 1;
-    font-size: 15px;
-`;
-
-export const SearchButton = styled.TouchableOpacity`
-    width: 24px;
-    height: 24px;
-`;
-
 export const ServiceArea = styled.View`
     padding-top: 25px;
 `;
@@ -81,7 +60,12 @@ export const LoadingIcon = styled.ActivityIndicator`
     margin-top: 50px;
 `;
 
-export const ServicesArea = styled.View`
+export const ServicesArea = styled.TouchableOpacity`
+    flex-direction: row;
+    margin-top: 10px;
+`;
+
+export const ServicesAreaEnable = styled.View`
     flex-direction: row;
     margin-top: 10px;
 `;
@@ -106,5 +90,7 @@ export const ServiceImage = styled.Image`
     width: 100px;
     height: 100px;
 `;
+
+
 
 

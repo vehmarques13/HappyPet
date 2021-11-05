@@ -55,15 +55,28 @@ export const InputText = styled.Text`
 `;
 
 export const CustomButton = styled.TouchableOpacity`
-    width: 100%;
+    width: 48%;
     height: 40px;
     background: #00B1E1;
-    border-bottom-width: 1px;
-    border-bottom-color: #EEEEEE;
     border-radius: 10px;
     justify-content: center;
     align-items: center;
-    margin-top: 35px;
+`;
+
+export const CustomButtonNo = styled.TouchableOpacity`
+    width: 48%;
+    height: 40px;
+    background: white;
+    border: 2px solid rgba(28, 38, 63, 0.7);
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    color: rgba(28, 38, 63, 0.7);
+`;
+
+export const CustomButtonTextNo = styled.Text`
+    font-weight: bold;
+    font-size: 15px;
 `;
 
 export const CustomButtonText = styled.Text`
@@ -77,6 +90,12 @@ export const SignMessageError = styled.Text`
     font-size: 13px;
     color: red;
     text-align: center;
+    margin-top: 30px;
+`;
+
+export const ButtonArea = styled.View`
+    flex-direction: row;
+    justify-content: space-between;
     margin-top: 30px;
 `;
 

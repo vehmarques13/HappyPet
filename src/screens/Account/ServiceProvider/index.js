@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { ImageBackground } from 'react-native';
-import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, Line, UserInfoArea, UserInfo, Avatar, UserInfoName, UserInfoState, UserInfoBirth, UserButton, LoadingIcon, ServiceArea, ServiceTitle, OrganizationArea, BackButton } from './styles';
+import { ImageBackground, Text, FlatList } from 'react-native';
+import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, UserInfoArea, UserInfo, Avatar, UserInfoName, UserInfoState, UserInfoBirth, UserButton, LoadingIcon, ServiceArea, ServiceTitle, OrganizationArea, Button } from './styles';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Api from '../../../Api';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -26,6 +26,7 @@ export default () => {
     // });
 
     const [userInfo, setUserInfo] = useState([]);
+    const [info, setInfo] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const getUserInfo = async () => {
@@ -34,8 +35,25 @@ export default () => {
         let email = await AsyncStorage.getItem('email');
         let res = await Api.getUser(email);
 
-        if (res.error == undefined) 
+        if (res.error == undefined) {
             setUserInfo(res);
+        }
+        else 
+            Alert('Erro: ' + res.error);
+
+        setLoading(false);
+    }
+
+    const getInfo = async () => {
+        setLoading(true);
+        setInfo([]);
+
+        let email = await AsyncStorage.getItem('email');
+        let res = await Api.getInformation(email);
+
+        if (res.error == undefined) {
+            setInfo(res.experiencias);
+        }
         else 
             Alert('Erro: ' + res.error);
 
@@ -44,7 +62,14 @@ export default () => {
 
     useEffect(() => {
         getUserInfo();
+        getInfo();
     }, []);
+
+    const handleAddClick = () => {
+        navigation.reset({
+            routes:[{name: 'AddExperience'}]
+        });
+    }
 
     let date = new Date(userInfo.nascimento);
 
@@ -81,17 +106,22 @@ export default () => {
                     <ServiceArea>
                         <OrganizationArea>
                             <ServiceTitle>Experiências</ServiceTitle>
-                            <AddIcon width="28" height="28" fill="#00B1E1" />
+                            <Button onPress={handleAddClick} >
+                                <AddIcon width="28" height="28" fill="#00B1E1" />
+                            </Button>
                         </OrganizationArea>
-                        <ExperienceItem />
-
-                        <Line />
-
-                        <OrganizationArea style={{marginTop: 10}}>
-                            <ServiceTitle>Certificações</ServiceTitle>
-                            <AddIcon width="28" height="28" fill="#00B1E1" />
-                        </OrganizationArea>
-                        <CertificationItem />
+                        {info.length != 0 ? 
+                            <FlatList 
+                                style={{marginTop: -8}}
+                                pagingEnabled={true}
+                                showsHorizontalScrollIndicator={false}
+                                legacyImplementation={false}
+                                data={info}
+                                keyExtractor={(item) => item.id}
+                                renderItem={ ({item}) => <ExperienceItem data={item}/>}
+                            /> 
+                        : <Text>Não há experiências cadastradas.</Text>
+                        }
                     </ServiceArea>
 
                     {loading &&   

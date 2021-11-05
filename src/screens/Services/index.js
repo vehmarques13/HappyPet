@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, SearchArea, SearchInput, SearchButton, LoadingIcon, ListArea } from './styles';
+import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, LoadingIcon, ListArea } from './styles';
 import { RefreshControl, FlatList } from 'react-native';
 import { Alert, Text } from 'react-native';
 
@@ -9,9 +9,8 @@ import Api from '../../Api';
 import WorkerItem from '../../components/WorkerItem';
 import Filter from '../../components/Filter';
 
-export default () => {
+export default (data) => {
 
-    const [searchText, setSearchText] = useState('');
     const [loading, setLoading] = useState(false);
     const [list, setList] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
@@ -19,7 +18,9 @@ export default () => {
     const getWorkers = async () => {
         setList([]);
 
-        let res = await Api.getWorkers();
+        let tipoServico = await AsyncStorage.getItem('tipoServico');
+        let res = await Api.getServicesById(`?servico=${tipoServico}`);
+
         res == null ? setList([]) : setList(res);
     }
 
@@ -41,17 +42,6 @@ export default () => {
                 </HeaderArea>
 
                 <PageBody>
-                    <SearchArea> 
-                        <SearchInput 
-                            placeholder="Faça sua busca..."
-                            value={searchText}
-                            onChangeText={o => setSearchText(o)}
-                        />
-                        <SearchButton onPress={getWorkers}>
-                            <SearchIcon width="24" height="24" fill="#6B6B6B" />
-                        </SearchButton>
-                    </SearchArea>
-
                     <Filter />
 
                     {loading &&

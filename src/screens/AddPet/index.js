@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, Box, Title, Form, InputText, ButtonArea, CustomButton, CustomButtonText, CustomButtonNo, CustomButtonTextNo, BackButton } from './styles';
-import { RefreshControl, ImageBackground, FlatList, Picker } from 'react-native';
+import { RefreshControl, ImageBackground, FlatList, Picker, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import BackIcon from '../../images/back.svg';
@@ -26,7 +26,11 @@ export default () => {
             let json = await Api.postPets("usuario@gmail.com", imageField, nameField, isSelectedTipoPet, isSelectedPorte, isSelectedSexo, breedField, descriptionField);
 
             if (json.data != null) {
-                console.log("DEU CERTO");
+                alert("Cadastro realizado com sucesso!");
+
+                navigation.reset({
+                    routes:[{name: 'MainTab'}]
+                });
             } else {
                 alert('Algo deu errado!');
             }
@@ -36,7 +40,9 @@ export default () => {
     }
 
     const handleGoBackClick = () => {
-        navigation.goBack();
+        navigation.reset({
+            routes:[{name: 'MainTab'}]
+        });
     }
 
     const onRefresh = () => {

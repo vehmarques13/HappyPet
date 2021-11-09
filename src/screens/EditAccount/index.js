@@ -31,10 +31,6 @@ export default () => {
         }
     }
 
-    const handleGoBackClick = () => {
-        navigation.goBack();
-    }
-
     const onRefresh = () => {
         setRefreshing(true); 
     }
@@ -115,7 +111,7 @@ export default () => {
                             />
 
                             <ButtonArea>
-                                <CustomButtonNo onPress={handleGoBackClick}>
+                                <CustomButtonNo onPress={() => navigation.goBack()}>
                                     <CustomButtonTextNo>Cancelar</CustomButtonTextNo>
                                 </CustomButtonNo>
                                 <CustomButton onPress={handleSignClick}>

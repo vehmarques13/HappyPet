@@ -79,7 +79,7 @@ export const SwipeImage = styled.Image`
     height: 200px;
 `;
 
-export default (data) => {
+export default ({data}) => {
     return (
         <ExperienceArea>
             <OrganizationArea>
@@ -87,11 +87,11 @@ export default (data) => {
                     <BigBall>
                         <SmallBall></SmallBall>
                     </BigBall>
-                    <ExperienceTitle>{data.data.titulo}</ExperienceTitle>
+                    <ExperienceTitle>{data.titulo}</ExperienceTitle>
                 </OrganizationTitle>
                 <EditIcon width="24" height="24" fill="#00B1E1" />
             </OrganizationArea>
-            <ExperienceDescription>{data.data.descricao}</ExperienceDescription>
+            <ExperienceDescription>{data.descricao}</ExperienceDescription>
             <Swiper
                 style={{height: 200}}
                 dot={<SwipeDot />}

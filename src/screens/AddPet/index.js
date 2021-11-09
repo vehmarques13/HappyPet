@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, Box, Title, Form, InputText, ButtonArea, CustomButton, CustomButtonText, CustomButtonNo, CustomButtonTextNo, BackButton } from './styles';
-import { RefreshControl, ImageBackground, FlatList, Picker, Alert } from 'react-native';
+import { RefreshControl, ImageBackground, Picker } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import BackIcon from '../../images/back.svg';
 
 import SignInput from '../../components/SignInput';
 import Api from '../../Api';
-import ButtonImage from '../../components/ButtonImage';
 
 export default () => {
     const navigation = useNavigation();
@@ -23,9 +23,10 @@ export default () => {
 
     const handleSignClick = async () => {
         if (nameField != '' && descriptionField != '' && breedField != '') {
-            let json = await Api.postPets("usuario@gmail.com", imageField, nameField, isSelectedTipoPet, isSelectedPorte, isSelectedSexo, breedField, descriptionField);
+            let email = await AsyncStorage.getItem('email');
+            let res = await Api.postPets(email, imageField, nameField, isSelectedTipoPet, isSelectedPorte, isSelectedSexo, breedField, descriptionField);
 
-            if (json.data != null) {
+            if (res.data != null) {
                 alert("Cadastro realizado com sucesso!");
 
                 navigation.reset({
@@ -37,12 +38,6 @@ export default () => {
         } else {
             alert('Preencha os campos corretamente!');
         }
-    }
-
-    const handleGoBackClick = () => {
-        navigation.reset({
-            routes:[{name: 'MainTab'}]
-        });
     }
 
     const onRefresh = () => {
@@ -60,7 +55,7 @@ export default () => {
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }>
                 <HeaderArea>
-                    <BackButton onPress={handleGoBackClick}>
+                    <BackButton onPress={() => navigation.goBack()}>
                         <BackIcon width="40" height="40" fill="#1C263F" />
                     </BackButton>
                     <HeaderTitle>HAPPY PET</HeaderTitle>
@@ -122,19 +117,8 @@ export default () => {
                                 <Picker.Item label="Grande" value="Grande" />
                             </Picker>
 
-                            {/* <InputText>Anexos</InputText>
-                            <FlatList 
-                                // horizontal
-                                // pagingEnabled={true}
-                                // showsHorizontalScrollIndicator={false}
-                                // legacyImplementation={false}
-                                // data={this.state.feed}
-                                // keyExtractor={(item) => item.id}
-                                // renderItem={ ({item}) => <ButtonImage data={item}/>}
-                            /> */}
-
                             <ButtonArea>
-                                <CustomButtonNo onPress={handleGoBackClick}>
+                                <CustomButtonNo onPress={() => navigation.goBack()}>
                                     <CustomButtonTextNo>Cancelar</CustomButtonTextNo>
                                 </CustomButtonNo>
                                 <CustomButton onPress={handleSignClick}>

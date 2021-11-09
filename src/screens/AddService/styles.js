@@ -70,13 +70,6 @@ export const ButtonImage = styled.TouchableOpacity`
     margin: 8px 8px 0 0;
 `;
 
-export const ImageArea = styled.View`
-    width: 100%;
-    justify-content: flex-start;
-    flex-direction: row;
-    flex-wrap: wrap;
-`;
-
 export const ButtonArea = styled.View`
     flex-direction: row;
     justify-content: space-between;
@@ -142,6 +135,8 @@ export const CheckBoxText = styled.Text`
     line-height: 14px;
     color: #A5A5A5;
 `;
+
+
 
 
 

@@ -9,20 +9,10 @@ import Api from '../../../Api';
 import Pets from '../../../components/Pets';
 
 import EditIcon from '../../../images/edit.svg';
-import AddIcon from '../../../images/add2.svg';
 
 export default () => {
 
     const navigation = useNavigation();
-    // const route = useRoute();
-
-    // const [userInfo, setUserInfo] = useState({
-    //     id: route.params.id,
-    //     avatar: route.params.avatar,
-    //     name: route.params.name,
-    //     stars: route.params.stars
-    // });
-
     const [userInfo, setUserInfo] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -35,7 +25,7 @@ export default () => {
         if (res.error == undefined) 
             setUserInfo(res);
         else 
-            Alert('Erro: ' + res.error);
+            console.log('Erro: ' + res.error);
 
         setLoading(false);
     }

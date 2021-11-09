@@ -27,9 +27,9 @@ export default () => {
     const handleSignClick = async () => {
         if (emailField != '' && passwordField != '' && nameField != '' && birthField != '', addressField != '' && stateField != '' && cityField != '' && cellphoneField != '') { 
 
-            let json = await Api.signUp(emailField, 2, imageField, nameField, passwordField, birthField, addressField, cellphoneField, isSelectedSexo, stateField, cityField, informationField);
+            let res = await Api.signUp(emailField, 2, imageField, nameField, passwordField, birthField, addressField, cellphoneField, isSelectedSexo, stateField, cityField, informationField);
 
-            if (json.data != null) {
+            if (res.data != null) {
                 navigation.reset({
                     routes: [{name: 'SupportServiceProvider'}]
                 });
@@ -39,12 +39,6 @@ export default () => {
         } else {
             alert('Preencha os campos!');
         }
-    }
-
-    const handleBackClick = () => {
-        navigation.reset({
-            routes: [{name: 'SignIn'}]
-        });
     }
 
     return (
@@ -127,7 +121,7 @@ export default () => {
                         />
 
                         <ButtonArea>
-                            <CustomButtonNo onPress={handleBackClick}>
+                            <CustomButtonNo onPress={() => navigation.goBack()}>
                                 <CustomButtonTextNo>Voltar</CustomButtonTextNo>
                             </CustomButtonNo>
                             <CustomButton onPress={handleSignClick}>

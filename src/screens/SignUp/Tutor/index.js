@@ -4,13 +4,10 @@ import { Container, Scroller, Name, Box, Title, Subtitle, Form, InputText, Custo
 import SignInput from '../../../components/SignInput';
 import Api from '../../../Api';
 import { useNavigation } from '@react-navigation/native';
-import { userContext } from '../../../contexts/UserContext';
-import AsyncStorage from '@react-native-community/async-storage';
 import DatePicker from 'react-native-datepicker';
 
 export default () => {
 
-    // const { dispatch: userDispatch } = userContext(userContext);
     const navigation = useNavigation();
 
     const [nameField, setNameField] = useState('');
@@ -27,9 +24,9 @@ export default () => {
 
     const handleSignClick = async () => {
         if (emailField != '' && passwordField != '' && nameField != '' && birthField != '', addressField != '' && stateField != '' && cityField != '' && cellphoneField != '') { 
-            let json = await Api.signUp(emailField, 1, imageField, nameField, passwordField, birthField, addressField, cellphoneField, isSelectedSexo, stateField, cityField, informationField);
+            let res = await Api.signUp(emailField, 1, imageField, nameField, passwordField, birthField, addressField, cellphoneField, isSelectedSexo, stateField, cityField, informationField);
 
-            if (json.data != null) {
+            if (res.data != null) {
                 navigation.reset({
                     routes: [{name: 'SupportTutor'}]
                 });
@@ -39,12 +36,6 @@ export default () => {
         } else {
             alert('Preencha os campos!');
         }
-    }
-
-    const handleBackClick = () => {
-        navigation.reset({
-            routes: [{name: 'SignIn'}]
-        });
     }
 
     return (
@@ -142,14 +133,13 @@ export default () => {
                         />
 
                         <ButtonArea>
-                            <CustomButtonNo onPress={handleBackClick}>
+                            <CustomButtonNo onPress={ () => navigation.goBack() }>
                                 <CustomButtonTextNo>Voltar</CustomButtonTextNo>
                             </CustomButtonNo>
                             <CustomButton onPress={handleSignClick}>
                                 <CustomButtonText>Cadastro</CustomButtonText>
                             </CustomButton>
                         </ButtonArea>
-                        {/* <SignMessageError></SignMessageError> */}
                     </Form>
                 </Box>
                 </ImageBackground>

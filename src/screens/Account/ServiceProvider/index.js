@@ -6,25 +6,14 @@ import Api from '../../../Api';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import ExperienceItem from '../../../components/ExperienceItem';
-import CertificationItem from '../../../components/CertificationItem';
 import Stars from '../../../components/Stars';
 
 import ChatIcon from '../../../images/chat.svg';
-import BackIcon from '../../../images/back.svg';
 import AddIcon from '../../../images/add2.svg';
 
 export default () => {
 
     const navigation = useNavigation();
-    // const route = useRoute();
-
-    // const [userInfo, setUserInfo] = useState({
-    //     id: route.params.id,
-    //     avatar: route.params.avatar,
-    //     name: route.params.name,
-    //     stars: route.params.stars
-    // });
-
     const [userInfo, setUserInfo] = useState([]);
     const [info, setInfo] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -39,7 +28,7 @@ export default () => {
             setUserInfo(res);
         }
         else 
-            Alert('Erro: ' + res.error);
+            console.log('Erro: ' + res.error);
 
         setLoading(false);
     }
@@ -55,7 +44,7 @@ export default () => {
             setInfo(res.experiencias);
         }
         else 
-            Alert('Erro: ' + res.error);
+            console.log('Erro: ' + res.error);
 
         setLoading(false);
     }

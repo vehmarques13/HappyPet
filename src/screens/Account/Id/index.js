@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { ImageBackground } from 'react-native';
+import { ImageBackground, FlatList } from 'react-native';
 import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, Line, UserInfoArea, UserInfo, Avatar, UserInfoName, UserInfoState, UserInfoBirth, UserButton, LoadingIcon, ServiceArea, ServiceTitle, OrganizationArea, BackButton } from './styles';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Api from '../../../Api';
 
 import ExperienceItem from '../../../components/ExperienceItem';
-import CertificationItem from '../../../components/CertificationItem';
 import Stars from '../../../components/Stars';
 
 import ChatIcon from '../../../images/chat.svg';
@@ -24,14 +23,6 @@ export default () => {
     } 
 
     const navigation = useNavigation();
-    // const route = useRoute();
-
-    // const [userInfo, setUserInfo] = useState({
-    //     id: route.params.id,
-    //     avatar: route.params.avatar,
-    //     name: route.params.name,
-    //     stars: route.params.stars
-    // });
 
     const [loading, setLoading] = useState(false);
 
@@ -51,16 +42,11 @@ export default () => {
         getWorkerInfo();
     }, []);
 
-    const handleGoBackButton = () => {
-        navigation.goBack();
-    }
-
     return (
         <Container>
-            {/* <Text>{userInfo.name}</Text> */}
             <Scroller>
                 <HeaderArea>
-                    <BackButton onPress={handleGoBackButton}>
+                    <BackButton onPress={() => navigation.goBack()}>
                         <BackIcon width="40" height="40" fill="#1C263F" />
                     </BackButton>
                     <HeaderTitle>HAPPY PET</HeaderTitle>
@@ -91,15 +77,15 @@ export default () => {
                             <ServiceTitle>Experiências</ServiceTitle>
                             <AddIcon width="28" height="28" fill="#00B1E1" />
                         </OrganizationArea>
-                        <ExperienceItem />
-
-                        <Line />
-
-                        <OrganizationArea style={{marginTop: 10}}>
-                            <ServiceTitle>Certificações</ServiceTitle>
-                            <AddIcon width="28" height="28" fill="#00B1E1" />
-                        </OrganizationArea>
-                        <CertificationItem />
+                        <FlatList 
+                            style={{marginTop: -8}}
+                            pagingEnabled={true}
+                            showsHorizontalScrollIndicator={false}
+                            legacyImplementation={false}
+                            data={info}
+                            keyExtractor={(item) => item.id}
+                            renderItem={ ({item}) => <ExperienceItem data={item}/>}
+                        /> 
                     </ServiceArea>
 
                     {loading &&   

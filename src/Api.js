@@ -100,6 +100,11 @@ export default {
     return axios.delete(`http://192.168.0.23:59555/api/Pet/delete?email=${email}&id=${id}`)
   },
 
+  getServiceById: async (email, id) => {
+    const req = await api.get(`Servico/${email}/${id}`);
+    const json = req.data;
+    return json;
+  },
   getServicesType: async (email) => {
     const req = await api.get(`Servico/${email}/tipos`);
     const json = req.data;
@@ -146,8 +151,8 @@ export default {
       information: information
     })
   },
-  putUserInformation: async (email, information) => {
-    return axios.put('http://192.168.0.23:59555/api/Usuario/information', {
+  postUserInformation: async (email, information) => {
+    return axios.post('http://192.168.0.23:59555/api/Usuario/information/prestador', {
       email: email,
       information: information
     })

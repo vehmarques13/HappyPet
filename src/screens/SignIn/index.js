@@ -9,20 +9,20 @@ import AsyncStorage from '@react-native-community/async-storage';
 export default () => {
     const navigation = useNavigation();
 
-    const [emailField, setEmailField] = useState('usuario@gmail.com');
+    const [emailField, setEmailField] = useState('prestador@gmail.com');
     const [passwordField, setPasswordField] = useState('123');
 
     const handleSignClick = async () => {
         if (emailField != '' && passwordField != '') {
-            let json = await Api.signIn(emailField, passwordField);
+            let res = await Api.signIn(emailField, passwordField);
 
-            if (json.data != null) {
-                let tipoUsuario = await (json.data.tipoUsuario).toString();
+            if (res.data != null) {
+                let tipoUsuario = await (res.data.tipoUsuario).toString();
 
-                await AsyncStorage.setItem('email', json.data.email);
+                await AsyncStorage.setItem('email', res.data.email);
                 await AsyncStorage.setItem('tipoUsuario', tipoUsuario);
 
-                switch (json.data.tipoUsuario) {
+                switch (res.data.tipoUsuario) {
                     case 1: 
                         navigation.reset({
                             routes: [{name: 'SupportTutor'}]

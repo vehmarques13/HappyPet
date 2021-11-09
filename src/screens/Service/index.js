@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Scroller, HeaderArea, HeaderTitle, Background, SwipeDot, SwipeDotActive, SwipeItem, SwipeImage, PageBody, UserInfoArea, UserInfo, Avatar, UserInfoName, UserInfoState, UserButton, LoadingIcon, ServiceArea, ServiceTitle, ServiceDescription, Line, BackButton } from './styles';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { Container, Scroller, HeaderArea, HeaderTitle, Background, SwipeDot, SwipeDotActive, SwipeItem, SwipeImage, PageBody, UserInfoArea, UserInfo, Avatar, UserInfoName, UserInfoState, UserButton, LoadingIcon, ServiceArea, ServiceTitle, ServiceDescription, Line, BackButton, AnimalsArea } from './styles';
+import { useNavigation } from '@react-navigation/native';
 import Api from '../../Api';
 import Swiper from 'react-native-swiper';
 
@@ -11,49 +11,37 @@ import FavoriteIcon from '../../images/favorite.svg';
 import ChatIcon from '../../images/chat.svg';
 import BackIcon from '../../images/back.svg';
 
-export default () => {
+export default ({route}) => {
     const navigation = useNavigation();
-    // const route = useRoute();
-
-    // const [userInfo, setUserInfo] = useState({
-    //     id: route.params.id,
-    //     avatar: route.params.avatar,
-    //     name: route.params.name,
-    //     stars: route.params.stars
-    // });
 
     const [loading, setLoading] = useState(false);
+    const [list, setList] = useState([]);
+    const [filtro, setFiltro] = useState([]);
+
+    const getServiceInfo = async () => {
+        setList([]);
+        setFiltro([]);
+
+        let id = route.params?.id;
+        let email = route.params?.email;
+
+        let res = await Api.getServiceById(email, id);
+
+        if (res != undefined) {
+            setList(res);
+            setFiltro(res.filtro);
+        }
+    }
 
     useEffect(() => {
-        const getWorkerInfo = async () => {
-            setLoading(true);
-
-            let json = await Api.getWorker(userInfo.id);
-
-            if (json.error != '')
-                alert(json.error);
-            else 
-                setUserInfo(json.data);
-
-            setLoading(false);
-        }
-        getWorkerInfo();
+        getServiceInfo();
     }, []);
-
-    const handleBackButton = () => {
-        navigation.goBack();
-    }
-
-    const handleGoBackButton = () => {
-        navigation.goBack();
-    }
 
     return (
         <Container>
-            {/* <Text>{userInfo.name}</Text> */}
             <Scroller>
                 <HeaderArea>
-                    <BackButton onPress={handleGoBackButton}>
+                    <BackButton onPress={() => navigation.goBack()}>
                         <BackIcon width="40" height="40" fill="#1C263F" />
                     </BackButton>
                     <HeaderTitle>HAPPY PET</HeaderTitle>
@@ -63,11 +51,14 @@ export default () => {
 
                 <PageBody>
                     <UserInfoArea>
-                        <Avatar source={require('../../images/avatar.jpg')} />
+                        {list.genero == "Masculino" ?
+                            <Avatar source={require('../../images/avatar.jpg')} />
+                        : <Avatar source={require('../../images/avatarMulher.jpg')} />
+                        }
                         <UserInfo>
-                            <UserInfoName>Bruno Sampaio de Morais</UserInfoName>
-                            <UserInfoState>São Vicente, São Paulo</UserInfoState>
-                            <Stars star={2} size={20} />
+                            <UserInfoName>{list.nome}</UserInfoName>
+                            <UserInfoState>{list.cidade}, {list.estado}</UserInfoState>
+                            <Stars stars={list.avaliacao} size={20} />
                         </UserInfo>
                         <UserButton>
                             <ChatIcon width="20" height="20" fill="#00B1E1" />
@@ -88,55 +79,73 @@ export default () => {
                             paginationStyle={{top: 15, right: 15, bottom: null, left: null}}
                             autoplay={true}
                         >
-                            {/* {userInfo.photos.map((item, key) => {
-                                <SwiperItem key={key}>
-                                    <SwiperImage source={{uri: item.url}} resizeMode="cover" />
-                                </SwiperItem>
-                            })} */}
+                            <SwipeItem>
+                                <SwipeImage source={require('../../images/fundo.png')} resizeMode="cover" />
+                            </SwipeItem>
 
-                                <SwipeItem>
-                                    <SwipeImage source={require('../../images/fundo.png')} resizeMode="cover" />
-                                </SwipeItem>
-
-                                <SwipeItem>
-                                    <SwipeImage source={require('../../images/fundo.png')} resizeMode="cover" />
-                                </SwipeItem>
+                            <SwipeItem>
+                                <SwipeImage source={require('../../images/fundo.png')} resizeMode="cover" />
+                            </SwipeItem>
                         </Swiper>
 
                         <Line />
 
                         <ServiceTitle>Descrição</ServiceTitle>
-                        <ServiceDescription>Descrição aqui.</ServiceDescription>
-
-                        <Line />
-                        
-                        <ServiceTitle>Dias da semana aceitos</ServiceTitle>
-                        <ServiceDescription>Segunda-feira, Terça-feira e Quinta-feira.</ServiceDescription>
+                        <ServiceDescription>{list.descricao}</ServiceDescription>
 
                         <Line />
 
                         <ServiceTitle>Preço médio</ServiceTitle>
-                        <ServiceDescription>20 reais a hora.</ServiceDescription>
+                        <ServiceDescription>{list.precoMedio}.</ServiceDescription>
 
                         <Line />
 
                         <ServiceTitle>Animais aceitos</ServiceTitle>
-                        <Animals animals={2} size={30} />
+                        {filtro.tiposPet == undefined ? 
+                            <ServiceDescription>Não aceita nenhum animal.</ServiceDescription>  
+                        :
+                            <AnimalsArea>
+                                {filtro.tiposPet.map((item, k) => (
+                                    <Animals key={k} animals={item} size={22} />
+                                ))}
+                            </AnimalsArea>
+                        }
 
                         <Line />
 
                         <ServiceTitle>Portes aceitos</ServiceTitle>
-                        <ServiceDescription>Pequeno e Médio.</ServiceDescription>
+                        {filtro.pesos == undefined ? 
+                            <ServiceDescription>Não aceita nenhum porte.</ServiceDescription>  
+                        :
+                            <AnimalsArea>
+                                {filtro.pesos.map((item, k) => (
+                                    <ServiceDescription>{item}; </ServiceDescription>
+                                ))}
+                            </AnimalsArea>
+                        }
 
                         <Line />
 
                         <ServiceTitle>Medicação oral</ServiceTitle>
-                        <ServiceDescription>Sim.</ServiceDescription>
+                        <ServiceDescription>{filtro.medicacaoOral == true ? "Sim" : "Não"}</ServiceDescription>
 
                         <Line />
 
                         <ServiceTitle>Medicação injetável</ServiceTitle>
-                        <ServiceDescription>Não.</ServiceDescription>
+                        {filtro.medicacaoInjetavel == undefined ? 
+                            <ServiceDescription></ServiceDescription> 
+                        :
+                            <ServiceDescription>{filtro.medicacaoInjetavel == true ? "Sim" : "Não"}</ServiceDescription>
+                        }
+
+                        <Line />
+
+                        <ServiceTitle>Curativo</ServiceTitle>
+                        {filtro.curativo == undefined ? 
+                            <ServiceDescription></ServiceDescription> 
+                        :
+                            <ServiceDescription>{filtro.curativo == true ? "Sim" : "Não"}</ServiceDescription>
+                        }
 
                     </ServiceArea>
 

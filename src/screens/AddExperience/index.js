@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, Box, Title, Form, InputText, ButtonArea, CustomButton, CustomButtonText, CustomButtonNo, CustomButtonTextNo, BackButton, ExperienceArea, ExperienceOption, ExperienceText } from './styles';
-import { RefreshControl, ImageBackground, FlatList } from 'react-native';
+import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, Box, Title, Form, InputText, ButtonArea, CustomButton, CustomButtonText, CustomButtonNo, CustomButtonTextNo, BackButton } from './styles';
+import { RefreshControl, ImageBackground, Picker } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import CheckBox from '@react-native-community/checkbox';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import BackIcon from '../../images/back.svg';
 
 import SignInput from '../../components/SignInput';
 import Api from '../../Api';
-import ButtonImage from '../../components/ButtonImage';
 
 export default () => {
 
@@ -17,23 +16,42 @@ export default () => {
     const [nameField, setNameField] = useState('');
     const [descriptionField, setDescriptionField] = useState('');
     const [linkField, setLinkField] = useState('');
-    const [yearField, setYearField] = useState('');
-    const [localField, setLocalField] = useState('');
     const [refreshing, setRefreshing] = useState(false);
-
-    const [isSelectedWork, setSelectedWork] = useState(false);
-    const [isSelectedCertification, setSelectedCertification] = useState(false);
+    const [isSelectedType, setSelectedType] = useState("Serviço");
 
     const handleSignClick = async () => {
-        if (nameField != '' && descriptionField != '') {
-            let json = await Api.signIn(nameField, descriptionField);
+        if (nameField != '' && descriptionField != '' && linkField != '') {
+            var json = {
+                "experiencias": [
+                    {
+                        "tipoExperiencia": isSelectedType,
+                        "links": [
+                            linkField,
+                        ],
+                        "imagens": null,
+                        "titulo": nameField,
+                        "descricao": descriptionField
+                    }
+                ]
+            };
+
+            let email = await AsyncStorage.getItem('email');
+            let res = await Api.postUserInformation(email, json);
+
+            console.log(res);
+
+            if (res.data != null) {
+                alert("Cadastro realizado com sucesso!");
+
+                navigation.reset({
+                    routes:[{name: 'AccountServiceProvider'}]
+                });
+            } else {
+                alert('Algo deu errado!');
+            }
         } else {
             alert('Preencha os campos!');
         }
-    }
-
-    const handleGoBackClick = () => {
-        navigation.goBack();
     }
 
     const onRefresh = () => {
@@ -51,7 +69,7 @@ export default () => {
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }>
                 <HeaderArea>
-                    <BackButton onPress={handleGoBackClick}>
+                    <BackButton onPress={() => navigation.goBack()}>
                         <BackIcon width="40" height="40" fill="#1C263F" />
                     </BackButton>
                     <HeaderTitle>HAPPY PET</HeaderTitle>
@@ -63,23 +81,14 @@ export default () => {
 
                         <Form>
                             <InputText>Tipo de experiência *</InputText>
-                            <ExperienceArea>
-                                <ExperienceOption>
-                                    <CheckBox
-                                        value={isSelectedWork}
-                                        onValueChange={setSelectedWork}
-                                    />
-                                    <ExperienceText>Trabalho</ExperienceText>
-                                </ExperienceOption>
-
-                                <ExperienceOption>
-                                    <CheckBox
-                                        value={isSelectedCertification}
-                                        onValueChange={setSelectedCertification}
-                                    />
-                                    <ExperienceText>Certificado</ExperienceText>
-                                </ExperienceOption>
-                            </ExperienceArea>
+                            <Picker
+                                selectedValue={isSelectedType}
+                                style={{ height: 30, width: '100%', marginTop: 8 }}
+                                onValueChange={(itemValue, itemIndex) => setSelectedType(itemValue)}
+                            >
+                                <Picker.Item label="Serviço" value={"Serviço"} />
+                                <Picker.Item label="Certificado" value={"Certificado"} />
+                            </Picker>
 
                             <InputText>Título</InputText>
                             <SignInput
@@ -99,22 +108,8 @@ export default () => {
                                 onChangeText={o => setLinkField(o)}
                             />
 
-                            <InputText>Ano</InputText>
-                            <SignInput
-                                value={yearField}
-                                onChangeText={o => setYearField(o)}
-                                password={true}
-                                keyboardType={'numeric'}
-                            />
-
-                            <InputText>Local</InputText>
-                            <SignInput
-                                value={localField}
-                                onChangeText={o => setLocalField(o)}
-                            />
-
                             <ButtonArea>
-                                <CustomButtonNo onPress={handleGoBackClick}>
+                                <CustomButtonNo onPress={() => navigation.goBack()}>
                                     <CustomButtonTextNo>Cancelar</CustomButtonTextNo>
                                 </CustomButtonNo>
                                 <CustomButton onPress={handleSignClick}>

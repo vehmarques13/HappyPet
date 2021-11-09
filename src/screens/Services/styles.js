@@ -59,3 +59,25 @@ export const ListArea = styled.View`
     margin-top: 20px;
 `;
 
+export const BackButton = styled.TouchableOpacity`
+    position: absolute;
+    left: 0;
+    z-index: 9;
+`;
+
+export const FilterFull = styled.TouchableOpacity`
+    margin-top: 15px;
+    width: 45px;
+    height: 45px;
+    border-radius: 15px; 
+    background-color: white;
+    border: 1px solid rgba(230, 230, 230, 1);
+    justify-content: center;
+    align-items: center;
+    margin-right: 8px;
+`;
+
+export const OrganizationFilter = styled.View`
+    flex-direction: row;
+`;
+

@@ -52,30 +52,36 @@ const UserServices = styled.Text`
     color: #929292;
 `;
 
+const AnimalsArea = styled.View`
+    flex-direction: row;
+`;
+
 export default ({data}) => {
     
     const navigation = useNavigation();
+    let id = data.id;
+    let email = data.email;
 
     const handleClick = () => {
-        navigation.navigate('Service');
-        // navigation.navigate('Service', {
-        //     id: data.id,
-        //     avatar: data.avatar,
-        //     name: data.name,
-        //     stars: data.stars
-        // }); 
+        navigation.navigate('Service', { id: id, email: email });
     }
 
     const tipoServico = () => {
         switch(data.tipoServico) {
+            case 0:
+                return "Veterinário";
             case 1:
-                return "Serviço 1";
+                return "Banho e Tosa";
             case 2:
-                return "Serviço 2";
+                return "Passeio";
             case 3:
-                return "Serviço 3";
+                return "Adestramento";
+            case 3:
+                return "Pet Sitter";
+            case 3:
+                return "Hospedagem";
             default:
-                return "Serviço";
+                return "Serviço indefinido!";
         }
     }
 
@@ -85,7 +91,6 @@ export default ({data}) => {
 
     return (
         <Area onPress={handleClick}>
-            {/* <Avatar source={{uri: data.avatar}} /> */}
             <Avatar source={require('../images/avatar.jpg')}/>
             <InfoArea>    
                 <OrganizationArea>
@@ -96,7 +101,11 @@ export default ({data}) => {
                 <UserServices>{tipoServico()}</UserServices>
                 <OrganizationArea style={{paddingBottom: 8}}>
                     <Stars stars={data.avaliacao} size={20} />
-                    <Animals animals={2} size={20} />
+                    <AnimalsArea>
+                        {data.filtro.tiposPet.map((item, k) => (
+                            <Animals key={k} animals={item} size={20} />
+                        ))}
+                    </AnimalsArea>
                 </OrganizationArea>
             </InfoArea>
         </Area>

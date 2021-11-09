@@ -81,7 +81,7 @@ const FilterText = styled.Text`
 
 const ButtonArea = styled.TouchableOpacity``;
 
-export default ({data}) => {
+export default ({data, funcRefresh = null}) => {
     const tipoPet = () => {
         switch(data.tipoPet) {
             case 0:
@@ -100,6 +100,8 @@ export default ({data}) => {
     const deletePet = async (id) => {
         let email = await AsyncStorage.getItem('email');
         let res = await Api.deletePets(email, id);
+
+        await funcRefresh();
     }
 
     return (

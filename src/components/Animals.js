@@ -1,24 +1,38 @@
-import React, { useContext } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components/native';
 
-import Cat from '../images/cat.svg';
-import Dog from '../images/dog.svg';
-import Bird from '../images/bird.svg';
-
-const AnimalsArea = styled.View``;
+import DogIcon from '../images/dog.svg';
+import CatIcon from '../images/cat.svg';
+import BirdIcon from '../images/bird.svg';
+import HamsterIcon from '../images/hamster.svg';
 
 const AnimalsView = styled.View`
-    flex-direction: row;
+    margin-left: 3px;
 `;
 
 export default ({ animals, size }) => {
+    const tipoPet = () => {
+        switch(animals) {
+            case "Canino":
+                return <DogIcon width={size} height={size} fill="#1C263F" />;
+            case "Pássaro":
+                return <BirdIcon width={size} height={size} fill="#1C263F" />;
+            case "Felino":
+                return <CatIcon width={size} height={size} fill="#1C263F" />;
+            case "Roedor":
+                return <HamsterIcon width={size} height={size} fill="#1C263F" />;
+            default:
+                return "Outros";
+        }
+    }
+
+    useEffect(() => {
+        tipoPet();
+    }, []);
+
     return (
-        <AnimalsArea>
-            <AnimalsView>
-                <Cat width={size} height={size} fill="#1C263F" style={{marginRight: 4}} />
-                <Dog width={size} height={size} fill="#1C263F" style={{marginRight: 4}} />
-                <Bird width={size} height={size} fill="#1C263F" />
-            </AnimalsView>
-        </AnimalsArea>
+        <AnimalsView>
+            {tipoPet()}
+        </AnimalsView>
     );
 }

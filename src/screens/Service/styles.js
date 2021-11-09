@@ -72,9 +72,7 @@ export const UserInfoArea = styled.View`
 export const Avatar = styled.Image`
     width: 112px;
     height: 135px;
-    border-radius: 11px;
     margin: 0 15px 0 8px;
-    border: 1px solid rgba(230, 230, 230, 0.6);
 `;
 
 export const UserInfo = styled.View`
@@ -141,4 +139,8 @@ export const BackButton = styled.TouchableOpacity`
     position: absolute;
     left: 0;
     z-index: 9;
+`;
+
+export const AnimalsArea = styled.View`
+    flex-direction: row;
 `;

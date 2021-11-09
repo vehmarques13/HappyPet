@@ -1,22 +1,16 @@
 import React, { useState } from 'react';
-import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, Box, Title, Form, InputText, ButtonArea, CheckBoxArea, CheckBoxOption, CheckBoxText, CustomButton, CustomButtonText, CustomButtonNo, CustomButtonTextNo, BackButton, ImageArea } from './styles';
-import { RefreshControl, ImageBackground, FlatList, Picker } from 'react-native';
+import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, Box, Title, Form, InputText, ButtonArea, CheckBoxArea, CheckBoxOption, CheckBoxText, CustomButton, CustomButtonText, CustomButtonNo, CustomButtonTextNo, BackButton } from './styles';
+import { RefreshControl, ImageBackground,  Picker } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import CheckBox from '@react-native-community/checkbox';
 
-import { launchImageLibrary } from 'react-native-image-picker';
-
-import Add from '../../images/add.svg';
 import BackIcon from '../../images/back.svg';
 
 import SignInput from '../../components/SignInput';
 import Api from '../../Api';
-import ButtonImage from '../../components/ButtonImage';
 
 export default () => {
-
-    const navigation = useNavigation();
-
+    
     const [nameField, setNameField] = useState('');
     const [descriptionField, setDescriptionField] = useState('');
     const [priceField, setPriceField] = useState(0);
@@ -36,11 +30,13 @@ export default () => {
     const [filterField, setFilterField] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
 
+    const navigation = useNavigation();
+
     const handleSignClick = async () => {
         if (nameField != '' && descriptionField != '' && priceField != '') {
-            let json = await Api.postServices(emailField, isSelectedTipoServico, descriptionField, priceField, imageField, filterField);
+            let res = await Api.postServices(emailField, isSelectedTipoServico, descriptionField, priceField, imageField, filterField);
 
-            if (json.data != null) {
+            if (res.data != null) {
                 console.log("DEU CERTO");
             } else {
                 alert('Algo deu errado!');
@@ -48,12 +44,6 @@ export default () => {
         } else {
             alert('Preencha os campos corretamente!');
         }
-    }
-
-    const handleGoBackClick = () => {
-        navigation.reset({
-            routes: [{name: 'MainTab'}]
-        });
     }
 
     const onRefresh = () => {
@@ -71,7 +61,7 @@ export default () => {
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }>
                 <HeaderArea>
-                    <BackButton onPress={handleGoBackClick}>
+                    <BackButton onPress={() => navigation.goBack()}>
                         <BackIcon width="40" height="40" fill="#1C263F" />
                     </BackButton>
                     <HeaderTitle>HAPPY PET</HeaderTitle>
@@ -248,7 +238,7 @@ export default () => {
                             </ImageArea> */}
 
                             <ButtonArea>
-                                <CustomButtonNo onPress={handleGoBackClick}>
+                                <CustomButtonNo onPress={() => navigation.goBack()}>
                                     <CustomButtonTextNo>Cancelar</CustomButtonTextNo>
                                 </CustomButtonNo>
                                 <CustomButton onPress={handleSignClick}>

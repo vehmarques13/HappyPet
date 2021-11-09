@@ -19,9 +19,9 @@ export default () => {
 
     const handleSignClick = async () => {
         if (commentField != '' && (starsField >= 0 && starsField <= 5)) {
-            let json = await Api.postRating("usuario@gmail.com", "prestador@gmail.com", commentField, starsField);
+            let res = await Api.postRating("usuario@gmail.com", "prestador@gmail.com", commentField, starsField);
 
-            if (json.data != null) {
+            if (res.data != null) {
                 console.log("DEU CERTO");
             } else {
                 alert('Algo deu errado!');

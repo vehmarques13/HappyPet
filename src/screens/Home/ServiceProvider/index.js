@@ -67,6 +67,11 @@ export default () => {
         return listServices.find(x => x == n) == n;
     }
 
+    const handleServiceClick = async (id) => {
+        await AsyncStorage.setItem('tipoServico', id.toString());
+        navigation.navigate('Services');
+    }
+
     return (
         <Container>
             <Scroller refreshControl={
@@ -77,6 +82,14 @@ export default () => {
                 </HeaderArea>
 
                 <PageBody>
+
+                    {loading &&
+                        <LoadingIcon 
+                            size='large'
+                            color='#20283D'
+                        />
+                    }
+
                     <ServiceArea>
                         <ServiceTitle>Agenda</ServiceTitle>
                         {listSchedule.length != 0 ? 
@@ -102,8 +115,8 @@ export default () => {
                             </ButtonArea>
                         </OrganizationArea>
                         <Services>
-                            {tipoServico(1) ?
-                                <ServicesArea>
+                            {tipoServico(0) ?
+                                <ServicesArea onPress={() => handleServiceClick(0)}>
                                     <ServicesView>
                                         <ServiceImage source={require('../../../images/veterinario.jpg')}/>
                                         <ServiceName>Veterinário</ServiceName>
@@ -116,8 +129,8 @@ export default () => {
                                 </ServicesView>
                               </ServicesAreaEnable>
                             }
-                            {tipoServico(2) ?
-                                <ServicesArea>
+                            {tipoServico(1) ?
+                                <ServicesArea onPress={() => handleServiceClick(1)}>
                                     <ServicesView>
                                         <ServiceImage source={require('../../../images/banho.jpg')}/>
                                         <ServiceName>Banho e Tosa</ServiceName>
@@ -130,8 +143,8 @@ export default () => {
                                 </ServicesView>
                               </ServicesAreaEnable>
                             }
-                            {tipoServico(3) ?
-                                <ServicesArea>
+                            {tipoServico(2) ?
+                                <ServicesArea onPress={() => handleServiceClick(2)}>
                                     <ServicesView>
                                         <ServiceImage source={require('../../../images/passeio.jpg')}/>
                                         <ServiceName>Passeio</ServiceName>
@@ -144,8 +157,8 @@ export default () => {
                                 </ServicesView>
                               </ServicesAreaEnable>
                             }
-                            {tipoServico(4) ?
-                                <ServicesArea>
+                            {tipoServico(3) ?
+                                <ServicesArea onPress={() => handleServiceClick(3)}>
                                     <ServicesView>
                                         <ServiceImage source={require('../../../images/adestramento.jpg')}/>
                                         <ServiceName>Adestramento</ServiceName>
@@ -158,8 +171,8 @@ export default () => {
                                 </ServicesView>
                               </ServicesAreaEnable>
                             }
-                            {tipoServico(5) ?
-                                <ServicesArea>
+                            {tipoServico(4) ?
+                                <ServicesArea onPress={() => handleServiceClick(4)}>
                                     <ServicesView>
                                         <ServiceImage source={require('../../../images/petsitter.jpg')}/>
                                         <ServiceName>Pet Sitter</ServiceName>
@@ -172,8 +185,8 @@ export default () => {
                                 </ServicesView>
                               </ServicesAreaEnable>
                             }
-                            {tipoServico(6) ?
-                                <ServicesArea>
+                            {tipoServico(5) ?
+                                <ServicesArea onPress={() => handleServiceClick(5)}>
                                     <ServicesView>
                                         <ServiceImage source={require('../../../images/hospedagem.jpg')}/>
                                         <ServiceName>Hospedagem</ServiceName>
@@ -188,13 +201,6 @@ export default () => {
                             }
                         </Services>
                     </ServiceArea>
-
-                    {loading &&
-                        <LoadingIcon 
-                            size='large'
-                            color='#20283D'
-                        />
-                    }
                 </PageBody>
             </Scroller>
         </Container>

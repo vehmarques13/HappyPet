@@ -41,7 +41,7 @@ export default () => {
             console.log(res);
 
             if (res.data != null) {
-                alert("Cadastro realizado com sucesso!");
+                alert("Experiência cadastrada com sucesso!");
 
                 navigation.reset({
                     routes:[{name: 'AccountServiceProvider'}]

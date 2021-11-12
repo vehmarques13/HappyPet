@@ -42,10 +42,15 @@ export const ListArea = styled.View`
     flex-wrap: wrap;
 `;
 
-export const BackButton = styled.TouchableOpacity`
-    position: absolute;
-    left: 0;
-    z-index: 9;
+export const OrganizationArea = styled.View`
+    flex-direction: row;
+    justify-content: flex-end;
+`;
+
+export const ButtonArea = styled.TouchableOpacity``;
+
+export const ServiceArea = styled.View`
+    padding-top: 25px;
 `;
 
 

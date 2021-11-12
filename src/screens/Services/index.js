@@ -69,9 +69,6 @@ export default () => {
 
                 <PageBody>
                     <OrganizationFilter>
-                        {/* <FilterFull>
-                            <FilterIcon width="26" height="26" fill="#858585"/>
-                        </FilterFull> */}
                         <FlatList
                             horizontal
                             pagingEnabled={true}
@@ -92,7 +89,7 @@ export default () => {
 
                     <ListArea>
                         {list.map((item, k) => (
-                            <WorkerItem key={k} data={item} />
+                            <WorkerItem key={k} data={item} funcRefresh={getWorkers}/>
                         ))}
                     </ListArea>
                     

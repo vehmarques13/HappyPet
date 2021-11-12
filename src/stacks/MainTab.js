@@ -38,8 +38,10 @@ export default () => {
                 <Tab.Screen name="HomeTutor" component={HomeTutor} />
             : <Tab.Screen name="HomeServiceProvider" component={HomeServiceProvider} />
             }
-            <Tab.Screen name="Favorites" component={Favorites} />
-            <Tab.Screen name="Schedule" component={Schedule} />
+            {userInfo == "1" ?
+                <Tab.Screen name="Favorites" component={Favorites} />
+            : <Tab.Screen name="Schedule" component={Schedule} />
+            }
             {userInfo == "1" ?
                 <Tab.Screen name="AccountTutor" component={AccountTutor} />
             : <Tab.Screen name="AccountServiceProvider" component={AccountServiceProvider} />

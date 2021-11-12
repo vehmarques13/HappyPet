@@ -52,6 +52,19 @@ export default {
     const json = req.data;
     return json;
   },
+  deleteSchedule: async (email, id) => {
+    return axios.delete(`http://192.168.0.23:59555/api/Agenda/delete?email=${email}&id=${id}`)
+  },
+  postSchedule: async (emailProprietario, nomeUsuario, contato, tipoServico, diaHora, descricao) => {
+    return axios.post('http://192.168.0.23:59555/api/Agenda', {
+      emailProprietario: emailProprietario,
+      nomeUsuario: nomeUsuario,
+      contato: contato,
+      tipoServico: tipoServico,
+      diaHora: diaHora,
+      descricao: descricao
+    })
+  },
 
   getRating: async () => {
     const req = await api.get('Avaliacao');
@@ -111,14 +124,16 @@ export default {
     return json;
   },
   postServices: async (email, tipoServico, descricao, precoMedio, imagens, filtro) => {
-    return axios.post('http://192.168.0.23:59555/api/Servico', {
+    var json = {
       email: email,
       tipoServico: tipoServico,
       descricao: descricao,
       precoMedio: precoMedio,
       imagens: imagens,
       filtro: filtro
-    })
+    }; 
+
+    return axios.post('http://192.168.0.23:59555/api/Servico', json)
   },
   putServices: async (email, tipoServico, descricao, precoMedio, imagens, filtro) => {
     return axios.put('http://192.168.0.23:59555/api/Servico', {
@@ -129,6 +144,9 @@ export default {
       imagens: imagens,
       filtro: filtro
     })
+  },
+  deleteServices: async (email, id) => {
+    return axios.delete(`http://192.168.0.23:59555/api/Servico/delete?email=${email}&id=${id}`)
   },
 
   getUser: async (email) => {

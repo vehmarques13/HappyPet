@@ -18,12 +18,12 @@ export default ({route}) => {
     const [list, setList] = useState([]);
     const [filtro, setFiltro] = useState([]);
 
+    let id = route.params?.id;
+    let email = route.params?.email;
+
     const getServiceInfo = async () => {
         setList([]);
         setFiltro([]);
-
-        let id = route.params?.id;
-        let email = route.params?.email;
 
         let res = await Api.getServiceById(email, id);
 
@@ -31,6 +31,10 @@ export default ({route}) => {
             setList(res);
             setFiltro(res.filtro);
         }
+    }
+
+    const handleClick = () => {
+        navigation.navigate('AccountId', { email: email });
     }
 
     useEffect(() => {
@@ -50,7 +54,7 @@ export default ({route}) => {
                 <Background source={require('../../images/fundo.png')} resizeMode="cover" />
 
                 <PageBody>
-                    <UserInfoArea>
+                    <UserInfoArea onPress={handleClick}>
                         {list.genero == "Masculino" ?
                             <Avatar source={require('../../images/avatar.jpg')} />
                         : <Avatar source={require('../../images/avatarMulher.jpg')} />

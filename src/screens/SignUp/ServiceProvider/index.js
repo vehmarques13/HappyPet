@@ -41,6 +41,12 @@ export default () => {
         }
     }
 
+    const handleBackClick = () => {
+        navigation.reset({
+            routes: [{name: 'SignIn'}]
+        });
+    }
+
     return (
         <Container>
             <Scroller>
@@ -121,7 +127,7 @@ export default () => {
                         />
 
                         <ButtonArea>
-                            <CustomButtonNo onPress={() => navigation.goBack()}>
+                            <CustomButtonNo onPress={handleBackClick}>
                                 <CustomButtonTextNo>Voltar</CustomButtonTextNo>
                             </CustomButtonNo>
                             <CustomButton onPress={handleSignClick}>

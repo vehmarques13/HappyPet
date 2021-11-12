@@ -1,11 +1,15 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components/native';
+import AsyncStorage from '@react-native-community/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 import Stars from '../components/Stars';
 import Animals from '../components/Animals';
 import Favorites from '../components/Favorites';
 
-import { useNavigation } from '@react-navigation/native';
+import Api from '../Api';
+
+import DeleteIcon from '../images/delete.svg';
 
 const Area = styled.TouchableOpacity`
     background-color: #FFFFFF;
@@ -56,7 +60,9 @@ const AnimalsArea = styled.View`
     flex-direction: row;
 `;
 
-export default ({data}) => {
+const ButtonArea = styled.TouchableOpacity``;
+
+export default ({data, funcRefresh = null}) => {
     
     const navigation = useNavigation();
     let id = data.id;
@@ -89,13 +95,25 @@ export default ({data}) => {
         tipoServico();
     }, []);
 
+    const deleteService = async (id) => {
+        let email = await AsyncStorage.getItem('email');
+        let res = await Api.deleteServices(email, id);
+
+        await funcRefresh();
+    }
+
     return (
         <Area onPress={handleClick}>
             <Avatar source={require('../images/avatar.jpg')}/>
             <InfoArea>    
                 <OrganizationArea>
                     <UserName>{data.nome}</UserName>
-                    <Favorites favorites={1} />
+                    {data.tipoUsuario == 1 ?
+                        <Favorites favorites={1} />
+                    :   <ButtonArea onPress={() => deleteService(data.id)}>
+                            <DeleteIcon style={{ marginRight: 5 }} width="15" height="15" fill="#00B1E1"/>
+                        </ButtonArea>
+                    }
                 </OrganizationArea>
                 <UserState>{data.cidade}, {data.estado}</UserState>
                 <UserServices>{tipoServico()}</UserServices>

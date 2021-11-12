@@ -1,6 +1,10 @@
-import { DrawerActions } from '@react-navigation/routers';
 import React, { useEffect } from 'react';
 import styled from 'styled-components/native';
+import AsyncStorage from '@react-native-community/async-storage';
+
+import Api from '../Api';
+
+import DeleteIcon from '../images/delete.svg';
 
 const ScheduleArea = styled.View`
     background-color: #FFFFFF;
@@ -9,7 +13,7 @@ const ScheduleArea = styled.View`
     flex-direction: row;
     width: 130px;
     border: 1px solid rgba(230, 230, 230, 1);
-    margin: 10px 10px 0 0;
+    margin: 0 10px 0 0;
 `;
 
 const InfoArea = styled.View`
@@ -45,7 +49,15 @@ const Time = styled.Text`
     margin-bottom: 5px;
 `;
 
-export default ({data}) => {
+const OrganizationTitle = styled.View`
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+const ButtonArea = styled.TouchableOpacity``;
+
+export default ({data, funcRefresh = null}) => {
     let date = new Date(data.diaHora);
 
     const fotoTipoServico = () => {
@@ -67,14 +79,26 @@ export default ({data}) => {
         }
     }
 
+    const deleteSchedule = async (id) => {
+        let email = await AsyncStorage.getItem('email');
+        let res = await Api.deleteSchedule(email, id);
+
+        await funcRefresh();
+    }
+
     useEffect(() => {
         fotoTipoServico();
     }, []);
 
     return (
         <ScheduleArea>
-            <InfoArea>    
-                <UserName>{data.nomeUsuario.substring(0, data.nomeUsuario.indexOf(' ') == -1 ? data.nomeUsuario.length : data.nomeUsuario.indexOf(' '))}</UserName>
+            <InfoArea>   
+                <OrganizationTitle> 
+                    <UserName>{data.nomeUsuario.substring(0, data.nomeUsuario.indexOf(' ') == -1 ? data.nomeUsuario.length : data.nomeUsuario.indexOf(' '))}</UserName>
+                    <ButtonArea onPress={() => deleteSchedule(data.id)}>
+                        <DeleteIcon style={{ marginRight: 5 }} width="15" height="15" fill="#00B1E1"/>
+                    </ButtonArea>
+                </OrganizationTitle>
                 <Line/>
                 <Service source={fotoTipoServico()} />
                 <Time>{date.toLocaleTimeString('pt-BR').substring(0, date.toLocaleTimeString('pt-BR').lastIndexOf(':'))}</Time>

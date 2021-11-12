@@ -110,3 +110,14 @@ export const Line = styled.View`
     background-color: rgba(230, 230, 230, 1);
     margin: 10px 0;
 `;
+
+export const PetArea = styled.View`
+    padding: 25px 18px;
+`;
+
+export const PetTitle = styled.Text`
+    font-weight: bold;
+    font-size: 18px;
+    color: #1C263F;
+    margin-bottom: 6px;
+`;

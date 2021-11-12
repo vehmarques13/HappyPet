@@ -13,6 +13,7 @@ import Service from '../screens/Service';
 import Services from '../screens/Services';
 import AddPet from '../screens/AddPet';
 import AddService from '../screens/AddService';
+import AddSchedule from '../screens/AddSchedule';
 import EditAccount from '../screens/EditAccount';
 import AddExperience from '../screens/AddExperience';
 import Rating from '../screens/Rating';
@@ -39,6 +40,7 @@ export default () => (
         <Stack.Screen name="Services" component={Services} />
         <Stack.Screen name="AddPet" component={AddPet} />
         <Stack.Screen name="AddService" component={AddService} />
+        <Stack.Screen name="AddSchedule" component={AddSchedule} />
         <Stack.Screen name="EditAccount" component={EditAccount} />
         <Stack.Screen name="AddExperience" component={AddExperience} />
         <Stack.Screen name="Rating" component={Rating} />

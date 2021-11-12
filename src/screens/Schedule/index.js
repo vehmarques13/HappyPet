@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, LoadingIcon, ListArea, BackButton } from './styles';
+import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, LoadingIcon, ListArea, OrganizationArea, ButtonArea, ServiceArea } from './styles';
 import { RefreshControl, FlatList, Text } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import { useNavigation } from '@react-navigation/native';
+import { Alert } from 'react-native';
 
 import Api from '../../Api';
-import { Alert } from 'react-native';
 import ScheduleItem from '../../components/ScheduleItem';
+
+import AddIcon from '../../images/add2.svg';
 
 export default () => {
     const [loading, setLoading] = useState(false);
     const [list, setList] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
+    const navigation = useNavigation();
 
     const getSchedule = async () => {
         setLoading(true);
@@ -36,8 +40,10 @@ export default () => {
         setRefreshing(true); 
     }
 
-    const handleGoBackButton = () => {
-        navigation.goBack();
+    const handleClick = () => {
+        navigation.reset({
+            routes: [{name: 'AddSchedule'}]
+        });
     }
 
     return (
@@ -50,6 +56,14 @@ export default () => {
                 </HeaderArea>
 
                 <PageBody>
+                    <ServiceArea>
+                        <OrganizationArea>
+                            <ButtonArea onPress={handleClick}>
+                                <AddIcon width="28" height="28" fill="#00B1E1" />
+                            </ButtonArea>
+                        </OrganizationArea>
+                    </ServiceArea>
+
                     {loading &&
                         <LoadingIcon 
                             size='large'
@@ -66,7 +80,7 @@ export default () => {
                             legacyImplementation={false}
                             data={list}
                             keyExtractor={(item) => item.id}
-                            renderItem={ ({item}) => <ScheduleItem data={item}/>}
+                            renderItem={ ({item}) => <ScheduleItem data={item} funcRefresh={getSchedule}/>}
                         />
                     :
                         <Text>Não há serviços agendados para você.</Text>

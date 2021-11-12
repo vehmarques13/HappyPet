@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, Box, Title, Form, InputText, ButtonArea, CheckBoxArea, CheckBoxOption, CheckBoxText, CustomButton, CustomButtonText, CustomButtonNo, CustomButtonTextNo, BackButton } from './styles';
 import { RefreshControl, ImageBackground,  Picker } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import CheckBox from '@react-native-community/checkbox';
+import CheckBox from '@react-native-community/checkbox'; 
+import AsyncStorage from '@react-native-community/async-storage';
 
 import BackIcon from '../../images/back.svg';
 
@@ -10,20 +11,12 @@ import SignInput from '../../components/SignInput';
 import Api from '../../Api';
 
 export default () => {
-    
-    const [nameField, setNameField] = useState('');
     const [descriptionField, setDescriptionField] = useState('');
-    const [priceField, setPriceField] = useState(0);
-    const [isSelectedTipoServico, setSelectedTipoServico] = useState(0);
-    const [isSelectedPequeno, setSelectedPequeno] = useState(false);
-    const [isSelectedMedio, setSelectedMedio] = useState(false);
-    const [isSelectedGrande, setSelectedGrande] = useState(false);
-    const [isSelectedFemea, setSelectedFemea] = useState(false);
-    const [isSelectedMacho, setSelectedMacho] = useState(false);
-    const [isSelectedRoedores, setSelectedRoedores] = useState(false);
-    const [isSelectedPassaros, setSelectedPassaros] = useState(false); 
-    const [isSelectedFelinos, setSelectedFelinos] = useState(false);
-    const [isSelectedCaninos, setSelectedCaninos] = useState(false); 
+    const [priceField, setPriceField] = useState("0");
+    const [isSelectedTipoServico, setSelectedTipoServico] = useState("0");
+    const [isSelectedPorte, setSelectedPorte] = useState([{"id": 0, "valueItem": 'Pequeno', "checked": true}, {"id": 1, "valueItem": 'Médio', "checked": false}, {"id": 2, "valueItem": 'Grande', "checked": false}]);
+    const [isSelectedSexo, setSelectedSexo] = useState([{"id": 0, "valueItem": 'Fêmea', "checked": true}, {"id": 1, "valueItem": 'Macho', "checked": false}]);
+    const [isSelectedTipoPet, setSelectedTipoPet] = useState([{"id": 0, "valueItem": 'Roedor', "checked": true}, {"id": 2, "valueItem": 'Pássaro', "checked": false}, {"id": 3, "valueItem": 'Felino', "checked": false}, {"id": 4, "valueItem": 'Canino', "checked": false}]);
     const [isSelectedMedicacaoOral, setSelectedMedicacaoOral] = useState(false); 
     const [isSelectedMedicacaoInjetavel, setSelectedMedicacaoInjetavel] = useState(false);
     const [isSelectedCurativo, setSelectedCurativo] = useState(false);
@@ -33,17 +26,58 @@ export default () => {
     const navigation = useNavigation();
 
     const handleSignClick = async () => {
-        if (nameField != '' && descriptionField != '' && priceField != '') {
-            let res = await Api.postServices(emailField, isSelectedTipoServico, descriptionField, priceField, imageField, filterField);
+        if (descriptionField != '' && priceField != '') {
+            var json = {
+                "pesos": isSelectedPorte.filter(x => x.checked == true).map(m => m.valueItem),
+                "generos": isSelectedSexo.filter(x => x.checked == true).map(m => m.valueItem),
+                "tiposPet": isSelectedTipoPet.filter(x => x.checked == true).map(m => m.valueItem),
+                "diasSemana": null,
+                "medicacaoOral": isSelectedMedicacaoOral,
+                "medicacaoInjetavel": isSelectedMedicacaoInjetavel,
+                "curativo": isSelectedCurativo
+            };
+
+            console.log(json);
+
+            let email = await AsyncStorage.getItem('email');
+            let res = await Api.postServices(email, parseInt(isSelectedTipoServico), descriptionField, parseFloat(priceField), {}, json);
 
             if (res.data != null) {
-                console.log("DEU CERTO");
+                alert("Serviço cadastrado com sucesso!");
+
+                navigation.reset({
+                    routes:[{name: 'MainTab'}]
+                });
             } else {
                 alert('Algo deu errado!');
             }
         } else {
             alert('Preencha os campos corretamente!');
         }
+    }
+    
+    const onCheckChangedPorte = (id) => {
+        const data = isSelectedPorte;
+
+        const index = data.findIndex(x => x.id === id);
+        data[index].checked = !data[index].checked;
+        setSelectedPorte(data);
+    }
+
+    const onCheckChangedSexo = (id) => {
+        const data = isSelectedSexo;
+
+        const index = data.findIndex(x => x.id === id);
+        data[index].checked = !data[index].checked;
+        setSelectedSexo(data);
+    }
+
+    const onCheckChangedTipoPet = (id) => {
+        const data = isSelectedTipoPet;
+
+        const index = data.findIndex(x => x.id === id);
+        data[index].checked = !data[index].checked;
+        setSelectedTipoPet(data);
     }
 
     const onRefresh = () => {
@@ -72,12 +106,6 @@ export default () => {
                         <Title>Adicionar Serviço</Title>
 
                         <Form>
-                            <InputText>Nome</InputText>
-                            <SignInput
-                                value={nameField}
-                                onChangeText={o => setNameField(o)}
-                            />
-
                             <InputText>Descrição</InputText>
                             <SignInput
                                 value={descriptionField}
@@ -97,94 +125,45 @@ export default () => {
                                 style={{ height: 30, width: '100%', marginTop: 8 }}
                                 onValueChange={(itemValue, itemIndex) => setSelectedTipoServico(itemValue)}
                             >
-                                <Picker.Item label="Veterinário" value={0} />
-                                <Picker.Item label="Banho e Tosa" value={1} />
-                                <Picker.Item label="Passeio" value={2} />
-                                <Picker.Item label="Adestramento" value={3} />
-                                <Picker.Item label="Pet Sitter" value={4} />
-                                <Picker.Item label="Hospedagem" value={5} />
+                                <Picker.Item label="Veterinário" value={"0"} />
+                                <Picker.Item label="Banho e Tosa" value={"1"} />
+                                <Picker.Item label="Passeio" value={"2"} />
+                                <Picker.Item label="Adestramento" value={"3"} />
+                                <Picker.Item label="Pet Sitter" value={"4"} />
+                                <Picker.Item label="Hospedagem" value={"5"} />
                             </Picker>
 
+                            
                             <InputText>Porte</InputText>
-                            <CheckBoxArea>
-                                <CheckBoxOption>
-                                    <CheckBox
-                                        value={isSelectedPequeno}
-                                        onValueChange={setSelectedPequeno}
-                                    />
-                                    <CheckBoxText>Pequeno</CheckBoxText>
-                                </CheckBoxOption>
-
-                                <CheckBoxOption>
-                                    <CheckBox
-                                        value={isSelectedMedio}
-                                        onValueChange={setSelectedMedio}
-                                    />
-                                    <CheckBoxText>Médio</CheckBoxText>
-                                </CheckBoxOption>
-
-                                <CheckBoxOption>
-                                    <CheckBox
-                                        value={isSelectedGrande}
-                                        onValueChange={setSelectedGrande}
-                                    />
-                                    <CheckBoxText>Grande</CheckBoxText>
-                                </CheckBoxOption>
-                            </CheckBoxArea>
-
+                            {isSelectedPorte.map((item,key) =>
+                                <CheckBoxArea>
+                                    <CheckBoxOption>
+                                        <CheckBox value={item.checked} onValueChange={() => onCheckChangedPorte(item.id)} />
+                                        <CheckBoxText>{item.valueItem}</CheckBoxText>
+                                    </CheckBoxOption>      
+                                </CheckBoxArea>
+                            )}
+                            
                             <InputText>Sexo</InputText>
-                            <CheckBoxArea>
-                                <CheckBoxOption>
-                                    <CheckBox
-                                        value={isSelectedFemea}
-                                        onValueChange={setSelectedFemea}
-                                    />
-                                    <CheckBoxText>Fêmea</CheckBoxText>
-                                </CheckBoxOption>
-
-                                <CheckBoxOption>
-                                    <CheckBox
-                                        value={isSelectedMacho}
-                                        onValueChange={setSelectedMacho}
-                                    />
-                                    <CheckBoxText>Macho</CheckBoxText>
-                                </CheckBoxOption>
-                            </CheckBoxArea>
+                            {isSelectedSexo.map((item,key) =>
+                                <CheckBoxArea>
+                                    <CheckBoxOption>
+                                        <CheckBox value={item.checked} onValueChange={() => onCheckChangedSexo(item.id)} />
+                                        <CheckBoxText>{item.valueItem}</CheckBoxText>
+                                    </CheckBoxOption>      
+                                </CheckBoxArea>
+                            )}
+                            
 
                             <InputText>Tipos de pets</InputText>
-                            <CheckBoxArea>
-                                <CheckBoxOption>
-                                    <CheckBox
-                                        value={isSelectedRoedores}
-                                        onValueChange={setSelectedRoedores}
-                                    />
-                                    <CheckBoxText>Roedores</CheckBoxText>
-                                </CheckBoxOption>
-
-                                <CheckBoxOption>
-                                    <CheckBox
-                                        value={isSelectedPassaros}
-                                        onValueChange={setSelectedPassaros}
-                                    />
-                                    <CheckBoxText>Pássaros</CheckBoxText>
-                                </CheckBoxOption>
-
-                                <CheckBoxOption>
-                                    <CheckBox
-                                        value={isSelectedFelinos}
-                                        onValueChange={setSelectedFelinos}
-                                    />
-                                    <CheckBoxText>Felinos</CheckBoxText>
-                                </CheckBoxOption>
-
-                                <CheckBoxOption>
-                                    <CheckBox
-                                        value={isSelectedCaninos}
-                                        onValueChange={setSelectedCaninos}
-                                    />
-                                    <CheckBoxText>Caninos</CheckBoxText>
-                                </CheckBoxOption>
-                            </CheckBoxArea>
+                            {isSelectedTipoPet.map((item,key) =>
+                                <CheckBoxArea>
+                                    <CheckBoxOption>
+                                        <CheckBox value={item.checked} onValueChange={() => onCheckChangedTipoPet(item.id)} />
+                                        <CheckBoxText>{item.valueItem}</CheckBoxText>
+                                    </CheckBoxOption>      
+                                </CheckBoxArea>
+                            )}
 
                             <InputText>Medicação oral</InputText>
                             <Picker

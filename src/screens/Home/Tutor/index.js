@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, LoadingIcon, ServiceArea, ServiceTitle, Services, ServicesArea, ServicesView, ServiceImage, ServiceName, PetTitle, OrganizationArea, ButtonArea } from './styles';
 import { RefreshControl, FlatList, Text } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import AddIcon from '../../../images/add2.svg';

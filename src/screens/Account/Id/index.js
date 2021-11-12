@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ImageBackground, FlatList } from 'react-native';
-import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, Line, UserInfoArea, UserInfo, Avatar, UserInfoName, UserInfoState, UserInfoBirth, UserButton, LoadingIcon, ServiceArea, ServiceTitle, OrganizationArea, BackButton } from './styles';
+import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, Line, UserInfoArea, UserInfo, Avatar, UserInfoName, UserInfoState, UserInfoBirth, UserButton, LoadingIcon, ServiceArea, ServiceTitle, OrganizationArea, BackButton, PetArea, PetTitle } from './styles';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Api from '../../../Api';
 
@@ -11,36 +11,43 @@ import ChatIcon from '../../../images/chat.svg';
 import BackIcon from '../../../images/back.svg';
 import AddIcon from '../../../images/add2.svg';
 
-export default () => {
-    this.state = {
-      feed:[
-        {id: 1, nome: 'Joseffe', idade: 32, email: 'joseffe@gmail.com'},
-        {id: 2, nome: 'João', idade: 17, email: 'joao@gmail.com'},
-        {id: 3, nome: 'Maria', idade: 22, email: 'maria@gmail.com'},
-        {id: 4, nome: 'Joaquim', idade: 42, email: 'joaquim@gmail.com'},
-        {id: 5, nome: 'Paulo', idade: 36, email: 'paulo@gmail.com'},
-      ]
-    } 
-
+export default ({route}) => {
     const navigation = useNavigation();
 
     const [loading, setLoading] = useState(false);
+    const [list, setList] = useState([]);
+    const [info, setInfo] = useState([]);
+
+    let email = route.params?.email;
+
+    const getUserInfo = async () => {
+        setList([]);
+        let res = await Api.getUser(email);
+
+        if (res != undefined) {
+            setList(res);
+        }
+    }
+
+    const getInfo = async () => {
+        setLoading(true);
+        setInfo([]);
+
+        let res = await Api.getInformation(email);
+
+        if (res.error == undefined) {
+            setInfo(res.experiencias);
+        }
+
+        setLoading(false);
+    }
 
     useEffect(() => {
-        const getWorkerInfo = async () => {
-            setLoading(true);
-
-            let json = await Api.getWorker(userInfo.id);
-
-            if (json.error != '')
-                alert(json.error);
-            else 
-                setUserInfo(json.data);
-
-            setLoading(false);
-        }
-        getWorkerInfo();
+        getUserInfo();
+        getInfo();
     }, []);
+
+    let date = new Date(list.nascimento);
 
     return (
         <Container>
@@ -52,44 +59,61 @@ export default () => {
                     <HeaderTitle>HAPPY PET</HeaderTitle>
                 </HeaderArea>
 
-                <ImageBackground 
-                    source={require('../../../images/fundo.png')} 
-                    resizeMode="cover" 
-                    style={{ width: '100%', height: 150, justifyContent: 'center', alignItems: 'center' }} 
+                <ImageBackground
+                    source={require('../../../images/fundo.png')}
+                    resizeMode="cover"
+                    style={{ width: '100%', height: 150, justifyContent: 'center', alignItems: 'center' }}
                 />
 
                 <PageBody>
                     <UserInfoArea>
                         <Avatar source={require('../../../images/avatar.jpg')} />
                         <UserInfo>
-                            <UserInfoName>Bruno Sampaio de Morais</UserInfoName>
-                            <UserInfoState>São Vicente, São Paulo</UserInfoState>
-                            <UserInfoBirth>25/07/2001</UserInfoBirth>
-                            <Stars stars={2} size={20} />
+                            <UserInfoName>{list.nome}</UserInfoName>
+                            <UserInfoState>{list.cidade}, {list.estado}</UserInfoState>
+                            <UserInfoBirth>{date.getUTCDate()}/{date.getMonth() + 1}/{date.getUTCFullYear()}</UserInfoBirth>
+                            <Stars stars={list.avaliacao} size={20} />
                         </UserInfo>
                         <UserButton>
                             <ChatIcon width="20" height="20" fill="#00B1E1" />
                         </UserButton>
                     </UserInfoArea>
 
-                    <ServiceArea>
-                        <OrganizationArea>
-                            <ServiceTitle>Experiências</ServiceTitle>
-                            <AddIcon width="28" height="28" fill="#00B1E1" />
-                        </OrganizationArea>
-                        <FlatList 
-                            style={{marginTop: -8}}
-                            pagingEnabled={true}
-                            showsHorizontalScrollIndicator={false}
-                            legacyImplementation={false}
-                            data={info}
-                            keyExtractor={(item) => item.id}
-                            renderItem={ ({item}) => <ExperienceItem data={item}/>}
-                        /> 
-                    </ServiceArea>
+                    {list.tipoUsuario == 1 ?
+                        <PetArea>
+                            <OrganizationArea>
+                                <PetTitle>Pets</PetTitle>
+                            </OrganizationArea>
+                            <FlatList 
+                                horizontal
+                                pagingEnabled={true}
+                                showsHorizontalScrollIndicator={false}
+                                legacyImplementation={false}
+                                data={list.pets}
+                                keyExtractor={(item) => item.id}
+                                renderItem={ ({item}) => <Pets data={item}/>}
+                            />
+                        </PetArea>
+                    :
+                        <ServiceArea>
+                            <OrganizationArea>
+                                <ServiceTitle>Experiências</ServiceTitle>
+                                <AddIcon width="28" height="28" fill="#00B1E1" />
+                            </OrganizationArea>
+                            <FlatList
+                                style={{marginTop: -8}}
+                                pagingEnabled={true}
+                                showsHorizontalScrollIndicator={false}
+                                legacyImplementation={false}
+                                data={info}
+                                keyExtractor={(item) => item.id}
+                                renderItem={ ({item}) => <ExperienceItem data={item}/>}
+                            />
+                        </ServiceArea>
+                    }
 
-                    {loading &&   
-                        <LoadingIcon 
+                    {loading &&
+                        <LoadingIcon
                             size='large'
                             color='#20283D'
                         />

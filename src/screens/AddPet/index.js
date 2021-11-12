@@ -27,7 +27,7 @@ export default () => {
             let res = await Api.postPets(email, imageField, nameField, isSelectedTipoPet, isSelectedPorte, isSelectedSexo, breedField, descriptionField);
 
             if (res.data != null) {
-                alert("Cadastro realizado com sucesso!");
+                alert("Pet cadastrado com sucesso!");
 
                 navigation.reset({
                     routes:[{name: 'MainTab'}]

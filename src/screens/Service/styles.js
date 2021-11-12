@@ -63,7 +63,7 @@ export const PageBody = styled.View`
     margin-top: -50px;
 `;
 
-export const UserInfoArea = styled.View`
+export const UserInfoArea = styled.TouchableOpacity`
     flex-direction: row;
     margin-top: -40px;
     padding: 0 10px;

@@ -94,14 +94,14 @@ export default () => {
                         <ServiceTitle>Agenda</ServiceTitle>
                         {listSchedule.length != 0 ? 
                             <FlatList 
-                                style={{marginTop: -8}}
+                                style={{marginTop: 10}}
                                 horizontal
                                 pagingEnabled={true}
                                 showsHorizontalScrollIndicator={false}
                                 legacyImplementation={false}
                                 data={listSchedule}
                                 keyExtractor={(item) => item.id}
-                                renderItem={ ({item}) => <ScheduleItem data={item}/>}
+                                renderItem={ ({item}) => <ScheduleItem data={item} funcRefresh={getScheduleToday} />}
                             /> 
                         : <Text>Não há serviços agendados para hoje.</Text>
                         }

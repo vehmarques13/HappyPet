@@ -22,6 +22,7 @@ export default () => {
 
     const getWorkers = async () => {
         setList([]);
+        setLoading(true);
 
         let tipoServico = await AsyncStorage.getItem('tipoServico');
         let tipoAnimal = await AsyncStorage.getItem('tipoAnimal');
@@ -35,10 +36,14 @@ export default () => {
 
         if (tipoUsuario == 2)
             route += `&email=${email}`;
+        else 
+            route += `&emailLogged=${email}`;
 
         let res = await Api.getServicesById(route);
 
         res == null ? setList([]) : setList(res); 
+
+        setLoading(false);
     }
 
     useEffect(() => {
@@ -52,7 +57,9 @@ export default () => {
     const handleGoBackButton = async () => {
         await AsyncStorage.removeItem('tipoAnimal');
 
-        navigation.goBack();
+        navigation.reset({
+            routes:[{name: 'MainTab'}]
+        });
     }
 
     return (

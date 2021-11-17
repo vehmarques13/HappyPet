@@ -34,6 +34,10 @@ export default () => {
         getUserInfo();
     }, []);
 
+    const handleEditClick = () => {
+        navigation.navigate('EditAccount', { id: id, email: email });
+    }
+
     let date = new Date(userInfo.nascimento);
 
     return (
@@ -44,7 +48,7 @@ export default () => {
                 </HeaderArea>
 
                 <ImageBackground 
-                    source={require('../../../images/fundo.png')} 
+                    source={require('../../../images/fundo3.png')} 
                     resizeMode="cover" 
                     style={{ width: '100%', height: 150, justifyContent: 'center', alignItems: 'center' }} 
                 />
@@ -60,7 +64,7 @@ export default () => {
                             <UserInfoState>{userInfo.cidade}, {userInfo.estado}</UserInfoState>
                             <UserInfoBirth>{date.getUTCDate()}/{date.getMonth() + 1}/{date.getUTCFullYear()}</UserInfoBirth>
                         </UserInfo>
-                        <UserButton>
+                        <UserButton onPress={handleEditClick}>
                             <EditIcon width="30" height="30" fill="#00B1E1" />
                         </UserButton>
                     </UserInfoArea>

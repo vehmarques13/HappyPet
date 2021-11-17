@@ -21,14 +21,14 @@ const PetsArea = styled.View`
 const PetsView = styled.View`
     width: 150px;
     background: #FFFFFF;
-    border-radius: 12px;
+    border-radius: 10px;
     border: 1px solid rgba(230, 230, 230, 0.8);
     margin-right: 10px;
 `;
 
 const PetInfo = styled.View`
     width: 100%;
-    padding: 10px 10px 10px 15px;
+    padding: 10px 10px 0 15px;
 `;
 
 const OrganizationTitle = styled.View`
@@ -60,7 +60,7 @@ const FilterPet = styled.View`
     background-color: white;
     flex-direction: row;
     align-items: center;
-    margin: 10px 0 4px 0;
+    margin-top: 10px;
 `;
 
 const FilterPetSmall = styled.View`
@@ -69,7 +69,7 @@ const FilterPetSmall = styled.View`
     background-color: white;
     flex-direction: row;
     align-items: center;
-    margin: 10px 0 4px 0;
+    margin-top: 10px;
 `;
 
 const FilterText = styled.Text`
@@ -77,6 +77,18 @@ const FilterText = styled.Text`
     font-weight: 500;
     font-size: 13px;
     margin-left: 8px;
+`;
+
+const PetImageOrganization = styled.View`
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+`;
+
+const PetImage = styled.Image`
+    width: 110px;
+    height: 110px;
 `;
 
 const ButtonArea = styled.TouchableOpacity``;
@@ -107,42 +119,57 @@ export default ({data, funcRefresh = null}) => {
     return (
         <PetsArea>
             <PetsView>
-                <PetInfo>
-                    <OrganizationTitle>
-                        <OrganizationArea>
-                            <PetName>{data.nome}</PetName>
-                            {data.sexo == "Fêmea" ? 
-                                <FemaleIcon width="18" height="18" fill="#1C263F"/> 
-                            : <MaleIcon width="18" height="18" fill="#1C263F"/> 
-                            }
-                        </OrganizationArea>
-                        <ButtonArea onPress={() => deletePet(data.id)}>
-                            <DeleteIcon width="15" height="15" fill="#00B1E1"/>
-                        </ButtonArea>
-                    </OrganizationTitle>
-                    <PetAge>{data.raca}</PetAge>
-                    {tipoPet() == "Roedor" ? 
-                        <FilterPet>
-                            <HamsterIcon width="22" height="22" fill="#1C263F" />
-                            <FilterText>Roedor</FilterText>
-                        </FilterPet>
-                    : tipoPet() == "Pássaro" ? 
-                        <FilterPet>
-                            <BirdIcon width="22" height="22" fill="#1C263F" />
-                            <FilterText>Passáro</FilterText>
-                        </FilterPet>
-                    : tipoPet() == "Felino" ?
-                        <FilterPetSmall>
-                            <CatIcon width="22" height="22" fill="#1C263F" />
-                            <FilterText>Felino</FilterText>
-                        </FilterPetSmall>
-                    : 
-                        <FilterPet>
-                            <DogIcon width="22" height="22" fill="#1C263F" />
-                            <FilterText>Canino</FilterText>
-                        </FilterPet>
-                    }
-                </PetInfo>
+                <ImageBackground 
+                    source={require('../images/fundo4.png')} 
+                    resizeMode="cover" 
+                    style={{ width: '100%', alignItems: 'center' }} 
+                    imageStyle={{ borderRadius: 10}}
+                >
+                    <PetInfo>
+                        <OrganizationTitle>
+                            <OrganizationArea>
+                                <PetName>{data.nome}</PetName>
+                                {data.sexo == "femea" ? 
+                                    <FemaleIcon width="18" height="18" fill="#1C263F"/> 
+                                : <MaleIcon width="18" height="18" fill="#1C263F"/> 
+                                }
+                            </OrganizationArea>
+                            <ButtonArea onPress={() => deletePet(data.id)}>
+                                <DeleteIcon width="15" height="15" fill="#00B1E1"/>
+                            </ButtonArea>
+                        </OrganizationTitle>
+                        <PetAge>{data.raca}</PetAge>
+                        {tipoPet() == "Roedor" ? 
+                            <FilterPet>
+                                <HamsterIcon width="22" height="22" fill="#1C263F" />
+                                <FilterText>Roedor</FilterText>
+                            </FilterPet>
+                        : tipoPet() == "Pássaro" ? 
+                            <FilterPet>
+                                <BirdIcon width="22" height="22" fill="#1C263F" />
+                                <FilterText>Passáro</FilterText>
+                            </FilterPet>
+                        : tipoPet() == "Felino" ?
+                            <FilterPetSmall>
+                                <CatIcon width="22" height="22" fill="#1C263F" />
+                                <FilterText>Felino</FilterText>
+                            </FilterPetSmall>
+                        : 
+                            <FilterPet>
+                                <DogIcon width="22" height="22" fill="#1C263F" />
+                                <FilterText>Canino</FilterText>
+                            </FilterPet>
+                        }
+                    </PetInfo>
+
+                    <PetImageOrganization>
+                        {data.sexo == "femea" ?
+                            <PetImage source={require('../images/avatarPetFemea2.png')}/>
+                        :
+                            <PetImage source={require('../images/avatarPetMacho2.png')}/>
+                        }
+                    </PetImageOrganization>
+                </ImageBackground>
             </PetsView>
         </PetsArea>
     );

@@ -3,6 +3,7 @@ import { Container, Scroller, HeaderArea, HeaderTitle, Background, SwipeDot, Swi
 import { useNavigation } from '@react-navigation/native';
 import Api from '../../Api';
 import Swiper from 'react-native-swiper';
+import { Linking } from 'react-native';
 
 import Stars from '../../components/Stars';
 import Animals from '../../components/Animals';
@@ -37,6 +38,12 @@ export default ({route}) => {
         navigation.navigate('AccountId', { email: email });
     }
 
+    const handleBackClick = () => {
+        navigation.reset({
+            routes:[{name: 'Services'}]
+        });
+    }
+
     useEffect(() => {
         getServiceInfo();
     }, []);
@@ -45,7 +52,7 @@ export default ({route}) => {
         <Container>
             <Scroller>
                 <HeaderArea>
-                    <BackButton onPress={() => navigation.goBack()}>
+                    <BackButton onPress={handleBackClick}>
                         <BackIcon width="40" height="40" fill="#1C263F" />
                     </BackButton>
                     <HeaderTitle>HAPPY PET</HeaderTitle>
@@ -54,17 +61,17 @@ export default ({route}) => {
                 <Background source={require('../../images/fundo.png')} resizeMode="cover" />
 
                 <PageBody>
-                    <UserInfoArea onPress={handleClick}>
+                    <UserInfoArea>
                         {list.genero == "Masculino" ?
                             <Avatar source={require('../../images/avatar.jpg')} />
                         : <Avatar source={require('../../images/avatarMulher.jpg')} />
                         }
-                        <UserInfo>
+                        <UserInfo onPress={handleClick}>
                             <UserInfoName>{list.nome}</UserInfoName>
                             <UserInfoState>{list.cidade}, {list.estado}</UserInfoState>
                             <Stars stars={list.avaliacao} size={20} />
                         </UserInfo>
-                        <UserButton>
+                        <UserButton onPress={()=> { Linking.openURL(list.telefone) }}>
                             <ChatIcon width="20" height="20" fill="#00B1E1" />
                         </UserButton>
 

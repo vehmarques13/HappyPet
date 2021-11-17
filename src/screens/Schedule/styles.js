@@ -35,7 +35,7 @@ export const LoadingIcon = styled.ActivityIndicator`
 `;
 
 export const ListArea = styled.View`
-    margin-top: 20px;
+    margin-top: 8px;
     width: 100%;
     justify-content: space-between;
     flex-direction: row;
@@ -44,13 +44,20 @@ export const ListArea = styled.View`
 
 export const OrganizationArea = styled.View`
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: space-between;
 `;
 
 export const ButtonArea = styled.TouchableOpacity``;
 
-export const ServiceArea = styled.View`
+export const ScheduleArea = styled.View`
     padding-top: 25px;
+`;
+
+export const ScheduleTitle = styled.Text`
+    font-weight: bold;
+    font-size: 18px;
+    color: #1C263F;
+    margin-bottom: 6px;
 `;
 
 

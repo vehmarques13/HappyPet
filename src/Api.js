@@ -124,7 +124,7 @@ export default {
     return json;
   },
   postServices: async (email, tipoServico, descricao, precoMedio, imagens, filtro) => {
-    var json = {
+    let json = {
       email: email,
       tipoServico: tipoServico,
       descricao: descricao,
@@ -154,7 +154,7 @@ export default {
     const json = req.data;
     return json;
   },
-  putUser: async (email, tipoUsuario, imagem, nome, nascimento, endereco, telefone, genero, estado, cidade, information) => {
+  putUser: async (email, tipoUsuario, imagem, nome, nascimento, endereco, telefone, genero, estado, cidade) => {
     return axios.put('http://192.168.0.23:59555/api/Usuario', {
       email: email,
       tipoUsuario: tipoUsuario,
@@ -165,8 +165,7 @@ export default {
       telefone: telefone,
       genero: genero,
       estado: estado,
-      cidade: cidade,
-      information: information
+      cidade: cidade
     })
   },
   postUserInformation: async (email, information) => {
@@ -186,5 +185,25 @@ export default {
     const req = await api.get(`Servico${rota}`);
     const json = req.data;
     return json;
-  }
+  },
+
+  getFavorites: async (route) => {
+    const req = await api.get(`Servico${route}`);
+    const json = req.data;
+    return json;
+  },
+  Favorites: async (emailLogado, id, email, status) => {
+    let json = {
+      email: emailLogado, 
+      favorito: {
+          id: id,
+          email: email
+      }
+    };
+
+    if (status)
+      return axios.delete(`http://192.168.0.23:59555/api/Usuario/information/tutor/${emailLogado}/${id}/${email}`)
+    else 
+      return axios.post('http://192.168.0.23:59555/api/Usuario/information/tutor', json)
+  },
 };

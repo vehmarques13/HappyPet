@@ -26,29 +26,8 @@ export const HeaderTitle = styled.Text`
 `;
 
 export const PageBody = styled.View`
-    padding: 0 20px;
+    padding: 0 15px;
     justify-content: center;
-`;
-
-export const SearchArea = styled.View`
-    background-color: #FFFFFF;
-    height: 45px;
-    border-radius: 20px;
-    flex-direction: row;
-    align-items: center;
-    padding: 0 12px;
-    margin-top: 25px;
-    border: 1px solid rgba(230, 230, 230, 1);
-`;
-
-export const SearchInput = styled.TextInput`
-    flex: 1;
-    font-size: 15px;
-`;
-
-export const SearchButton = styled.TouchableOpacity`
-    width: 24px;
-    height: 24px;
 `;
 
 export const LoadingIcon = styled.ActivityIndicator`
@@ -64,3 +43,20 @@ export const BackButton = styled.TouchableOpacity`
     left: 0;
     z-index: 9;
 `;
+
+export const FilterFull = styled.TouchableOpacity`
+    margin-top: 15px;
+    width: 45px;
+    height: 45px;
+    border-radius: 15px; 
+    background-color: white;
+    border: 1px solid rgba(230, 230, 230, 1);
+    justify-content: center;
+    align-items: center;
+    margin-right: 8px;
+`;
+
+export const OrganizationFilter = styled.View`
+    flex-direction: row;
+`;
+

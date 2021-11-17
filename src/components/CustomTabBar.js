@@ -39,7 +39,9 @@ export default ({ state, navigation }) => {
         setUserInfo(tipoUsuario);
     }
 
-    tipoUsuario();
+    useEffect(() => {
+        tipoUsuario();
+    }, []);
 
     return (
         <TabArea>

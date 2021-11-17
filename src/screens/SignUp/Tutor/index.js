@@ -15,15 +15,15 @@ export default () => {
     const [passwordField, setPasswordField] = useState('');
     const [birthField, setBirthField] = useState('');
     const [addressField, setAddressField] = useState('');
-    const [stateField, setStateField] = useState('');
-    const [cityField, setCityField] = useState('');
+    const [stateField, setStateField] = useState('São Paulo');
+    const [cityField, setCityField] = useState('Santos');
     const [cellphoneField, setCellphoneField] = useState('');
     const [imageField, setImageField] = useState('');
     const [isSelectedSexo, setSelectedSexo] = useState('Feminino');
     const [informationField, setInformationField] = useState(null);
 
     const handleSignClick = async () => {
-        if (emailField != '' && passwordField != '' && nameField != '' && birthField != '', addressField != '' && stateField != '' && cityField != '' && cellphoneField != '') { 
+        if (emailField != '' && passwordField != '' && nameField != '' && birthField != '', addressField != '' && cellphoneField != '') { 
             let res = await Api.signUp(emailField, 1, imageField, nameField, passwordField, birthField, addressField, cellphoneField, isSelectedSexo, stateField, cityField, informationField);
 
             if (res.data != null) {
@@ -120,18 +120,32 @@ export default () => {
                         />
 
                         <InputText>Estado</InputText>
-                        <SignInput
-                            value={stateField}
-                            onChangeText={o => setStateField(o)}
-                        />
+                        <Picker
+                            selectedValue={isSelectedSexo}
+                            style={{ height: 30, width: '100%', marginTop: 8 }}
+                            onValueChange={(itemValue, itemIndex) => setStateField(itemValue)}
+                        >
+                            <Picker.Item label="São Paulo" value="São Paulo" />
+                        </Picker>
 
                         <InputText>Cidade</InputText>
-                        <SignInput
-                            value={cityField}
-                            onChangeText={o => setCityField(o)}
-                        />
+                        <Picker
+                            selectedValue={isSelectedSexo}
+                            style={{ height: 30, width: '100%', marginTop: 8 }}
+                            onValueChange={(itemValue, itemIndex) => setCityField(itemValue)}
+                        >
+                            <Picker.Item label="Santos" value="Santos" />
+                            <Picker.Item label="São Vicente" value="São Vicente" />
+                            <Picker.Item label="Guarujá" value="Guarujá" />
+                            <Picker.Item label="Praia Grande" value="Praia Grande" />
+                            <Picker.Item label="Peruíbe" value="Peruíbe" />
+                            <Picker.Item label="Mongaguá" value="Mongaguá" />
+                            <Picker.Item label="Itanhaêm" value="Itanhaêm" />
+                            <Picker.Item label="Bertioga" value="Bertioga" />
+                            <Picker.Item label="Cubatão" value="Cubatão" />
+                        </Picker>
 
-                        <InputText>Telefone</InputText>
+                        <InputText>Contato</InputText>
                         <SignInput
                             value={cellphoneField}
                             onChangeText={o => setCellphoneField(o)}

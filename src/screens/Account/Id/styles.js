@@ -42,6 +42,8 @@ export const Avatar = styled.Image`
     width: 112px;
     height: 135px;
     margin: 0 15px 0 0;
+    border-radius: 8px;
+    border: 1px solid rgba(230, 230, 230, 0.6);
 `;
 
 export const UserInfo = styled.View`

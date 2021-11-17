@@ -1,20 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
 import Stars from '../components/Stars';
 import Animals from '../components/Animals';
-import Favorites from '../components/Favorites';
 
 import Api from '../Api';
 
 import DeleteIcon from '../images/delete.svg';
+import FavoritesFull from '../images/favorite_full.svg';
+import FavoritesEmpty from '../images/favorite.svg';
 
 const Area = styled.TouchableOpacity`
     background-color: #FFFFFF;
     border-radius: 12px;
-    padding: 10px;
     flex-direction: row;
     padding: 10px 10px 0 10px;
     border: 1px solid rgba(230, 230, 230, 0.8);
@@ -60,6 +60,10 @@ const AnimalsArea = styled.View`
     flex-direction: row;
 `;
 
+const FavoriteArea = styled.View``;
+
+const FavoriteView = styled.View``;
+
 const ButtonArea = styled.TouchableOpacity``;
 
 export default ({data, funcRefresh = null}) => {
@@ -67,6 +71,7 @@ export default ({data, funcRefresh = null}) => {
     const navigation = useNavigation();
     let id = data.id;
     let email = data.email;
+    const [userInfo, setUserInfo] = useState('');
 
     const handleClick = () => {
         navigation.navigate('Service', { id: id, email: email });
@@ -93,6 +98,7 @@ export default ({data, funcRefresh = null}) => {
 
     useEffect(() => {
         tipoServico();
+        tipoUsuario();
     }, []);
 
     const deleteService = async (id) => {
@@ -102,14 +108,36 @@ export default ({data, funcRefresh = null}) => {
         await funcRefresh();
     }
 
+    const IconFavorites = async (id, email, status) => {
+        let emailLogado = await AsyncStorage.getItem('email');
+
+        let res = await Api.Favorites(emailLogado, id, email, status);
+        await funcRefresh();
+    }
+
+    const tipoUsuario = async () => {
+        let tipoUsuario = await AsyncStorage.getItem('tipoUsuario');
+        setUserInfo(tipoUsuario);
+    }
+
     return (
         <Area onPress={handleClick}>
-            <Avatar source={require('../images/avatar.jpg')}/>
+            {data.genero == "Masculino" ?
+                <Avatar source={require('../images/avatar.jpg')} />
+            : <Avatar source={require('../images/avatarMulher.jpg')} />
+            }
             <InfoArea>    
                 <OrganizationArea>
                     <UserName>{data.nome}</UserName>
-                    {data.tipoUsuario == 1 ?
-                        <Favorites favorites={1} />
+                    {userInfo == 1 ?
+                        <ButtonArea onPress={() => IconFavorites(data.id, data.email, data.isFavorito)}>
+                            <FavoriteArea>
+                                <FavoriteView>
+                                    {data.isFavorito == false && <FavoritesEmpty width="23" height="23" fill="#A8D4FF" />}
+                                    {data.isFavorito == true && <FavoritesFull width="23" height="23" fill="#A8D4FF" />}
+                                </FavoriteView>
+                            </FavoriteArea>
+                        </ButtonArea>
                     :   <ButtonArea onPress={() => deleteService(data.id)}>
                             <DeleteIcon style={{ marginRight: 5 }} width="15" height="15" fill="#00B1E1"/>
                         </ButtonArea>

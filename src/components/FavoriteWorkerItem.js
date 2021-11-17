@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
+
+import Api from '../Api';
 
 import Stars from '../components/Stars';
-import Favorites from '../components/Favorites';
+import Animals from '../components/Animals';
 
-import { useNavigation } from '@react-navigation/native';
+import FavoritesFull from '../images/favorite_full.svg';
+import FavoritesEmpty from '../images/favorite.svg';
 
 const Area = styled.TouchableOpacity`
     background-color: #FFFFFF;
@@ -51,33 +56,81 @@ const UserServices = styled.Text`
     color: #929292;
 `;
 
-export default ({data}) => {
+const AnimalsArea = styled.View`
+    flex-direction: row;
+`;
+
+const FavoriteArea = styled.View``;
+
+const FavoriteView = styled.View``;
+
+const ButtonArea = styled.TouchableOpacity``;
+
+export default ({data, funcRefresh = null}) => {
     
     const navigation = useNavigation();
 
     const handleClick = () => {
         navigation.navigate('AccountId');
-        // navigation.navigate('Service', {
-        //     id: data.id,
-        //     avatar: data.avatar,
-        //     name: data.name,
-        //     stars: data.stars
-        // }); 
     }
+
+    const tipoServico = () => {
+        switch(data.tipoServico) {
+            case 0:
+                return "Veterinário";
+            case 1:
+                return "Banho e Tosa";
+            case 2:
+                return "Passeio";
+            case 3:
+                return "Adestramento";
+            case 3:
+                return "Pet Sitter";
+            case 3:
+                return "Hospedagem";
+            default:
+                return "Serviço indefinido!";
+        }
+    }
+
+    const IconFavorites = async (id, email, status) => {
+        let emailLogado = await AsyncStorage.getItem('email');
+
+        let res = await Api.Favorites(emailLogado, id, email, status);
+        await funcRefresh();
+    }
+
+    useEffect(() => {
+        tipoServico();
+    }, []);
 
     return (
         <Area onPress={handleClick}>
-            {/* <Avatar source={{uri: data.avatar}} /> */}
-            <Avatar source={require('../images/avatar.jpg')}/>
+            {data.genero == "Masculino" ?
+                <Avatar source={require('../images/avatar.jpg')} />
+            : <Avatar source={require('../images/avatarMulher.jpg')} />
+            }
             <InfoArea>    
                 <OrganizationArea>
                     <UserName>{data.nome}</UserName>
-                    <Favorites favorites={1} />
+                    <ButtonArea onPress={() => IconFavorites(data.id, data.email, data.isFavorito)}>
+                        <FavoriteArea>
+                            <FavoriteView>
+                                {data.isFavorito == false && <FavoritesEmpty width="23" height="23" fill="#A8D4FF" />}
+                                {data.isFavorito == true && <FavoritesFull width="23" height="23" fill="#A8D4FF" />}
+                            </FavoriteView>
+                        </FavoriteArea>
+                    </ButtonArea>
                 </OrganizationArea>
                 <UserState>{data.cidade}, {data.estado}</UserState>
-                <UserServices>{data.email}</UserServices>
+                <UserServices>{tipoServico()}</UserServices>
                 <OrganizationArea style={{paddingBottom: 8}}>
                     <Stars stars={data.avaliacao} size={20} />
+                    <AnimalsArea>
+                        {data.filtro.tiposPet.map((item, k) => (
+                            <Animals key={k} animals={item} size={20} />
+                        ))}
+                    </AnimalsArea>
                 </OrganizationArea>
             </InfoArea>
         </Area>

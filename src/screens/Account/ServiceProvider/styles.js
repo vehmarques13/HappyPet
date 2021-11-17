@@ -42,6 +42,8 @@ export const Avatar = styled.Image`
     width: 112px;
     height: 135px;
     margin: 0 15px 0 0;
+    border-radius: 8px;
+    border: 1px solid rgba(230, 230, 230, 0.6);
 `;
 
 export const UserInfo = styled.View`
@@ -81,7 +83,9 @@ export const UserButton = styled.TouchableOpacity`
 
 export const Button = styled.TouchableOpacity``;
 
-export const ServiceArea = styled.View``;
+export const ServiceArea = styled.View`
+    margin: 10px 0;
+`;
 
 export const ServiceTitle = styled.Text`
     font-weight: bold;
@@ -93,7 +97,6 @@ export const ServiceTitle = styled.Text`
 export const OrganizationArea = styled.View`
     flex-direction: row;
     justify-content: space-between;
-    margin-top: 25px;
 `;
 
 export const LoadingIcon = styled.ActivityIndicator`

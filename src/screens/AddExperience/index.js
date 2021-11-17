@@ -38,8 +38,6 @@ export default () => {
             let email = await AsyncStorage.getItem('email');
             let res = await Api.postUserInformation(email, json);
 
-            console.log(res);
-
             if (res.data != null) {
                 alert("Experiência cadastrada com sucesso!");
 
@@ -58,6 +56,12 @@ export default () => {
         setRefreshing(true); 
     }
 
+    const handleBackClick = () => {
+        navigation.reset({
+            routes:[{name: 'MainTab'}]
+        });
+    }
+
     return (
         <Container>
             <ImageBackground 
@@ -69,7 +73,7 @@ export default () => {
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }>
                 <HeaderArea>
-                    <BackButton onPress={() => navigation.goBack()}>
+                    <BackButton onPress={handleBackClick}>
                         <BackIcon width="40" height="40" fill="#1C263F" />
                     </BackButton>
                     <HeaderTitle>HAPPY PET</HeaderTitle>
@@ -109,7 +113,7 @@ export default () => {
                             />
 
                             <ButtonArea>
-                                <CustomButtonNo onPress={() => navigation.goBack()}>
+                                <CustomButtonNo onPress={handleBackClick}>
                                     <CustomButtonTextNo>Cancelar</CustomButtonTextNo>
                                 </CustomButtonNo>
                                 <CustomButton onPress={handleSignClick}>

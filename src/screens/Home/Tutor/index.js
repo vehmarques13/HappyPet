@@ -18,6 +18,8 @@ export default () => {
     const navigation = useNavigation();
 
     const getPets = async () => {
+        await AsyncStorage.removeItem('tipoAnimal');
+        
         setLoading(true);
         setListPets([]);
 

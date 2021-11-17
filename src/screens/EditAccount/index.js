@@ -1,31 +1,44 @@
 import React, { useState } from 'react';
 import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, Box, Title, Form, InputText, ButtonArea, CustomButton, CustomButtonText, CustomButtonNo, CustomButtonTextNo, BackButton } from './styles';
-import { RefreshControl, ImageBackground, FlatList } from 'react-native';
+import { RefreshControl, ImageBackground, Picker } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import DatePicker from 'react-native-datepicker';
 
 import BackIcon from '../../images/back.svg';
 
 import SignInput from '../../components/SignInput';
 import Api from '../../Api';
-import ButtonImage from '../../components/ButtonImage';
 
-export default () => {
+export default ({route}) => {
 
     const navigation = useNavigation();
 
-    const [nameField, setNameField] = useState('');
-    const [emailField, setEmailField] = useState('');
-    const [passwordField, setPasswordField] = useState('');
-    const [birthField, setBirthField] = useState('');
-    const [addressField, setAddressField] = useState('');
-    const [stateField, setStateField] = useState('');
-    const [cityField, setCityField] = useState('');
-    const [cellphoneField, setCellphoneField] = useState('');
+    let userInfo = route.params?.userInfo;
+
+    const [nameField, setNameField] = useState(userInfo.nome);
+    const [birthField, setBirthField] = useState(userInfo.nascimento);
+    const [addressField, setAddressField] = useState(userInfo.endereco);
+    const [stateField, setStateField] = useState('São Paulo');
+    const [cityField, setCityField] = useState(userInfo.cidade);
+    const [cellphoneField, setCellphoneField] = useState(userInfo.telefone);
+    const [isSelectedSexo, setSelectedSexo] = useState(userInfo.genero);
     const [refreshing, setRefreshing] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [list, setList] = useState([]);
 
     const handleSignClick = async () => {
-        if (nameField != '' && descriptionField != '') {
-            let json = await Api.signIn(nameField, descriptionField);
+        if (nameField != '' && addressField != '' && cellphoneField != '') {
+            let json = await Api.putUser(userInfo.email, userInfo.tipoUsuario, " ", nameField, birthField, addressField, cellphoneField, isSelectedSexo, stateField, cityField);
+
+            if (json.status != 200) {
+                alert("Conta editada com sucesso!");
+
+                navigation.reset({
+                    routes:[{name: 'MainTab'}]
+                });
+            } else {
+                alert('Algo deu errado!');
+            }
         } else {
             alert('Preencha os campos corretamente!');
         }
@@ -33,6 +46,12 @@ export default () => {
 
     const onRefresh = () => {
         setRefreshing(true); 
+    }
+
+    const handleBackClick = () => {
+        navigation.reset({
+            routes:[{name: 'MainTab'}]
+        });
     }
 
     return (
@@ -46,7 +65,7 @@ export default () => {
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }>
                 <HeaderArea>
-                    <BackButton onPress={handleGoBackClick}>
+                    <BackButton onPress={handleBackClick}>
                         <BackIcon width="40" height="40" fill="#1C263F" />
                     </BackButton>
                     <HeaderTitle>HAPPY PET</HeaderTitle>
@@ -63,26 +82,27 @@ export default () => {
                                 onChangeText={o => setNameField(o)}
                             />
 
-                            <InputText>Email</InputText>
-                            <SignInput
-                                value={emailField}
-                                onChangeText={o => setEmailField(o)}
-                                keyboardType={'email-address'}
-                            />
-
-                            <InputText>Senha</InputText>
-                            <SignInput
-                                value={passwordField}
-                                onChangeText={o => setPasswordField(o)}
-                                password={true}
-                            />
-
                             <InputText>Data de nascimento</InputText>
-                            <SignInput
-                                value={birthField}
-                                onChangeText={o => setBirthField(o)}
-                                password={true}
-                                keyboardType={'numeric'}
+                            <DatePicker
+                                style={{width: 200}}
+                                date={birthField}
+                                mode="date"
+                                placeholder="Selecione uma data"
+                                format="YYYY-MM-DD"
+                                confirmBtnText="Confirm"
+                                cancelBtnText="Cancel"
+                                customStyles={{
+                                    dateIcon: {
+                                        position: 'absolute',
+                                        right: 0,
+                                        top: 4,
+                                        marginRight: 0
+                                    },
+                                    dateInput: {
+                                        marginRight: 36
+                                    }
+                                }}
+                                onDateChange={(date) => {setBirthField(date)}}
                             />
 
                             <InputText>Endereço</InputText>
@@ -92,18 +112,32 @@ export default () => {
                             />
 
                             <InputText>Estado</InputText>
-                            <SignInput
-                                value={stateField}
-                                onChangeText={o => setStateField(o)}
-                            />
+                            <Picker
+                                selectedValue={isSelectedSexo}
+                                style={{ height: 30, width: '100%', marginTop: 8 }}
+                                onValueChange={(itemValue, itemIndex) => setStateField(itemValue)}
+                            >
+                                <Picker.Item label="São Paulo" value="São Paulo" />
+                            </Picker>
 
                             <InputText>Cidade</InputText>
-                            <SignInput
-                                value={cityField}
-                                onChangeText={o => setCityField(o)}
-                            />
+                            <Picker
+                                selectedValue={isSelectedSexo}
+                                style={{ height: 30, width: '100%', marginTop: 8 }}
+                                onValueChange={(itemValue, itemIndex) => setCityField(itemValue)}
+                            >
+                                <Picker.Item label="Santos" value="Santos" />
+                                <Picker.Item label="São Vicente" value="São Vicente" />
+                                <Picker.Item label="Guarujá" value="Guarujá" />
+                                <Picker.Item label="Praia Grande" value="Praia Grande" />
+                                <Picker.Item label="Peruíbe" value="Peruíbe" />
+                                <Picker.Item label="Mongaguá" value="Mongaguá" />
+                                <Picker.Item label="Itanhaêm" value="Itanhaêm" />
+                                <Picker.Item label="Bertioga" value="Bertioga" />
+                                <Picker.Item label="Cubatão" value="Cubatão" />
+                            </Picker>
 
-                            <InputText>Telefone</InputText>
+                            <InputText>Contato</InputText>
                             <SignInput
                                 value={cellphoneField}
                                 onChangeText={o => setCellphoneField(o)}
@@ -111,7 +145,7 @@ export default () => {
                             />
 
                             <ButtonArea>
-                                <CustomButtonNo onPress={() => navigation.goBack()}>
+                                <CustomButtonNo onPress={handleBackClick}>
                                     <CustomButtonTextNo>Cancelar</CustomButtonTextNo>
                                 </CustomButtonNo>
                                 <CustomButton onPress={handleSignClick}>

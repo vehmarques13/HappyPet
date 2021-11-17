@@ -34,6 +34,8 @@ export default () => {
     }
 
     const getServicesType = async () => {
+        await AsyncStorage.removeItem('tipoAnimal');
+        
         setLoading(true);
         setListServices([]);
 

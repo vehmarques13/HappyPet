@@ -42,6 +42,8 @@ export const Avatar = styled.Image`
     width: 112px;
     height: 135px;
     margin: 0 15px 0 8px;
+    border-radius: 8px;
+    border: 1px solid rgba(230, 230, 230, 0.6);
 `;
 
 export const UserInfo = styled.View`
@@ -69,12 +71,14 @@ export const UserInfoBirth = styled.Text`
 `;
 
 export const UserButton = styled.TouchableOpacity`
-    width: 30px;
-    height: 30px;
+    width: 38px;
+    height: 38px;
+    background-color: white;
     border-radius: 20px;
+    border: 1px solid rgba(230, 230, 230, 1);
     justify-content: center;
     align-items: center;
-    margin: 25px 2px 0 2px;
+    margin: 20px 0 0 2px;
 `;
 
 export const PetArea = styled.View`

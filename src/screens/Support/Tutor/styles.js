@@ -16,9 +16,10 @@ export const Name = styled.Text`
 export const Box = styled.View`
     background-color: #ffffff;
     width: 80%;
-    border-radius: 20px;
+    border-radius: 15px;
     align-items: center;
-    padding: 15px 21px;
+    padding: 8px 21px;
+    border: 1px solid rgba(230, 230, 230, 1);
 `;
 
 export const Title = styled.Text`

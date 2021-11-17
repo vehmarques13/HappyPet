@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ImageBackground, FlatList } from 'react-native';
+import { ImageBackground, FlatList, Linking } from 'react-native';
 import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, Line, UserInfoArea, UserInfo, Avatar, UserInfoName, UserInfoState, UserInfoBirth, UserButton, LoadingIcon, ServiceArea, ServiceTitle, OrganizationArea, BackButton, PetArea, PetTitle } from './styles';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Api from '../../../Api';
@@ -42,6 +42,10 @@ export default ({route}) => {
         setLoading(false);
     }
 
+    const handleBackClick = () => {
+        navigation.navigate('Service', { id: list.id, email: list.email });
+    }
+
     useEffect(() => {
         getUserInfo();
         getInfo();
@@ -53,14 +57,14 @@ export default ({route}) => {
         <Container>
             <Scroller>
                 <HeaderArea>
-                    <BackButton onPress={() => navigation.goBack()}>
+                    <BackButton onPress={handleBackClick}>
                         <BackIcon width="40" height="40" fill="#1C263F" />
                     </BackButton>
                     <HeaderTitle>HAPPY PET</HeaderTitle>
                 </HeaderArea>
 
                 <ImageBackground
-                    source={require('../../../images/fundo.png')}
+                    source={require('../../../images/fundo4.png')}
                     resizeMode="cover"
                     style={{ width: '100%', height: 150, justifyContent: 'center', alignItems: 'center' }}
                 />
@@ -74,7 +78,7 @@ export default ({route}) => {
                             <UserInfoBirth>{date.getUTCDate()}/{date.getMonth() + 1}/{date.getUTCFullYear()}</UserInfoBirth>
                             <Stars stars={list.avaliacao} size={20} />
                         </UserInfo>
-                        <UserButton>
+                        <UserButton onPress={()=> { Linking.openURL(list.telefone) }}>
                             <ChatIcon width="20" height="20" fill="#00B1E1" />
                         </UserButton>
                     </UserInfoArea>

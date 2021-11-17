@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, LoadingIcon, ListArea, OrganizationArea, ButtonArea, ServiceArea } from './styles';
+import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, LoadingIcon, ListArea, OrganizationArea, ButtonArea, ScheduleArea, ScheduleTitle } from './styles';
 import { RefreshControl, FlatList, Text } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -56,36 +56,37 @@ export default () => {
                 </HeaderArea>
 
                 <PageBody>
-                    <ServiceArea>
+                    <ScheduleArea>
                         <OrganizationArea>
+                            <ScheduleTitle>Agenda</ScheduleTitle>
                             <ButtonArea onPress={handleClick}>
                                 <AddIcon width="28" height="28" fill="#00B1E1" />
                             </ButtonArea>
                         </OrganizationArea>
-                    </ServiceArea>
 
-                    {loading &&
-                        <LoadingIcon 
-                            size='large'
-                            color='#20283D'
-                        />
-                    }
+                        {loading &&
+                            <LoadingIcon 
+                                size='large'
+                                color='#20283D'
+                            />
+                        }
 
-                    <ListArea>
-                    {list.length != 0 ? 
-                        <FlatList 
-                            horizontal
-                            pagingEnabled={true}
-                            showsHorizontalScrollIndicator={false}
-                            legacyImplementation={false}
-                            data={list}
-                            keyExtractor={(item) => item.id}
-                            renderItem={ ({item}) => <ScheduleItem data={item} funcRefresh={getSchedule}/>}
-                        />
-                    :
-                        <Text>Não há serviços agendados para você.</Text>
-                    }
-                    </ListArea>
+                        <ListArea>
+                            {list.length != 0 ? 
+                                <FlatList 
+                                    horizontal
+                                    pagingEnabled={true}
+                                    showsHorizontalScrollIndicator={false}
+                                    legacyImplementation={false}
+                                    data={list}
+                                    keyExtractor={(item) => item.id}
+                                    renderItem={ ({item}) => <ScheduleItem data={item} funcRefresh={getSchedule}/>}
+                                />
+                            :
+                                <Text>Não há serviços agendados para você.</Text>
+                            }
+                        </ListArea>
+                    </ScheduleArea>
                 </PageBody>
             </Scroller>
         </Container>

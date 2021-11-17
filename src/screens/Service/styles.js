@@ -63,7 +63,7 @@ export const PageBody = styled.View`
     margin-top: -50px;
 `;
 
-export const UserInfoArea = styled.TouchableOpacity`
+export const UserInfoArea = styled.View`
     flex-direction: row;
     margin-top: -40px;
     padding: 0 10px;
@@ -73,9 +73,11 @@ export const Avatar = styled.Image`
     width: 112px;
     height: 135px;
     margin: 0 15px 0 8px;
+    border-radius: 8px;
+    border: 1px solid rgba(230, 230, 230, 0.6);
 `;
 
-export const UserInfo = styled.View`
+export const UserInfo = styled.TouchableOpacity`
     flex: 1;
     justify-content: flex-end;
 `;

@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { ImageBackground, Text, FlatList } from 'react-native';
-import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, UserInfoArea, UserInfo, Avatar, UserInfoName, UserInfoState, UserInfoBirth, UserButton, LoadingIcon, ServiceArea, ServiceTitle, OrganizationArea, Button } from './styles';
+import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, UserInfoArea, UserInfo, Avatar, UserInfoName, UserInfoState, UserInfoBirth, UserButton, LoadingIcon, Line, ServiceArea, ServiceTitle, OrganizationArea, Button } from './styles';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Api from '../../../Api';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import ExperienceItem from '../../../components/ExperienceItem';
+import Rating from '../../../components/Rating';
 import Stars from '../../../components/Stars';
 
-import ChatIcon from '../../../images/chat.svg';
+import EditIcon from '../../../images/edit.svg';
 import AddIcon from '../../../images/add2.svg';
 
 export default () => {
@@ -60,6 +61,10 @@ export default () => {
         });
     }
 
+    const handleEditClick = () => {
+        navigation.navigate('EditAccount', { userInfo: userInfo });
+    }
+
     let date = new Date(userInfo.nascimento);
 
     return (
@@ -70,7 +75,7 @@ export default () => {
                 </HeaderArea>
 
                 <ImageBackground 
-                    source={require('../../../images/fundo.png')} 
+                    source={require('../../../images/fundo4.png')} 
                     resizeMode="cover" 
                     style={{ width: '100%', height: 150, justifyContent: 'center', alignItems: 'center' }} 
                 />
@@ -87,12 +92,12 @@ export default () => {
                             <UserInfoBirth>{date.getUTCDate()}/{date.getMonth() + 1}/{date.getUTCFullYear()}</UserInfoBirth>
                             <Stars stars={userInfo.mediaAvaliacao} size={20} />
                         </UserInfo>
-                        <UserButton>
-                            <ChatIcon width="20" height="20" fill="#00B1E1" />
+                        <UserButton onPress={handleEditClick}>
+                            <EditIcon width="30" height="30" fill="#00B1E1" />
                         </UserButton>
                     </UserInfoArea>
 
-                    <ServiceArea>
+                    <ServiceArea style={{marginTop: 25}}>
                         <OrganizationArea>
                             <ServiceTitle>Experiências</ServiceTitle>
                             <Button onPress={handleAddClick} >
@@ -110,6 +115,27 @@ export default () => {
                                 renderItem={ ({item}) => <ExperienceItem data={item}/>}
                             /> 
                         : <Text>Não há experiências cadastradas.</Text>
+                        }
+                    </ServiceArea>
+
+                    <Line />
+
+                    <ServiceArea>
+                        <OrganizationArea>
+                            <ServiceTitle>Avaliações</ServiceTitle>
+                        </OrganizationArea>
+                        {userInfo.length != 0 ? 
+                            <FlatList 
+                                style={{marginTop: 2}}
+                                pagingEnabled={true}
+                                horizontal
+                                showsHorizontalScrollIndicator={false}
+                                legacyImplementation={false}
+                                data={userInfo.avaliacoes}
+                                keyExtractor={(item) => item.id}
+                                renderItem={ ({item}) => <Rating data={item}/>}
+                            /> 
+                        : <Text>Não há avaliações cadastradas.</Text>
                         }
                     </ServiceArea>
 

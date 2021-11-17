@@ -37,12 +37,10 @@ export default () => {
                 "curativo": isSelectedCurativo
             };
 
-            console.log(json);
-
             let email = await AsyncStorage.getItem('email');
             let res = await Api.postServices(email, parseInt(isSelectedTipoServico), descriptionField, parseFloat(priceField), {}, json);
 
-            if (res.data != null) {
+            if (res.status != 200) {
                 alert("Serviço cadastrado com sucesso!");
 
                 navigation.reset({
@@ -84,6 +82,12 @@ export default () => {
         setRefreshing(true); 
     }
 
+    const handleBackClick = () => {
+        navigation.reset({
+            routes:[{name: 'MainTab'}]
+        });
+    }
+
     return (
         <Container>
             <ImageBackground 
@@ -95,7 +99,7 @@ export default () => {
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }>
                 <HeaderArea>
-                    <BackButton onPress={() => navigation.goBack()}>
+                    <BackButton onPress={handleBackClick}>
                         <BackIcon width="40" height="40" fill="#1C263F" />
                     </BackButton>
                     <HeaderTitle>HAPPY PET</HeaderTitle>
@@ -217,7 +221,7 @@ export default () => {
                             </ImageArea> */}
 
                             <ButtonArea>
-                                <CustomButtonNo onPress={() => navigation.goBack()}>
+                                <CustomButtonNo onPress={handleBackClick}>
                                     <CustomButtonTextNo>Cancelar</CustomButtonTextNo>
                                 </CustomButtonNo>
                                 <CustomButton onPress={handleSignClick}>

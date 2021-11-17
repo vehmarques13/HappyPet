@@ -40,6 +40,12 @@ export default () => {
         }
     }
 
+    const handleBackClick = async () => {
+        navigation.reset({
+            routes:[{name: 'MainTab'}]
+        });
+    }
+
     const onRefresh = () => {
         setRefreshing(true); 
     }
@@ -55,7 +61,7 @@ export default () => {
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }>
                 <HeaderArea>
-                    <BackButton onPress={() => navigation.goBack()}>
+                    <BackButton onPress={handleBackClick}>
                         <BackIcon width="40" height="40" fill="#1C263F" />
                     </BackButton>
                     <HeaderTitle>HAPPY PET</HeaderTitle>
@@ -118,7 +124,7 @@ export default () => {
                             </Picker>
 
                             <ButtonArea>
-                                <CustomButtonNo onPress={() => navigation.goBack()}>
+                                <CustomButtonNo onPress={handleBackClick}>
                                     <CustomButtonTextNo>Cancelar</CustomButtonTextNo>
                                 </CustomButtonNo>
                                 <CustomButton onPress={handleSignClick}>

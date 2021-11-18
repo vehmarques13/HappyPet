@@ -63,14 +63,6 @@ export default () => {
                 </HeaderArea>
 
                 <PageBody>
-
-                    {loading &&
-                        <LoadingIcon 
-                            size='large'
-                            color='#20283D'
-                        />
-                    }
-
                     <ServiceArea>
                         <OrganizationArea>
                             <PetTitle>Pets</PetTitle>
@@ -78,6 +70,14 @@ export default () => {
                                 <AddIcon width="28" height="28" fill="#00B1E1" />
                             </ButtonArea>
                         </OrganizationArea>
+
+                        {loading &&
+                            <LoadingIcon 
+                                size='large'
+                                color='#20283D'
+                            />
+                        }
+
                         {listPets.length != 0 ? 
                             <FlatList 
                                 style={{marginTop: -8}}

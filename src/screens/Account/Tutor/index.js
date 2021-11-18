@@ -59,7 +59,15 @@ export default () => {
                             <Avatar source={require('../../../images/avatar.jpg')} />
                         : <Avatar source={require('../../../images/avatarMulher.jpg')} />
                         }
+
                         <UserInfo>
+                            {loading &&   
+                                <LoadingIcon 
+                                    size='large'
+                                    color='#20283D'
+                                />
+                            }
+
                             <UserInfoName>{userInfo.nome}</UserInfoName>
                             <UserInfoState>{userInfo.cidade}, {userInfo.estado}</UserInfoState>
                             <UserInfoBirth>{date.getUTCDate()}/{date.getMonth() + 1}/{date.getUTCFullYear()}</UserInfoBirth>
@@ -84,14 +92,6 @@ export default () => {
                         />
 
                     </PetArea>
-
-                    {loading &&   
-                        <LoadingIcon 
-                            size='large'
-                            color='#20283D'
-                        />
-                    }
-
                 </PageBody>
             </Scroller>
         </Container>

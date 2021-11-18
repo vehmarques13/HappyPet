@@ -24,6 +24,7 @@ export const Box = styled.View`
     font-family:'Roboto';
     align-items: center;
     margin-bottom: 50px;
+    border: 1px solid rgba(230, 230, 230, 1);
 `;
 
 export const Title = styled.Text`

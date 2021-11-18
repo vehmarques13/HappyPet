@@ -17,7 +17,6 @@ export const OrganizationArea = styled.View`
 `;
 
 export const OrganizationTitle = styled.View`
-    width: 90%;
     flex-direction: row;
     align-items: center;
 `;
@@ -42,13 +41,12 @@ export const SmallBall = styled.View`
 export const ExperienceTitle = styled.Text`
     font-weight: 500;
     font-size: 16px;
-    color: #000000;
+    color: #1C263F;
     margin-left: 8px;
 `;
 
 export const ExperienceDescription = styled.Text`
-    font-weight: 500;
-    font-size: 13px;
+    font-size: 14px;
     color: #858585;
     margin: 3px 0 10px 25px;
 `;
@@ -89,7 +87,6 @@ export default ({data}) => {
                     </BigBall>
                     <ExperienceTitle>{data.titulo}</ExperienceTitle>
                 </OrganizationTitle>
-                <EditIcon width="24" height="24" fill="#00B1E1" />
             </OrganizationArea>
             <ExperienceDescription>{data.descricao}</ExperienceDescription>
             <Swiper

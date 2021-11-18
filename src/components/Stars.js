@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import styled from 'styled-components/native';
 
 import StarFull from '../images/star.svg';
-import StarEmpty from '../images/star_empty.svg';
 
 const StarArea = styled.View`
     flex-direction: row;

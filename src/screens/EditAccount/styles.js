@@ -36,6 +36,7 @@ export const Box = styled.View`
     font-family:'Roboto';
     align-items: center;
     margin: 30px 0;
+    border: 1px solid rgba(230, 230, 230, 1);
 `;
 
 export const Title = styled.Text`

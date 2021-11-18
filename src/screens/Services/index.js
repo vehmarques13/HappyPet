@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import BackIcon from '../../images/back.svg';
-import FilterIcon from '../../images/filter.svg';
 
 import Api from '../../Api';
 import WorkerItem from '../../components/WorkerItem';

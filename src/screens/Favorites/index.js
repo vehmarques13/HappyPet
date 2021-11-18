@@ -18,8 +18,6 @@ export default () => {
     const [refreshing, setRefreshing] = useState(false);
     const [animals, setAnimals] = useState({"animals": [{"id": 0, "value": "Canino"}, {"id": 1, "value": "Felino"}, {"id": 2, "value": "Pássaro"}, {"id": 3, "value": "Roedor"}]});
 
-    const navigation = useNavigation();
-
     const getFavorites = async () => {
         setList([]);
         setLoading(true);
@@ -50,25 +48,23 @@ export default () => {
         setRefreshing(true); 
     }
 
-    const handleGoBackButton = async () => {
-        await AsyncStorage.removeItem('tipoAnimal');
-        getFavorites();
-        navigation.goBack();
-    }
-
     return (
         <Container>
             <Scroller refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }>
                 <HeaderArea>
-                    <BackButton onPress={handleGoBackButton}>
-                        <BackIcon width="40" height="40" fill="#1C263F" />
-                    </BackButton>
                     <HeaderTitle>HAPPY PET</HeaderTitle>
                 </HeaderArea>
 
                 <PageBody>
+                    {loading &&
+                        <LoadingIcon 
+                            size='large'
+                            color='#20283D'
+                        />
+                    }
+
                     <OrganizationFilter>
                         <FlatList
                             horizontal
@@ -80,13 +76,6 @@ export default () => {
                             renderItem={ ({item}) => <Filter data={item} funcRefresh={getFavorites}/>}
                         />
                     </OrganizationFilter>
-
-                    {loading &&
-                        <LoadingIcon 
-                            size='large'
-                            color='#20283D'
-                        />
-                    }
 
                     <ListArea>
                         {list.map((item, k) => (

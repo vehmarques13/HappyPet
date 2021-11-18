@@ -36,6 +36,7 @@ export default () => {
 
     const getInfo = async () => {
         setLoading(true);
+        
         setInfo([]);
 
         let email = await AsyncStorage.getItem('email');
@@ -87,6 +88,13 @@ export default () => {
                         : <Avatar source={require('../../../images/avatarMulher.jpg')} />
                         }
                         <UserInfo>
+                            {loading &&   
+                                <LoadingIcon 
+                                    size='large'
+                                    color='#20283D'
+                                />
+                            }
+                            
                             <UserInfoName>{userInfo.nome}</UserInfoName>
                             <UserInfoState>{userInfo.cidade}, {userInfo.estado}</UserInfoState>
                             <UserInfoBirth>{date.getUTCDate()}/{date.getMonth() + 1}/{date.getUTCFullYear()}</UserInfoBirth>
@@ -138,14 +146,6 @@ export default () => {
                         : <Text>Não há avaliações cadastradas.</Text>
                         }
                     </ServiceArea>
-
-                    {loading &&   
-                        <LoadingIcon 
-                            size='large'
-                            color='#20283D'
-                        />
-                    }
-
                 </PageBody>
             </Scroller>
         </Container>

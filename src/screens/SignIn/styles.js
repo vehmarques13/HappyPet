@@ -19,6 +19,7 @@ export const Box = styled.View`
     border-radius: 20px;
     font-family:'Roboto';
     align-items: center;
+    border: 1px solid rgba(230, 230, 230, 1);
 `;
 
 export const Title = styled.Text`

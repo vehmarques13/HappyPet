@@ -33,7 +33,7 @@ const UserName = styled.Text`
 const Service = styled.Image`
     width: 100px;
     height: 100px;
-    margin: 0 0 6px 0;
+    margin: 0 0 4px 0;
 `;
 
 const Line = styled.View`
@@ -42,18 +42,11 @@ const Line = styled.View`
     margin-bottom: 10px;
 `;
 
-const Data = styled.Text`
-    font-weight: bold;
-    font-size: 20px;
-    color: #00B1E1;
-    margin-bottom: 2px;
-`;
-
 const Time = styled.Text`
     font-weight: bold;
-    font-size: 15px;
-    color: #1C263F;
-    margin-bottom: 6px;
+    font-size: 19px;
+    color: #00B1E1;
+    margin-bottom: 9px;
 `;
 
 const OrganizationTitle = styled.View`
@@ -108,7 +101,6 @@ export default ({data, funcRefresh = null}) => {
                 </OrganizationTitle>
                 <Line/>
                 <Service source={fotoTipoServico()} />
-                <Data>{date.toLocaleDateString('pt-BR').substring(0, date.toLocaleDateString('pt-BR').lastIndexOf('/'))}</Data>
                 <Time>{date.toLocaleTimeString('pt-BR').substring(0, date.toLocaleTimeString('pt-BR').lastIndexOf(':'))}</Time>
             </InfoArea>
         </ScheduleArea>

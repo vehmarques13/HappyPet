@@ -84,16 +84,16 @@ export default () => {
                 </HeaderArea>
 
                 <PageBody>
-
-                    {loading &&
-                        <LoadingIcon 
-                            size='large'
-                            color='#20283D'
-                        />
-                    }
-
                     <ServiceArea>
                         <ServiceTitle>Agenda</ServiceTitle>
+
+                        {loading &&
+                            <LoadingIcon 
+                                size='large'
+                                color='#20283D'
+                            />
+                        }
+                        
                         {listSchedule.length != 0 ? 
                             <FlatList 
                                 style={{marginTop: 10}}

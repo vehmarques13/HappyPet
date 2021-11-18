@@ -43,7 +43,7 @@ export default {
   },
 
   getSchedule: async (email) => {
-    const req = await api.get(`Agenda/proprietario/${email}`);
+    const req = await api.get(`Agenda/proprietario/${email}/formatado`);
     const json = req.data;
     return json;
   },
@@ -113,8 +113,8 @@ export default {
     return axios.delete(`http://192.168.0.23:59555/api/Pet/delete?email=${email}&id=${id}`)
   },
 
-  getServiceById: async (email, id) => {
-    const req = await api.get(`Servico/${email}/${id}`);
+  getServiceById: async (email, id, emailLogado) => {
+    const req = await api.get(`Servico/${email}/${id}?emailLogged=${emailLogado}`);
     const json = req.data;
     return json;
   },

@@ -87,7 +87,7 @@ export default () => {
                     </SignMessageButton>
 
                     <CustomButton onPress={handleSignClick}>
-                        <CustomButtonText>LOGIN</CustomButtonText>
+                        <CustomButtonText>Login</CustomButtonText>
                     </CustomButton>
 
                     {/* <SignMessageError></SignMessageError> */}

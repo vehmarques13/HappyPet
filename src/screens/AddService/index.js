@@ -40,7 +40,7 @@ export default () => {
             let email = await AsyncStorage.getItem('email');
             let res = await Api.postServices(email, parseInt(isSelectedTipoServico), descriptionField, parseFloat(priceField), {}, json);
 
-            if (res.status != 200) {
+            if (res.data != null) {
                 alert("Serviço cadastrado com sucesso!");
 
                 navigation.reset({

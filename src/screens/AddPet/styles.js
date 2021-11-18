@@ -35,6 +35,7 @@ export const Box = styled.View`
     border-radius: 20px;
     align-items: center;
     margin: 30px 0;
+    border: 1px solid rgba(230, 230, 230, 1);
 `;
 
 export const Title = styled.Text`

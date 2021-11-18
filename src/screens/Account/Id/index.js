@@ -21,16 +21,21 @@ export default ({route}) => {
     let email = route.params?.email;
 
     const getUserInfo = async () => {
+        setLoading(true);
+
         setList([]);
         let res = await Api.getUser(email);
 
         if (res != undefined) {
             setList(res);
         }
+
+        setLoading(false);
     }
 
     const getInfo = async () => {
         setLoading(true);
+        
         setInfo([]);
 
         let res = await Api.getInformation(email);
@@ -71,8 +76,18 @@ export default ({route}) => {
 
                 <PageBody>
                     <UserInfoArea>
-                        <Avatar source={require('../../../images/avatar.jpg')} />
+                        {list.genero == "Masculino" ?
+                            <Avatar source={require('../../../images/avatar.jpg')} />
+                        : <Avatar source={require('../../../images/avatarMulher.jpg')} />
+                        }
                         <UserInfo>
+                            {loading &&
+                                <LoadingIcon
+                                    size='large'
+                                    color='#20283D'
+                                />
+                            }
+                            
                             <UserInfoName>{list.nome}</UserInfoName>
                             <UserInfoState>{list.cidade}, {list.estado}</UserInfoState>
                             <UserInfoBirth>{date.getUTCDate()}/{date.getMonth() + 1}/{date.getUTCFullYear()}</UserInfoBirth>
@@ -114,13 +129,6 @@ export default ({route}) => {
                                 renderItem={ ({item}) => <ExperienceItem data={item}/>}
                             />
                         </ServiceArea>
-                    }
-
-                    {loading &&
-                        <LoadingIcon
-                            size='large'
-                            color='#20283D'
-                        />
                     }
 
                 </PageBody>

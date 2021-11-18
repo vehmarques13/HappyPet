@@ -146,3 +146,7 @@ export const BackButton = styled.TouchableOpacity`
 export const AnimalsArea = styled.View`
     flex-direction: row;
 `;
+
+export const FavoriteArea = styled.View``;
+
+export const FavoriteView = styled.View``;

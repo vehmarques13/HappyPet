@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, LoadingIcon, ListArea, OrganizationArea, ButtonArea, ScheduleArea, ScheduleTitle } from './styles';
+import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, LoadingIcon, ListArea, OrganizationArea, ButtonArea, ScheduleArea, ScheduleTitle, Line, FlatArea, DateTitle } from './styles';
 import { RefreshControl, FlatList, Text } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -46,6 +46,13 @@ export default () => {
         });
     }
 
+    const DateTransformer = (dateTransformer) => {
+        let date = new Date(dateTransformer);
+
+        let arrayData = date.toLocaleDateString('pt-BR').substring(0, date.toLocaleDateString('pt-BR').lastIndexOf('/')).split('/');
+        return arrayData[1] + '/' + arrayData[0];
+    }
+
     return (
         <Container>
             <Scroller refreshControl={
@@ -58,35 +65,42 @@ export default () => {
                 <PageBody>
                     <ScheduleArea>
                         <OrganizationArea>
-                            <ScheduleTitle>Agenda</ScheduleTitle>
+                            <ScheduleTitle>Serviços agendados</ScheduleTitle>
                             <ButtonArea onPress={handleClick}>
                                 <AddIcon width="28" height="28" fill="#00B1E1" />
                             </ButtonArea>
                         </OrganizationArea>
-
-                        {loading &&
-                            <LoadingIcon 
-                                size='large'
-                                color='#20283D'
-                            />
-                        }
-
-                        <ListArea>
-                            {list.length != 0 ? 
-                                <FlatList 
-                                    horizontal
-                                    pagingEnabled={true}
-                                    showsHorizontalScrollIndicator={false}
-                                    legacyImplementation={false}
-                                    data={list}
-                                    keyExtractor={(item) => item.id}
-                                    renderItem={ ({item}) => <ScheduleItem data={item} funcRefresh={getSchedule}/>}
-                                />
-                            :
-                                <Text>Não há serviços agendados para você.</Text>
-                            }
-                        </ListArea>
                     </ScheduleArea>
+
+                    {loading &&
+                        <LoadingIcon 
+                            size='large'
+                            color='#20283D'
+                        />
+                    }
+
+                    {list.map((item, k) => 
+                        <FlatArea>
+                            <DateTitle>{DateTransformer(item.date)}</DateTitle>
+                            <ListArea>
+                                {item.agendas.length != 0 ? 
+                                    <FlatList 
+                                        horizontal
+                                        pagingEnabled={true}
+                                        showsHorizontalScrollIndicator={false}
+                                        legacyImplementation={false}
+                                        data={item.agendas}
+                                        keyExtractor={(item) => item.id}
+                                        renderItem={ ({item}) => <ScheduleItem data={item} funcRefresh={getSchedule}/>}
+                                    />
+                                :
+                                    <Text>Não há serviços agendados para você.</Text>
+                                }
+                            </ListArea>
+
+                            <Line />
+                        </FlatArea>
+                    )}
                 </PageBody>
             </Scroller>
         </Container>

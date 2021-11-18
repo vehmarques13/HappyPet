@@ -133,8 +133,8 @@ export default ({data, funcRefresh = null}) => {
                         <ButtonArea onPress={() => IconFavorites(data.id, data.email, data.isFavorito)}>
                             <FavoriteArea>
                                 <FavoriteView>
-                                    {data.isFavorito == false && <FavoritesEmpty width="23" height="23" fill="#A8D4FF" />}
-                                    {data.isFavorito == true && <FavoritesFull width="23" height="23" fill="#A8D4FF" />}
+                                    {data.isFavorito == false && <FavoritesEmpty width="23" height="23" fill="#00B1E1" />}
+                                    {data.isFavorito == true && <FavoritesFull width="23" height="23" fill="#00B1E1" />}
                                 </FavoriteView>
                             </FavoriteArea>
                         </ButtonArea>

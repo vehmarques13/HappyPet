@@ -50,14 +50,30 @@ export const OrganizationArea = styled.View`
 export const ButtonArea = styled.TouchableOpacity``;
 
 export const ScheduleArea = styled.View`
-    padding-top: 25px;
+    padding: 25px 0 10px 0;
 `;
+
+export const FlatArea = styled.View``;
 
 export const ScheduleTitle = styled.Text`
     font-weight: bold;
     font-size: 18px;
     color: #1C263F;
     margin-bottom: 6px;
+`;
+
+export const DateTitle = styled.Text`
+    font-weight: bold;
+    font-size: 16px;
+    color: #00B1E1;
+    margin-bottom: 6px;
+`;
+
+export const Line = styled.View`
+    width: 100%;
+    height: 1px;
+    background-color: rgba(230, 230, 230, 1);
+    margin: 20px 0;
 `;
 
 

@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Scroller, HeaderArea, HeaderTitle, Background, SwipeDot, SwipeDotActive, SwipeItem, SwipeImage, PageBody, UserInfoArea, UserInfo, Avatar, UserInfoName, UserInfoState, UserButton, LoadingIcon, ServiceArea, ServiceTitle, ServiceDescription, Line, BackButton, AnimalsArea } from './styles';
+import { Container, Scroller, HeaderArea, HeaderTitle, Background, SwipeDot, SwipeDotActive, SwipeItem, SwipeImage, PageBody, UserInfoArea, UserInfo, Avatar, UserInfoName, UserInfoState, UserButton, LoadingIcon, ServiceArea, ServiceTitle, ServiceDescription, Line, BackButton, AnimalsArea, FavoriteArea, FavoriteView } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import Api from '../../Api';
 import Swiper from 'react-native-swiper';
 import { Linking } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import Stars from '../../components/Stars';
 import Animals from '../../components/Animals';
 
-import FavoriteIcon from '../../images/favorite.svg';
 import ChatIcon from '../../images/chat.svg';
 import BackIcon from '../../images/back.svg';
+import FavoritesFull from '../../images/favorite_full.svg';
+import FavoritesEmpty from '../../images/favorite.svg';
 
 export default ({route}) => {
     const navigation = useNavigation();
@@ -23,15 +25,21 @@ export default ({route}) => {
     let email = route.params?.email;
 
     const getServiceInfo = async () => {
+        let emailLogado = await AsyncStorage.getItem('email');
+
+        setLoading(true);
+
         setList([]);
         setFiltro([]);
 
-        let res = await Api.getServiceById(email, id);
+        let res = await Api.getServiceById(email, id, emailLogado);
 
         if (res != undefined) {
             setList(res);
             setFiltro(res.filtro);
         }
+
+        setLoading(false);
     }
 
     const handleClick = () => {
@@ -39,9 +47,14 @@ export default ({route}) => {
     }
 
     const handleBackClick = () => {
-        navigation.reset({
-            routes:[{name: 'Services'}]
-        });
+        navigation.goBack();
+    }
+
+    const IconFavorites = async (id, email, status) => {
+        let emailLogado = await AsyncStorage.getItem('email');
+
+        let res = await Api.Favorites(emailLogado, id, email, status);
+        getServiceInfo();
     }
 
     useEffect(() => {
@@ -67,6 +80,13 @@ export default ({route}) => {
                         : <Avatar source={require('../../images/avatarMulher.jpg')} />
                         }
                         <UserInfo onPress={handleClick}>
+                            {loading &&
+                                <LoadingIcon 
+                                    size='large'
+                                    color='#20283D'
+                                />
+                            }
+                            
                             <UserInfoName>{list.nome}</UserInfoName>
                             <UserInfoState>{list.cidade}, {list.estado}</UserInfoState>
                             <Stars stars={list.avaliacao} size={20} />
@@ -75,8 +95,13 @@ export default ({route}) => {
                             <ChatIcon width="20" height="20" fill="#00B1E1" />
                         </UserButton>
 
-                        <UserButton>
-                            <FavoriteIcon width="22" height="22" fill="#00B1E1" />
+                        <UserButton onPress={() => IconFavorites(list.id, list.email, list.isFavorito)}>
+                            <FavoriteArea>
+                                <FavoriteView>
+                                    {list.isFavorito == false && <FavoritesEmpty width="23" height="23" fill="#00B1E1" />}
+                                    {list.isFavorito == true && <FavoritesFull width="23" height="23" fill="#00B1E1" />}
+                                </FavoriteView>
+                            </FavoriteArea>
                         </UserButton>
                     </UserInfoArea>
 
@@ -159,14 +184,6 @@ export default ({route}) => {
                         }
 
                     </ServiceArea>
-
-                    {loading &&
-                        <LoadingIcon 
-                            size='large'
-                            color='#20283D'
-                        />
-                    }
-
                 </PageBody>
             </Scroller>
         </Container>

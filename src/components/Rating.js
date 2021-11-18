@@ -18,15 +18,16 @@ const InfoArea = styled.View`
 `;
 
 const UserName = styled.Text`
-    font-weight: bold;
-    font-size: 17px;
+    font-weight: 500;
+    font-size: 16px;
     color: #1C263F;
+    margin-bottom: 2px;
 `;
 
 const UserState = styled.Text`
-    font-weight: 500;
     font-size: 14px;
     color: #858585;
+    margin-top: 2px;
 `;
 
 export default ({data}) => {

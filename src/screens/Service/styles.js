@@ -15,7 +15,7 @@ export const HeaderArea = styled.View`
     justify-content: center;
     align-items: center;
     height: 60px;
-    background-color: #FFFFFF;
+    background-color: #fcfcfc;
     border: 1px solid rgba(230, 230, 230, 0.8);
 `;
 
@@ -61,6 +61,7 @@ export const FakeSwiper = styled.View`
 export const PageBody = styled.View`
     background-color: white;
     margin-top: -50px;
+    border: 1px solid rgba(230, 230, 230, 0.6);
 `;
 
 export const UserInfoArea = styled.View`
@@ -70,8 +71,8 @@ export const UserInfoArea = styled.View`
 `;
 
 export const Avatar = styled.Image`
-    width: 112px;
-    height: 135px;
+    width: 90px;
+    height: 123px;
     margin: 0 15px 0 8px;
     border-radius: 8px;
     border: 1px solid rgba(230, 230, 230, 0.6);
@@ -150,3 +151,9 @@ export const AnimalsArea = styled.View`
 export const FavoriteArea = styled.View``;
 
 export const FavoriteView = styled.View``;
+
+export const UserServices = styled.Text`
+    font-weight: normal;
+    font-size: 12px;
+    color: #929292;
+`;

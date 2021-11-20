@@ -21,22 +21,10 @@ export default () => {
 
                 await AsyncStorage.setItem('email', res.data.email);
                 await AsyncStorage.setItem('tipoUsuario', tipoUsuario);
-
-                switch (res.data.tipoUsuario) {
-                    case 1: 
-                        navigation.reset({
-                            routes: [{name: 'SupportTutor'}]
-                        });
-                        break;
-                    case 2: 
-                        navigation.reset({
-                            routes: [{name: 'SupportServiceProvider'}]
-                        });
-                        break;
-                    default: 
-                        alert('Usuário inválido!');
-                        break;
-                }
+                
+                navigation.reset({
+                    routes: [{name: 'MainTab'}]
+                });
             } else {
                 alert('Algo deu errado!');
             }

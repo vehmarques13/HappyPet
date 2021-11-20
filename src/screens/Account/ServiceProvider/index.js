@@ -98,6 +98,7 @@ export default () => {
                             <UserInfoName>{userInfo.nome}</UserInfoName>
                             <UserInfoState>{userInfo.cidade}, {userInfo.estado}</UserInfoState>
                             <UserInfoBirth>{date.getUTCDate()}/{date.getMonth() + 1}/{date.getUTCFullYear()}</UserInfoBirth>
+                            <UserInfoBirth>{userInfo.servicos}</UserInfoBirth>
                             <Stars stars={userInfo.mediaAvaliacao} size={20} />
                         </UserInfo>
                         <UserButton onPress={handleEditClick}>
@@ -105,7 +106,7 @@ export default () => {
                         </UserButton>
                     </UserInfoArea>
 
-                    <ServiceArea style={{marginTop: 25}}>
+                    <ServiceArea style={{marginTop: 28}}>
                         <OrganizationArea>
                             <ServiceTitle>Experiências</ServiceTitle>
                             <Button onPress={handleAddClick} >

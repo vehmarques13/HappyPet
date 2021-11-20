@@ -4,7 +4,7 @@ import { Container, Scroller, Name, Box, Title, Subtitle, Form, InputText, Custo
 import SignInput from '../../../components/SignInput';
 import Api from '../../../Api';
 import { useNavigation } from '@react-navigation/native';
-import { userContext } from '../../../contexts/UserContext';
+import DatePicker from 'react-native-datepicker';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default () => {
@@ -27,11 +27,14 @@ export default () => {
     const handleSignClick = async () => {
         if (emailField != '' && passwordField != '' && nameField != '' && birthField != '', addressField != '' && cellphoneField != '') { 
 
-            let res = await Api.signUp(emailField, 2, imageField, nameField, passwordField, birthField, addressField, cellphoneField, isSelectedSexo, stateField, cityField, informationField);
+            let res = await Api.signUp(emailField, 2, imageField, nameField, passwordField, birthField, addressField, cellphoneField, isSelectedSexo, stateField, cityField, {"experiencias": []});
 
             if (res.data != null) {
+                await AsyncStorage.setItem('email', emailField);
+                await AsyncStorage.setItem('tipoUsuario', "2");
+                
                 navigation.reset({
-                    routes: [{name: 'SupportServiceProvider'}]
+                    routes: [{name: 'MainTab'}]
                 });
             } else {
                 alert('Algo deu errado!');
@@ -94,11 +97,26 @@ export default () => {
                         </Picker>
 
                         <InputText>Data de nascimento</InputText>
-                        <SignInput
-                            value={birthField}
-                            onChangeText={o => setBirthField(o)}
-                            password={true}
-                            keyboardType={'numeric'}
+                        <DatePicker
+                            style={{width: 200}}
+                            date={birthField}
+                            mode="date"
+                            placeholder="Selecione uma data"
+                            format="YYYY-MM-DD"
+                            confirmBtnText="Confirm"
+                            cancelBtnText="Cancel"
+                            customStyles={{
+                                dateIcon: {
+                                    position: 'absolute',
+                                    right: 0,
+                                    top: 4,
+                                    marginRight: 0
+                                },
+                                dateInput: {
+                                    marginRight: 36
+                                }
+                            }}
+                            onDateChange={(date) => {setBirthField(date)}}
                         />
 
                         <InputText>Endereço</InputText>

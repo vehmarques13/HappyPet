@@ -5,6 +5,7 @@ import SignInput from '../../../components/SignInput';
 import Api from '../../../Api';
 import { useNavigation } from '@react-navigation/native';
 import DatePicker from 'react-native-datepicker';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default () => {
 
@@ -24,11 +25,14 @@ export default () => {
 
     const handleSignClick = async () => {
         if (emailField != '' && passwordField != '' && nameField != '' && birthField != '', addressField != '' && cellphoneField != '') { 
-            let res = await Api.signUp(emailField, 1, imageField, nameField, passwordField, birthField, addressField, cellphoneField, isSelectedSexo, stateField, cityField, informationField);
+            let res = await Api.signUp(emailField, 1, imageField, nameField, passwordField, birthField, addressField, cellphoneField, isSelectedSexo, stateField, cityField, {"favoritos": []});
 
             if (res.data != null) {
+                await AsyncStorage.setItem('email', emailField);
+                await AsyncStorage.setItem('tipoUsuario', "1");
+                
                 navigation.reset({
-                    routes: [{name: 'SupportTutor'}]
+                    routes: [{name: 'MainTab'}]
                 });
             } else {
                 alert('Algo deu errado!');
@@ -149,7 +153,6 @@ export default () => {
                         <SignInput
                             value={cellphoneField}
                             onChangeText={o => setCellphoneField(o)}
-                            keyboardType={'phone-pad'}
                         />
 
                         <ButtonArea>

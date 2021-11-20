@@ -70,8 +70,9 @@ export default () => {
     }
 
     const handleServiceClick = async (id) => {
-        await AsyncStorage.setItem('tipoServico', id.toString());
-        navigation.navigate('Services');
+        let email = await AsyncStorage.getItem('email');
+
+        navigation.navigate('Service', { id: id, email: email });
     }
 
     return (
@@ -85,7 +86,7 @@ export default () => {
 
                 <PageBody>
                     <ServiceArea>
-                        <ServiceTitle>Agenda</ServiceTitle>
+                        <ServiceTitle>Agenda do dia</ServiceTitle>
 
                         {loading &&
                             <LoadingIcon 

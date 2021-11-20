@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Scroller, HeaderArea, HeaderTitle, Background, SwipeDot, SwipeDotActive, SwipeItem, SwipeImage, PageBody, UserInfoArea, UserInfo, Avatar, UserInfoName, UserInfoState, UserButton, LoadingIcon, ServiceArea, ServiceTitle, ServiceDescription, Line, BackButton, AnimalsArea, FavoriteArea, FavoriteView } from './styles';
+import { Container, Scroller, HeaderArea, HeaderTitle, SwipeDot, SwipeDotActive, SwipeItem, SwipeImage, PageBody, UserInfoArea, UserInfo, Avatar, UserInfoName, UserInfoState, UserServices, UserButton, LoadingIcon, ServiceArea, ServiceTitle, ServiceDescription, Line, BackButton, AnimalsArea, FavoriteArea, FavoriteView } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import Api from '../../Api';
 import Swiper from 'react-native-swiper';
-import { Linking } from 'react-native';
+import { Linking, Text, ImageBackground } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import Stars from '../../components/Stars';
 import Animals from '../../components/Animals';
 
 import ChatIcon from '../../images/chat.svg';
 import BackIcon from '../../images/back.svg';
 import FavoritesFull from '../../images/favorite_full.svg';
 import FavoritesEmpty from '../../images/favorite.svg';
+import DeleteIcon from '../../images/delete.svg';
 
 export default ({route}) => {
     const navigation = useNavigation();
 
     const [loading, setLoading] = useState(false);
     const [list, setList] = useState([]);
-    const [filtro, setFiltro] = useState([]);
+    const [filtros, setFiltro] = useState([]);
 
     let id = route.params?.id;
     let email = route.params?.email;
@@ -32,12 +32,11 @@ export default ({route}) => {
         setList([]);
         setFiltro([]);
 
-        let res = await Api.getServiceById(email, id, emailLogado);
+        let rota = `?email=${emailLogado}&servico=${id}`;
+        let res = await Api.getServices(rota);
 
-        if (res != undefined) {
-            setList(res);
-            setFiltro(res.filtro);
-        }
+        setList(res[0]);
+        setFiltro(res[0].filtro);
 
         setLoading(false);
     }
@@ -57,8 +56,37 @@ export default ({route}) => {
         getServiceInfo();
     }
 
+    const deleteService = async (id) => {
+        let email = await AsyncStorage.getItem('email');
+        let res = await Api.deleteServices(email, id);
+
+        navigation.reset({
+            routes:[{name: 'MainTab'}]
+        });
+    }
+
+    const tipoServico = () => {
+        switch(list.tipoServico) {
+            case 0:
+                return "Veterinário";
+            case 1:
+                return "Banho e Tosa";
+            case 2:
+                return "Passeio";
+            case 3:
+                return "Adestramento";
+            case 3:
+                return "Pet Sitter";
+            case 3:
+                return "Hospedagem";
+            default:
+                return "Serviço indefinido!";
+        }
+    }
+
     useEffect(() => {
         getServiceInfo();
+        tipoServico();
     }, []);
 
     return (
@@ -71,7 +99,11 @@ export default ({route}) => {
                     <HeaderTitle>HAPPY PET</HeaderTitle>
                 </HeaderArea>
 
-                <Background source={require('../../images/fundo.png')} resizeMode="cover" />
+                <ImageBackground
+                    source={require('../../images/fundo4.png')}
+                    resizeMode="cover"
+                    style={{ width: '100%', height: 150, justifyContent: 'center', alignItems: 'center' }}
+                />
 
                 <PageBody>
                     <UserInfoArea>
@@ -89,23 +121,93 @@ export default ({route}) => {
                             
                             <UserInfoName>{list.nome}</UserInfoName>
                             <UserInfoState>{list.cidade}, {list.estado}</UserInfoState>
-                            <Stars stars={list.avaliacao} size={20} />
+                            <UserServices>{tipoServico()}</UserServices>
                         </UserInfo>
-                        <UserButton onPress={()=> { Linking.openURL(list.telefone) }}>
-                            <ChatIcon width="20" height="20" fill="#00B1E1" />
-                        </UserButton>
-
-                        <UserButton onPress={() => IconFavorites(list.id, list.email, list.isFavorito)}>
-                            <FavoriteArea>
-                                <FavoriteView>
-                                    {list.isFavorito == false && <FavoritesEmpty width="23" height="23" fill="#00B1E1" />}
-                                    {list.isFavorito == true && <FavoritesFull width="23" height="23" fill="#00B1E1" />}
-                                </FavoriteView>
-                            </FavoriteArea>
-                        </UserButton>
+                        {list.tipoUsuario == 1 ?
+                            <>
+                                <UserButton onPress={() => { Linking.openURL(list.telefone); } }>
+                                    <ChatIcon width="20" height="20" fill="#00B1E1" />
+                                </UserButton>
+                                <UserButton onPress={() => IconFavorites(list.id, list.email, list.isFavorito)}>
+                                    <FavoriteArea>
+                                        <FavoriteView>
+                                            {list.isFavorito == false && <FavoritesEmpty width="23" height="23" fill="#00B1E1" />}
+                                            {list.isFavorito == true && <FavoritesFull width="23" height="23" fill="#00B1E1" />}
+                                        </FavoriteView>
+                                    </FavoriteArea>
+                                </UserButton>
+                            </>
+                        :  
+                            <UserButton onPress={()=> { deleteService(list.id) }}>
+                                <DeleteIcon width="20" height="20" fill="#00B1E1" />
+                            </UserButton>
+                        }
                     </UserInfoArea>
 
                     <ServiceArea>
+                        <ServiceTitle>Descrição</ServiceTitle>
+                        <ServiceDescription>{list.descricao}</ServiceDescription>
+
+                        <Line />
+
+                        <ServiceTitle>Preço médio</ServiceTitle>
+                        <ServiceDescription>{list.precoMedio}.</ServiceDescription>
+
+                        <Line />
+
+                        <ServiceTitle>Animais aceitos</ServiceTitle>
+                        {filtros.tiposPet == undefined ? 
+                            <ServiceDescription>Não aceita nenhum animal.</ServiceDescription>  
+                        :
+                            <AnimalsArea>
+                                {filtros.tiposPet.map((item, k) => (
+                                    <Animals key={k} animals={item} size={22} />
+                                ))}
+                            </AnimalsArea>
+                        }
+
+                        <Line />
+
+                        <ServiceTitle>Portes aceitos</ServiceTitle>
+                        {filtros.pesos == undefined ? 
+                            <ServiceDescription>Não aceita nenhum porte.</ServiceDescription>  
+                        :
+                            <AnimalsArea>
+                                {filtros.pesos.map((item, k) => (
+                                    <ServiceDescription>{item}; </ServiceDescription>
+                                ))}
+                            </AnimalsArea>
+                        }
+
+                        <Line />
+
+                        <ServiceTitle>Medicação oral</ServiceTitle>
+                        {filtros.medicacaoOral == undefined ? 
+                            <ServiceDescription></ServiceDescription> 
+                        :
+                            <ServiceDescription>{filtros.medicacaoOral == true ? "Sim" : "Não"}</ServiceDescription>
+                        }
+
+                        <Line />
+
+                        <ServiceTitle>Medicação injetável</ServiceTitle>
+                        {filtros.medicacaoInjetavel == undefined ? 
+                            <ServiceDescription></ServiceDescription> 
+                        :
+                            <ServiceDescription>{filtros.medicacaoInjetavel == true ? "Sim" : "Não"}</ServiceDescription>
+                        }
+
+                        <Line />
+
+                        <ServiceTitle>Curativo</ServiceTitle>
+                        {filtros.curativo == undefined ? 
+                            <ServiceDescription></ServiceDescription> 
+                        :
+                            <ServiceDescription>{filtros.curativo == true ? "Sim" : "Não"}</ServiceDescription>
+                        }
+
+                        <Line />
+
                         <ServiceTitle>Imagens</ServiceTitle>
 
                         <Swiper
@@ -123,66 +225,6 @@ export default ({route}) => {
                                 <SwipeImage source={require('../../images/fundo.png')} resizeMode="cover" />
                             </SwipeItem>
                         </Swiper>
-
-                        <Line />
-
-                        <ServiceTitle>Descrição</ServiceTitle>
-                        <ServiceDescription>{list.descricao}</ServiceDescription>
-
-                        <Line />
-
-                        <ServiceTitle>Preço médio</ServiceTitle>
-                        <ServiceDescription>{list.precoMedio}.</ServiceDescription>
-
-                        <Line />
-
-                        <ServiceTitle>Animais aceitos</ServiceTitle>
-                        {filtro.tiposPet == undefined ? 
-                            <ServiceDescription>Não aceita nenhum animal.</ServiceDescription>  
-                        :
-                            <AnimalsArea>
-                                {filtro.tiposPet.map((item, k) => (
-                                    <Animals key={k} animals={item} size={22} />
-                                ))}
-                            </AnimalsArea>
-                        }
-
-                        <Line />
-
-                        <ServiceTitle>Portes aceitos</ServiceTitle>
-                        {filtro.pesos == undefined ? 
-                            <ServiceDescription>Não aceita nenhum porte.</ServiceDescription>  
-                        :
-                            <AnimalsArea>
-                                {filtro.pesos.map((item, k) => (
-                                    <ServiceDescription>{item}; </ServiceDescription>
-                                ))}
-                            </AnimalsArea>
-                        }
-
-                        <Line />
-
-                        <ServiceTitle>Medicação oral</ServiceTitle>
-                        <ServiceDescription>{filtro.medicacaoOral == true ? "Sim" : "Não"}</ServiceDescription>
-
-                        <Line />
-
-                        <ServiceTitle>Medicação injetável</ServiceTitle>
-                        {filtro.medicacaoInjetavel == undefined ? 
-                            <ServiceDescription></ServiceDescription> 
-                        :
-                            <ServiceDescription>{filtro.medicacaoInjetavel == true ? "Sim" : "Não"}</ServiceDescription>
-                        }
-
-                        <Line />
-
-                        <ServiceTitle>Curativo</ServiceTitle>
-                        {filtro.curativo == undefined ? 
-                            <ServiceDescription></ServiceDescription> 
-                        :
-                            <ServiceDescription>{filtro.curativo == true ? "Sim" : "Não"}</ServiceDescription>
-                        }
-
                     </ServiceArea>
                 </PageBody>
             </Scroller>

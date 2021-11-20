@@ -26,7 +26,7 @@ export const HeaderTitle = styled.Text`
 `;
 
 export const PageBody = styled.View`
-    background-color: #fcfcfc;
+    background-color: white;
     margin-top: -50px;
     height: 100%;
     border: 1px solid rgba(230, 230, 230, 0.6);
@@ -40,7 +40,7 @@ export const UserInfoArea = styled.View`
 
 export const Avatar = styled.Image`
     width: 112px;
-    height: 135px;
+    height: 145px;
     margin: 0 15px 0 0;
     border-radius: 8px;
     border: 1px solid rgba(230, 230, 230, 0.6);
@@ -81,7 +81,11 @@ export const UserButton = styled.TouchableOpacity`
     margin: 20px 0 0 2px;
 `;
 
-export const ServiceArea = styled.View``;
+export const Button = styled.TouchableOpacity``;
+
+export const ServiceArea = styled.View`
+    margin: 10px 0;
+`;
 
 export const ServiceTitle = styled.Text`
     font-weight: bold;
@@ -93,7 +97,6 @@ export const ServiceTitle = styled.Text`
 export const OrganizationArea = styled.View`
     flex-direction: row;
     justify-content: space-between;
-    margin-top: 25px;
 `;
 
 export const LoadingIcon = styled.ActivityIndicator`
@@ -111,15 +114,4 @@ export const Line = styled.View`
     height: 1px;
     background-color: rgba(230, 230, 230, 1);
     margin: 10px 0;
-`;
-
-export const PetArea = styled.View`
-    padding: 25px 18px;
-`;
-
-export const PetTitle = styled.Text`
-    font-weight: bold;
-    font-size: 18px;
-    color: #1C263F;
-    margin-bottom: 6px;
 `;

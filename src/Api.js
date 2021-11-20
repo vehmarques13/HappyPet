@@ -113,6 +113,11 @@ export default {
     return axios.delete(`http://192.168.0.23:59555/api/Pet/delete?email=${email}&id=${id}`)
   },
 
+  getServices: async (route) => {
+    const req = await api.get(`Servico${route}`);
+    const json = req.data;
+    return json;
+  },
   getServiceById: async (email, id, emailLogado) => {
     const req = await api.get(`Servico/${email}/${id}?emailLogged=${emailLogado}`);
     const json = req.data;
@@ -181,8 +186,8 @@ export default {
     return json;
   },
 
-  getServicesById: async (rota) => {
-    const req = await api.get(`Servico${rota}`);
+  getServicesById: async (route) => {
+    const req = await api.get(`Servico${route}`);
     const json = req.data;
     return json;
   },

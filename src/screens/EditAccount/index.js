@@ -28,20 +28,18 @@ export default ({route}) => {
 
     const handleSignClick = async () => {
         if (nameField != '' && addressField != '' && cellphoneField != '') {
-            let json = await Api.putUser(userInfo.email, userInfo.tipoUsuario, " ", nameField, birthField, addressField, cellphoneField, isSelectedSexo, stateField, cityField);
+            let res = await Api.putUser(userInfo.email, userInfo.tipoUsuario, " ", nameField, birthField, addressField, cellphoneField, isSelectedSexo, stateField, cityField);
 
-            if (json.status != 200) {
+            if (res.data != null) {
                 alert("Conta editada com sucesso!");
 
                 navigation.reset({
                     routes:[{name: 'MainTab'}]
                 });
-            } else {
+            } else 
                 alert('Algo deu errado!');
-            }
-        } else {
+        } else 
             alert('Preencha os campos corretamente!');
-        }
     }
 
     const onRefresh = () => {

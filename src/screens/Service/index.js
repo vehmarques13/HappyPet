@@ -23,8 +23,10 @@ export default ({route}) => {
 
     let id = route.params?.id;
     let email = route.params?.email;
+    let tipoServicos = route.params?.tipoServicos;
 
     const getServiceInfo = async () => {
+        let tipoUsuario = await AsyncStorage.getItem('tipoUsuario');
         let emailLogado = await AsyncStorage.getItem('email');
 
         setLoading(true);
@@ -32,11 +34,21 @@ export default ({route}) => {
         setList([]);
         setFiltro([]);
 
-        let rota = `?email=${emailLogado}&servico=${id}`;
-        let res = await Api.getServices(rota);
+        if (tipoUsuario == "1") {
+            let res = await Api.getServiceById(email, id, emailLogado);
 
-        setList(res[0]);
-        setFiltro(res[0].filtro);
+            setList(res);
+            setFiltro(res.filtro);
+        }
+        else {
+            let rota = `?email=${emailLogado}&servico=${tipoServicos}`;
+
+            console.log(rota);
+            let res = await Api.getServices(rota);
+
+            setList(res[0]);
+            setFiltro(res[0].filtro);
+        }
 
         setLoading(false);
     }
@@ -106,6 +118,7 @@ export default ({route}) => {
                 />
 
                 <PageBody>
+                    {console.log(list)}
                     <UserInfoArea>
                         {list.genero == "Masculino" ?
                             <Avatar source={require('../../images/avatar.jpg')} />

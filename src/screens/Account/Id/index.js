@@ -91,10 +91,10 @@ export default ({route}) => {
                             
                             <UserInfoName>{list.nome}</UserInfoName>
                             <UserInfoState>{list.cidade}, {list.estado}</UserInfoState>
-                            <UserInfoBirth>{date.getUTCDate()}/{date.getMonth() + 1}/{date.getUTCFullYear()}</UserInfoBirth>
                             {list.tipoUsuario == 2 ? 
                                 <UserInfoBirth>{list.servicos}</UserInfoBirth>
                             : <Text></Text>}
+                            <UserInfoBirth>{date.getUTCDate()}/{date.getMonth() + 1}/{date.getUTCFullYear()}</UserInfoBirth>
                             <Stars stars={list.mediaAvaliacao} size={20} />
                         </UserInfo>
                         {list.tipoUsuario == 1 ?

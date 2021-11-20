@@ -97,8 +97,8 @@ export default () => {
                             
                             <UserInfoName>{userInfo.nome}</UserInfoName>
                             <UserInfoState>{userInfo.cidade}, {userInfo.estado}</UserInfoState>
-                            <UserInfoBirth>{date.getUTCDate()}/{date.getMonth() + 1}/{date.getUTCFullYear()}</UserInfoBirth>
                             <UserInfoBirth>{userInfo.servicos}</UserInfoBirth>
+                            <UserInfoBirth>{date.getUTCDate()}/{date.getMonth() + 1}/{date.getUTCFullYear()}</UserInfoBirth>
                             <Stars stars={userInfo.mediaAvaliacao} size={20} />
                         </UserInfo>
                         <UserButton onPress={handleEditClick}>

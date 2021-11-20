@@ -71,10 +71,11 @@ export default ({data, funcRefresh = null}) => {
     const navigation = useNavigation();
     let id = data.id;
     let email = data.email;
+    let tipoServicos = data.tipoServico;
     const [userInfo, setUserInfo] = useState('');
 
     const handleClick = () => {
-        navigation.navigate('Service', { id: id, email: email });
+        navigation.navigate('Service', { id: id, email: email, tipoServicos: tipoServicos });
     }
 
     const tipoServico = () => {

@@ -72,7 +72,7 @@ export default () => {
     const handleServiceClick = async (id) => {
         let email = await AsyncStorage.getItem('email');
 
-        navigation.navigate('Service', { id: id, email: email });
+        navigation.navigate('Service', { id: id, email: email, tipoServicos: id });
     }
 
     return (

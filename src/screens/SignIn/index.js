@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ImageBackground, Text } from 'react-native';
-import { Container, Name, Box, Title, Subtitle, Form, InputText, SignMessageButton, SignMessageButtonText, SignMessageButtonTextBold, CustomButton, CustomButtonText, SignMessageError } from './styles';
+import { Container, Name, Box, Title, Subtitle, Form, InputText, SignMessageButton, SignMessageButtonText, SignMessageButtonTextBold, CustomButton, CustomButtonText } from './styles';
 import SignInput from '../../components/SignInput';
 import Api from '../../Api';
 import { useNavigation } from '@react-navigation/native';
@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 export default () => {
     const navigation = useNavigation();
 
-    const [emailField, setEmailField] = useState('prestador@gmail.com');
+    const [emailField, setEmailField] = useState('usuario@gmail.com');
     const [passwordField, setPasswordField] = useState('123');
 
     const handleSignClick = async () => {
@@ -20,6 +20,7 @@ export default () => {
                 let tipoUsuario = await (res.data.tipoUsuario).toString();
 
                 await AsyncStorage.setItem('email', res.data.email);
+                await AsyncStorage.setItem('nome', res.data.nome);
                 await AsyncStorage.setItem('tipoUsuario', tipoUsuario);
                 
                 navigation.reset({

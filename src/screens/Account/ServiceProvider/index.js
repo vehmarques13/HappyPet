@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ImageBackground, Text, FlatList } from 'react-native';
-import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, UserInfoArea, UserInfo, Avatar, UserInfoName, UserInfoState, UserInfoBirth, UserButton, LoadingIcon, Line, ServiceArea, ServiceTitle, OrganizationArea, Button } from './styles';
+import { Container, Scroller, HeaderArea, HeaderTitle, Name, PageBody, UserInfoArea, UserInfo, Avatar, UserInfoName, UserInfoState, UserInfoBirth, UserButton, LoadingIcon, Line, ServiceArea, ServiceTitle, OrganizationArea, Button } from './styles';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Api from '../../../Api';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -11,6 +11,7 @@ import Stars from '../../../components/Stars';
 
 import EditIcon from '../../../images/edit.svg';
 import AddIcon from '../../../images/add2.svg';
+import BackIcon from '../../../images/sair.svg';
 
 export default () => {
 
@@ -18,6 +19,7 @@ export default () => {
     const [userInfo, setUserInfo] = useState([]);
     const [info, setInfo] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [name, setName] = useState("");
 
     const getUserInfo = async () => {
         setLoading(true);
@@ -54,6 +56,7 @@ export default () => {
     useEffect(() => {
         getUserInfo();
         getInfo();
+        pegarNome();
     }, []);
 
     const handleAddClick = () => {
@@ -62,8 +65,25 @@ export default () => {
         });
     }
 
+    const handleBackClick = async () => {
+        await AsyncStorage.removeItem('email');
+        await AsyncStorage.removeItem('tipoUsuario');
+        await AsyncStorage.removeItem('tipoServico');
+        await AsyncStorage.removeItem('tipoAnimal');
+        await AsyncStorage.removeItem('nome');
+        await AsyncStorage.removeItem('rotaFiltro');
+
+        navigation.reset({
+            routes:[{name: 'SignIn'}]
+        });
+    }
+
     const handleEditClick = () => {
         navigation.navigate('EditAccount', { userInfo: userInfo });
+    }
+
+    const pegarNome = async () => {
+        setName(await AsyncStorage.getItem('nome'));
     }
 
     let date = new Date(userInfo.nascimento);
@@ -73,6 +93,7 @@ export default () => {
             <Scroller>
                 <HeaderArea>
                     <HeaderTitle>HAPPY PET</HeaderTitle>
+                    <Name>Olá, {name.substring(0, name.indexOf(' ') == -1 ? name.length : name.indexOf(' '))}!</Name>
                 </HeaderArea>
 
                 <ImageBackground 
@@ -102,7 +123,11 @@ export default () => {
                             <Stars stars={userInfo.mediaAvaliacao} size={20} />
                         </UserInfo>
                         <UserButton onPress={handleEditClick}>
-                            <EditIcon width="30" height="30" fill="#00B1E1" />
+                            <EditIcon width="35" height="35" fill="#00B1E1" />
+                        </UserButton>
+
+                        <UserButton style={{ backgroundColor: "#00B1E1", width: 38, height: 38 }} onPress={handleBackClick}>
+                            <BackIcon width="22" height="22" fill="#FFFFFF" />
                         </UserButton>
                     </UserInfoArea>
 

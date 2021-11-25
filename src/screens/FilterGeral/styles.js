@@ -24,7 +24,6 @@ export const HeaderTitle = styled.Text`
     font-weight: bold;
     font-size: 23px;
     color: #20283D;
-    margin-left: 30px;
 `;
 
 export const PageBody = styled.View`
@@ -75,13 +74,6 @@ export const ButtonImage = styled.TouchableOpacity`
     margin: 8px 8px 0 0;
 `;
 
-export const ImageArea = styled.View`
-    width: 100%;
-    justify-content: flex-start;
-    flex-direction: row;
-    flex-wrap: wrap;
-`;
-
 export const ButtonArea = styled.View`
     flex-direction: row;
     justify-content: space-between;
@@ -125,11 +117,36 @@ export const BackButton = styled.TouchableOpacity`
     z-index: 9;
 `;
 
+export const CheckBoxArea = styled.View`
+    width: 100%;
+    justify-content: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+`;
+
+export const CheckBoxOption = styled.View`
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 5px 15px 0 0;
+`;
+
+export const CheckBoxText = styled.Text`
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 14px;
+    color: #A5A5A5;
+`;
+
 export const Name = styled.Text`
     font-weight: 500;
     font-size: 14px;
     color: #20283D;
 `;
+
+
 
 
 

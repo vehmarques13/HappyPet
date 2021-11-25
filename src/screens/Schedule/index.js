@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, LoadingIcon, ListArea, OrganizationArea, ButtonArea, ScheduleArea, ScheduleTitle, Line, FlatArea, DateTitle } from './styles';
+import { Container, Scroller, HeaderArea, HeaderTitle, Name, PageBody, LoadingIcon, ListArea, OrganizationArea, ButtonArea, ScheduleArea, ScheduleTitle, Line, FlatArea, DateTitle } from './styles';
 import { RefreshControl, FlatList, Text } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -15,6 +15,7 @@ export default () => {
     const [list, setList] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
     const navigation = useNavigation();
+    const [name, setName] = useState("");
 
     const getSchedule = async () => {
         setLoading(true);
@@ -31,9 +32,9 @@ export default () => {
         setLoading(false);
     }
 
-
     useEffect(() => {
         getSchedule();
+        pegarNome();
     }, []);
 
     const onRefresh = () => {
@@ -44,6 +45,10 @@ export default () => {
         navigation.reset({
             routes: [{name: 'AddSchedule'}]
         });
+    }
+
+    const pegarNome = async () => {
+        setName(await AsyncStorage.getItem('nome'));
     }
 
     const DateTransformer = (dateTransformer) => {
@@ -60,6 +65,7 @@ export default () => {
             }>
                 <HeaderArea>
                     <HeaderTitle>HAPPY PET</HeaderTitle>
+                    <Name>Olá, {name.substring(0, name.indexOf(' ') == -1 ? name.length : name.indexOf(' '))}!</Name>
                 </HeaderArea>
 
                 <PageBody>

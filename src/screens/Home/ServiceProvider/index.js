@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, LoadingIcon, ServiceArea, ServiceTitle, Services, ServicesArea, ServicesAreaEnable, ServicesView, ServiceImage, ServiceName, OrganizationArea, ButtonArea } from './styles';
+import { Container, Scroller, HeaderArea, HeaderTitle, Name, PageBody, LoadingIcon, ServiceArea, ServiceTitle, Services, ServicesArea, ServicesAreaEnable, ServicesView, ServiceImage, ServiceName, OrganizationArea, ButtonArea } from './styles';
 import { RefreshControl, FlatList, Text } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -17,6 +17,7 @@ export default () => {
     const [listServices, setListServices] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
     const navigation = useNavigation();
+    const [name, setName] = useState("");
 
     const getScheduleToday = async () => {
         setLoading(true);
@@ -53,6 +54,7 @@ export default () => {
     useEffect(() => {
         getScheduleToday();
         getServicesType();
+        pegarNome();
     }, []);
 
     const onRefresh = () => {
@@ -63,6 +65,10 @@ export default () => {
         navigation.reset({
             routes: [{name: 'AddService'}]
         });
+    }
+
+    const pegarNome = async () => {
+        setName(await AsyncStorage.getItem('nome'));
     }
     
     function tipoServico(n) {
@@ -82,6 +88,7 @@ export default () => {
             }>
                 <HeaderArea>
                     <HeaderTitle>HAPPY PET</HeaderTitle>
+                    <Name>Olá, {name.substring(0, name.indexOf(' ') == -1 ? name.length : name.indexOf(' '))}!</Name>
                 </HeaderArea>
 
                 <PageBody>

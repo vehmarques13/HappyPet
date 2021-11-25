@@ -28,7 +28,6 @@ const Avatar = styled.Image`
 
 const InfoArea = styled.View`
     flex: 1;
-    margin-left: 8px;
     justify-content: space-between;
 `;
 

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, Box, Title, Form, InputText, ButtonArea, CustomButton, CustomButtonText, CustomButtonNo, CustomButtonTextNo, BackButton } from './styles';
+import React, { useState, useEffect } from 'react';
+import { Container, Scroller, HeaderArea, HeaderTitle, Name, PageBody, Box, Title, Form, InputText, ButtonArea, CustomButton, CustomButtonText, CustomButtonNo, CustomButtonTextNo, BackButton } from './styles';
 import { RefreshControl, ImageBackground, Picker } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import DatePicker from 'react-native-datepicker';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import BackIcon from '../../images/back.svg';
 
@@ -23,8 +24,7 @@ export default ({route}) => {
     const [cellphoneField, setCellphoneField] = useState(userInfo.telefone);
     const [isSelectedSexo, setSelectedSexo] = useState(userInfo.genero);
     const [refreshing, setRefreshing] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [list, setList] = useState([]);
+    const [name, setName] = useState("");
 
     const handleSignClick = async () => {
         if (nameField != '' && addressField != '' && cellphoneField != '') {
@@ -52,6 +52,14 @@ export default ({route}) => {
         });
     }
 
+    const pegarNome = async () => {
+        setName(await AsyncStorage.getItem('nome'));
+    }
+
+    useEffect(() => {
+        pegarNome();
+    }, []);
+
     return (
         <Container>
             <ImageBackground 
@@ -67,6 +75,7 @@ export default ({route}) => {
                         <BackIcon width="40" height="40" fill="#1C263F" />
                     </BackButton>
                     <HeaderTitle>HAPPY PET</HeaderTitle>
+                    <Name>Olá, {name.substring(0, name.indexOf(' ') == -1 ? name.length : name.indexOf(' '))}!</Name>
                 </HeaderArea>
 
                 <PageBody>

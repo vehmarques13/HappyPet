@@ -12,18 +12,22 @@ export const Scroller = styled.ScrollView`
 `;
 
 export const HeaderArea = styled.View`
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     height: 60px;
-    background-color: #fcfcfc;
+    background-color: #FFFFFF;
     border: 1px solid rgba(230, 230, 230, 0.8);
+    flex-direction: row;
+    padding: 0 20px;
 `;
 
 export const HeaderTitle = styled.Text`
     font-weight: bold;
     font-size: 23px;
     color: #20283D;
+    margin-left: 30px;
 `;
+
 export const Background = styled.Image`
     width: 100%;
     height: 150px;
@@ -61,19 +65,19 @@ export const FakeSwiper = styled.View`
 export const PageBody = styled.View`
     background-color: white;
     margin-top: -50px;
+    padding: 0 20px;
     border: 1px solid rgba(230, 230, 230, 0.6);
 `;
 
 export const UserInfoArea = styled.View`
     flex-direction: row;
     margin-top: -40px;
-    padding: 0 10px;
 `;
 
 export const Avatar = styled.Image`
     width: 90px;
     height: 123px;
-    margin: 0 15px 0 8px;
+    margin: 0 15px 0 0;
     border-radius: 8px;
     border: 1px solid rgba(230, 230, 230, 0.6);
 `;
@@ -104,11 +108,11 @@ export const UserButton = styled.TouchableOpacity`
     border: 1px solid rgba(230, 230, 230, 1);
     justify-content: center;
     align-items: center;
-    margin: 20px 2px 0 2px;
+    margin: 20px 0 0 2px;
 `;
 
 export const ServiceArea = styled.View`
-    padding: 25px 18px;
+    padding: 25px 0;
 `;
 
 export const ServiceTitle = styled.Text`
@@ -156,4 +160,10 @@ export const UserServices = styled.Text`
     font-weight: normal;
     font-size: 12px;
     color: #929292;
+`;
+
+export const Name = styled.Text`
+    font-weight: 500;
+    font-size: 14px;
+    color: #20283D;
 `;

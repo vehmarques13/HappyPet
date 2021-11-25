@@ -153,6 +153,7 @@ export default () => {
                         <SignInput
                             value={cellphoneField}
                             onChangeText={o => setCellphoneField(o)}
+                            keyboardType={'phone-pad'}
                         />
 
                         <ButtonArea>

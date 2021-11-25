@@ -18,6 +18,8 @@ import EditAccount from '../screens/EditAccount';
 import AddExperience from '../screens/AddExperience';
 import Rating from '../screens/Rating';
 import AccountId from '../screens/Account/Id';
+import Pet from '../screens/Pet';
+import FilterGeral from '../screens/FilterGeral';
 
 const Stack = createStackNavigator();
 
@@ -45,5 +47,7 @@ export default () => (
         <Stack.Screen name="AddExperience" component={AddExperience} />
         <Stack.Screen name="Rating" component={Rating} />
         <Stack.Screen name="AccountId" component={AccountId} />
+        <Stack.Screen name="Pet" component={Pet} />
+        <Stack.Screen name="FilterGeral" component={FilterGeral} />
     </Stack.Navigator>
 );

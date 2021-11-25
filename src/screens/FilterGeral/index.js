@@ -11,50 +11,64 @@ import SignInput from '../../components/SignInput';
 import Api from '../../Api';
 
 export default () => {
-    const [descriptionField, setDescriptionField] = useState('');
-    const [priceField, setPriceField] = useState("0");
-    const [isSelectedTipoServico, setSelectedTipoServico] = useState("0");
-    const [isSelectedPorte, setSelectedPorte] = useState([{"id": 0, "valueItem": 'Pequeno', "checked": true}, {"id": 1, "valueItem": 'Médio', "checked": false}, {"id": 2, "valueItem": 'Grande', "checked": false}]);
-    const [isSelectedSexo, setSelectedSexo] = useState([{"id": 0, "valueItem": 'Fêmea', "checked": true}, {"id": 1, "valueItem": 'Macho', "checked": false}]);
-    const [isSelectedTipoPet, setSelectedTipoPet] = useState([{"id": 0, "valueItem": 'Roedor', "checked": true}, {"id": 2, "valueItem": 'Pássaro', "checked": false}, {"id": 3, "valueItem": 'Felino', "checked": false}, {"id": 4, "valueItem": 'Canino', "checked": false}]);
+    const navigation = useNavigation();
+
+    const [isSelectedTipoServico, setSelectedTipoServico] = useState("Santos");
+    const [isSelectedPorte, setSelectedPorte] = useState([{"id": 0, "valueItem": 'Pequeno', "checked": false}, {"id": 1, "valueItem": 'Médio', "checked": false}, {"id": 2, "valueItem": 'Grande', "checked": false}]);
+    const [isSelectedSexo, setSelectedSexo] = useState([{"id": 0, "valueItem": 'Fêmea', "checked": false}, {"id": 1, "valueItem": 'Macho', "checked": false}]);
+    const [isSelectedTipoPet, setSelectedTipoPet] = useState([{"id": 0, "valueItem": 'Roedor', "checked": false}, {"id": 2, "valueItem": 'Pássaro', "checked": false}, {"id": 3, "valueItem": 'Felino', "checked": false}, {"id": 4, "valueItem": 'Canino', "checked": false}]);
     const [isSelectedMedicacaoOral, setSelectedMedicacaoOral] = useState(false); 
     const [isSelectedMedicacaoInjetavel, setSelectedMedicacaoInjetavel] = useState(false);
     const [isSelectedCurativo, setSelectedCurativo] = useState(false);
-    const [filterField, setFilterField] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
     const [name, setName] = useState("");
 
-    const navigation = useNavigation();
-
     const handleSignClick = async () => {
-        if (descriptionField != '' && priceField != '') {
-            var json = {
-                "pesos": isSelectedPorte.filter(x => x.checked == true).map(m => m.valueItem),
-                "generos": isSelectedSexo.filter(x => x.checked == true).map(m => m.valueItem),
-                "tiposPet": isSelectedTipoPet.filter(x => x.checked == true).map(m => m.valueItem),
-                "diasSemana": null,
-                "medicacaoOral": isSelectedMedicacaoOral,
-                "medicacaoInjetavel": isSelectedMedicacaoInjetavel,
-                "curativo": isSelectedCurativo
-            };
 
-            let email = await AsyncStorage.getItem('email');
-            let res = await Api.postServices(email, parseInt(isSelectedTipoServico), descriptionField, parseFloat(priceField), {}, json);
+        var parameters = "";
 
-            if (res.data != null) {
-                alert("Serviço cadastrado com sucesso!");
-
-                navigation.reset({
-                    routes:[{name: 'MainTab'}]
-                });
-            } else {
-                alert('Algo deu errado!');
-            }
-        } else {
-            alert('Preencha os campos corretamente!');
+        if (isSelectedPorte.filter(x => x.checked == true).length > 0) {
+            parameters += "&pesos=";
+            parameters += isSelectedPorte.filter(x => x.checked == true).map(m => m.valueItem);
         }
+
+        if (isSelectedSexo.filter(x => x.checked == true).length > 0) {
+            parameters += "&generos=";
+            parameters += isSelectedSexo.filter(x => x.checked == true).map(m => m.valueItem);
+        }
+
+        if (isSelectedTipoPet.filter(x => x.checked == true).length > 0) {
+            parameters += "&tiposPet=";
+            parameters += isSelectedTipoPet.filter(x => x.checked == true).map(m => m.valueItem);
+        }
+
+        if (isSelectedMedicacaoOral == true) {
+            parameters += "&medicacaoOral=true";
+        }
+
+        if (isSelectedMedicacaoInjetavel == true) {
+            parameters += "&medicacaoInjetavel=true";
+        }
+
+        if (isSelectedCurativo == true) {
+            parameters += "&curativo=" + isSelectedCurativo;
+        }
+
+        parameters += "&cidade=" + isSelectedTipoServico;
+
+        console.log(parameters);
+
+        await AsyncStorage.setItem('rotaFiltro', parameters);
+
+        navigation.reset({
+            routes:[{name: 'Services'}]
+        });
     }
     
+    const pegarNome = async () => {
+        setName(await AsyncStorage.getItem('nome'));
+    }
+
     const onCheckChangedPorte = (id) => {
         const data = isSelectedPorte;
 
@@ -83,14 +97,12 @@ export default () => {
         setRefreshing(true); 
     }
 
-    const handleBackClick = () => {
-        navigation.reset({
-            routes:[{name: 'MainTab'}]
-        });
-    }
+    const handleBackClick = async () => {
+        await AsyncStorage.removeItem('rotaFiltro');
 
-    const pegarNome = async () => {
-        setName(await AsyncStorage.getItem('nome'));
+        navigation.reset({
+            routes:[{name: 'Services'}]
+        });
     }
 
     useEffect(() => {
@@ -117,34 +129,25 @@ export default () => {
 
                 <PageBody>
                     <Box>
-                        <Title>Adicionar Serviço</Title>
+                        <Title>Filtrar Serviço</Title>
 
                         <Form>
-                            <InputText>Descrição</InputText>
-                            <SignInput
-                                value={descriptionField}
-                                onChangeText={o => setDescriptionField(o)}
-                            />
 
-                            <InputText>Preço médio</InputText>
-                            <SignInput
-                                value={priceField}
-                                onChangeText={o => setPriceField(o)}
-                                keyboardType={'numeric'}
-                            />
-
-                            <InputText>Tipos do serviço</InputText>
+                            <InputText>Cidade</InputText>
                             <Picker
                                 selectedValue={isSelectedTipoServico}
                                 style={{ height: 30, width: '100%', marginTop: 8 }}
                                 onValueChange={(itemValue, itemIndex) => setSelectedTipoServico(itemValue)}
                             >
-                                <Picker.Item label="Veterinário" value={"0"} />
-                                <Picker.Item label="Banho e Tosa" value={"1"} />
-                                <Picker.Item label="Passeio" value={"2"} />
-                                <Picker.Item label="Adestramento" value={"3"} />
-                                <Picker.Item label="Pet Sitter" value={"4"} />
-                                <Picker.Item label="Hospedagem" value={"5"} />
+                                <Picker.Item label="Santos" value="Santos" />
+                                <Picker.Item label="São Vicente" value="São Vicente" />
+                                <Picker.Item label="Guarujá" value="Guarujá" />
+                                <Picker.Item label="Praia Grande" value="Praia Grande" />
+                                <Picker.Item label="Peruíbe" value="Peruíbe" />
+                                <Picker.Item label="Mongaguá" value="Mongaguá" />
+                                <Picker.Item label="Itanhaêm" value="Itanhaêm" />
+                                <Picker.Item label="Bertioga" value="Bertioga" />
+                                <Picker.Item label="Cubatão" value="Cubatão" />
                             </Picker>
 
                             
@@ -195,7 +198,7 @@ export default () => {
                                 style={{ height: 30, width: '100%', marginTop: 8 }}
                                 onValueChange={(itemValue, itemIndex) => setSelectedMedicacaoInjetavel(itemValue)}
                             >
-                               <Picker.Item label="Sim" value={true} />
+                                <Picker.Item label="Sim" value={true} />
                                 <Picker.Item label="Não" value={false} />
                             </Picker>
 
@@ -208,34 +211,13 @@ export default () => {
                                 <Picker.Item label="Sim" value={true} />
                                 <Picker.Item label="Não" value={false} />
                             </Picker>
-{/* 
-                            <InputText>Anexos</InputText>
-                            <FlatList 
-                                horizontal
-                                pagingEnabled={true}
-                                showsHorizontalScrollIndicator={false}
-                                legacyImplementation={false}
-                                data={imageField}
-                                keyExtractor={(item) => item.id}
-                                renderItem={ ({item}) => 
-                                <ImageArea>
-                                    <ButtonImage onPress={() => launchImageLibrary({}, imagePickerCallBack)}> 
-                                        <Add width="23" height="23" fill="rgba(219, 219, 219, 0.9)"/>
-                                    </ButtonImage>
-                                </ImageArea>}
-                            />
-                           <ImageArea>
-                                <ButtonImage onPress={() => launchImageLibrary({}, imagePickerCallBack)}> 
-                                    <Add width="23" height="23" fill="rgba(219, 219, 219, 0.9)"/>
-                                </ButtonImage>
-                            </ImageArea> */}
 
                             <ButtonArea>
                                 <CustomButtonNo onPress={handleBackClick}>
-                                    <CustomButtonTextNo>Cancelar</CustomButtonTextNo>
+                                    <CustomButtonTextNo>Limpar</CustomButtonTextNo>
                                 </CustomButtonNo>
                                 <CustomButton onPress={handleSignClick}>
-                                    <CustomButtonText>Adicionar</CustomButtonText>
+                                    <CustomButtonText>Filtrar</CustomButtonText>
                                 </CustomButton>
                             </ButtonArea>
                         </Form>

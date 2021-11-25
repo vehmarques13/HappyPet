@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
-import { Text, ImageBackground } from 'react-native';
+import React from 'react';
+import { ImageBackground, Confirm } from 'react-native';
 import styled from 'styled-components/native';
 import AsyncStorage from '@react-native-community/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 import FemaleIcon from '../images/female.svg';
 import MaleIcon from '../images/male.svg';
@@ -13,7 +14,7 @@ import HamsterIcon from '../images/hamster.svg';
 
 import Api from '../Api';
 
-const PetsArea = styled.View`
+const PetsArea = styled.TouchableOpacity`
     flex-direction: row;
     margin-top: 15px;
 `;
@@ -94,6 +95,8 @@ const PetImage = styled.Image`
 const ButtonArea = styled.TouchableOpacity``;
 
 export default ({data, funcRefresh = null}) => {
+    const navigation = useNavigation();
+
     const tipoPet = () => {
         switch(data.tipoPet) {
             case 0:
@@ -111,13 +114,19 @@ export default ({data, funcRefresh = null}) => {
 
     const deletePet = async (id) => {
         let email = await AsyncStorage.getItem('email');
-        let res = await Api.deletePets(email, id);
 
-        await funcRefresh();
+        if (Confirm("Você deseja realmente excluir?")) {
+            let res = await Api.deletePets(email, id);
+            await funcRefresh();
+        }
+    }
+
+    const handleClick = () => {
+        navigation.navigate('Pet', { pet: data });
     }
 
     return (
-        <PetsArea>
+        <PetsArea onPress={handleClick}>
             <PetsView>
                 <ImageBackground 
                     source={require('../images/fundo4.png')} 

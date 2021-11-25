@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, Box, Title, Form, InputText, ButtonArea, CustomButton, CustomButtonText, CustomButtonNo, CustomButtonTextNo, BackButton } from './styles';
+import React, { useState, useEffect } from 'react';
+import { Container, Scroller, HeaderArea, HeaderTitle, Name, PageBody, Box, Title, Form, InputText, ButtonArea, CustomButton, CustomButtonText, CustomButtonNo, CustomButtonTextNo, BackButton } from './styles';
 import { RefreshControl, ImageBackground, Picker } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -20,6 +20,7 @@ export default () => {
     const [isSelectedTipoPet, setSelectedTipoPet] = useState(0); 
     const [isSelectedPorte, setSelectedPorte] = useState('pequeno'); 
     const [imageField, setImageField] = useState('');
+    const [name, setName] = useState("");
 
     const handleSignClick = async () => {
         if (nameField != '' && descriptionField != '' && breedField != '') {
@@ -50,6 +51,14 @@ export default () => {
         setRefreshing(true); 
     }
 
+    const pegarNome = async () => {
+        setName(await AsyncStorage.getItem('nome'));
+    }
+
+    useEffect(() => {
+        pegarNome();
+    }, []);
+
     return (
         <Container>
             <ImageBackground 
@@ -65,6 +74,7 @@ export default () => {
                         <BackIcon width="40" height="40" fill="#1C263F" />
                     </BackButton>
                     <HeaderTitle>HAPPY PET</HeaderTitle>
+                    <Name>Olá, {name.substring(0, name.indexOf(' ') == -1 ? name.length : name.indexOf(' '))}!</Name>
                 </HeaderArea>
 
                 <PageBody>

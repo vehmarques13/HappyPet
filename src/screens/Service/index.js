@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Scroller, HeaderArea, HeaderTitle, SwipeDot, SwipeDotActive, SwipeItem, SwipeImage, PageBody, UserInfoArea, UserInfo, Avatar, UserInfoName, UserInfoState, UserServices, UserButton, LoadingIcon, ServiceArea, ServiceTitle, ServiceDescription, Line, BackButton, AnimalsArea, FavoriteArea, FavoriteView } from './styles';
+import { Container, Scroller, HeaderArea, HeaderTitle, Name, SwipeDot, SwipeDotActive, SwipeItem, SwipeImage, PageBody, UserInfoArea, UserInfo, Avatar, UserInfoName, UserInfoState, UserServices, UserButton, LoadingIcon, ServiceArea, ServiceTitle, ServiceDescription, Line, BackButton, AnimalsArea, FavoriteArea, FavoriteView } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import Api from '../../Api';
 import Swiper from 'react-native-swiper';
-import { Linking, Text, ImageBackground } from 'react-native';
+import { ImageBackground } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import Animals from '../../components/Animals';
@@ -20,6 +20,8 @@ export default ({route}) => {
     const [loading, setLoading] = useState(false);
     const [list, setList] = useState([]);
     const [filtros, setFiltro] = useState([]);
+    const [tipoUsuario, setTipoUsuario] = useState("");
+    const [name, setName] = useState("");
 
     let id = route.params?.id;
     let email = route.params?.email;
@@ -68,6 +70,10 @@ export default ({route}) => {
         getServiceInfo();
     }
 
+    const pegarNome = async () => {
+        setName(await AsyncStorage.getItem('nome'));
+    }
+
     const deleteService = async (id) => {
         let email = await AsyncStorage.getItem('email');
         let res = await Api.deleteServices(email, id);
@@ -75,6 +81,10 @@ export default ({route}) => {
         navigation.reset({
             routes:[{name: 'MainTab'}]
         });
+    }
+
+    const pegarTipoUsuario = async () => {
+        setTipoUsuario(await AsyncStorage.getItem('tipoUsuario'));
     }
 
     const tipoServico = () => {
@@ -99,6 +109,8 @@ export default ({route}) => {
     useEffect(() => {
         getServiceInfo();
         tipoServico();
+        pegarTipoUsuario();
+        pegarNome();
     }, []);
 
     return (
@@ -109,6 +121,7 @@ export default ({route}) => {
                         <BackIcon width="40" height="40" fill="#1C263F" />
                     </BackButton>
                     <HeaderTitle>HAPPY PET</HeaderTitle>
+                    <Name>Olá, {name.substring(0, name.indexOf(' ') == -1 ? name.length : name.indexOf(' '))}!</Name>
                 </HeaderArea>
 
                 <ImageBackground
@@ -118,7 +131,6 @@ export default ({route}) => {
                 />
 
                 <PageBody>
-                    {console.log(list)}
                     <UserInfoArea>
                         {list.genero == "Masculino" ?
                             <Avatar source={require('../../images/avatar.jpg')} />
@@ -136,11 +148,8 @@ export default ({route}) => {
                             <UserInfoState>{list.cidade}, {list.estado}</UserInfoState>
                             <UserServices>{tipoServico()}</UserServices>
                         </UserInfo>
-                        {list.tipoUsuario == 1 ?
+                        {tipoUsuario == "1" ?
                             <>
-                                <UserButton onPress={() => { Linking.openURL(list.telefone); } }>
-                                    <ChatIcon width="20" height="20" fill="#00B1E1" />
-                                </UserButton>
                                 <UserButton onPress={() => IconFavorites(list.id, list.email, list.isFavorito)}>
                                     <FavoriteArea>
                                         <FavoriteView>
@@ -164,7 +173,7 @@ export default ({route}) => {
                         <Line />
 
                         <ServiceTitle>Preço médio</ServiceTitle>
-                        <ServiceDescription>{list.precoMedio}.</ServiceDescription>
+                        <ServiceDescription>R$ {list.precoMedio?.toString().replace(".", ",")}</ServiceDescription>
 
                         <Line />
 

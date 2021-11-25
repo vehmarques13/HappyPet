@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, LoadingIcon, ServiceArea, ServiceTitle, Services, ServicesArea, ServicesView, ServiceImage, ServiceName, PetTitle, OrganizationArea, ButtonArea } from './styles';
+import { Container, Scroller, HeaderArea, HeaderTitle, Name, PageBody, LoadingIcon, ServiceArea, ServiceTitle, Services, ServicesArea, ServicesView, ServiceImage, ServiceName, PetTitle, OrganizationArea, ButtonArea } from './styles';
 import { RefreshControl, FlatList, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -15,6 +15,7 @@ export default () => {
     const [loading, setLoading] = useState(false);
     const [listPets, setListPets] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
+    const [name, setName] = useState("");
     const navigation = useNavigation();
 
     const getPets = async () => {
@@ -36,10 +37,15 @@ export default () => {
 
     useEffect(() => {
         getPets();
+        pegarNome();
     }, []);
 
     const onRefresh = () => {
         setRefreshing(true); 
+    }
+
+    const pegarNome = async () => {
+        setName(await AsyncStorage.getItem('nome'));
     }
 
     const handleClick = () => {
@@ -60,6 +66,7 @@ export default () => {
             }>
                 <HeaderArea>
                     <HeaderTitle>HAPPY PET</HeaderTitle>
+                    <Name>Olá, {name.substring(0, name.indexOf(' ') == -1 ? name.length : name.indexOf(' '))}!</Name>
                 </HeaderArea>
 
                 <PageBody>

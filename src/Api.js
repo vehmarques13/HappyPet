@@ -85,6 +85,11 @@ export default {
     const json = req.data;
     return json;
   },
+  getPetByEmailId: async (email, id) => {
+    const req = await api.get(`Pet/${email}/${id}`);
+    const json = req.data;
+    return json;
+  },
   postPets: async (email, imagem, nome, tipoPet, porte, sexo, raca, descricao) => {
     return axios.post('http://192.168.0.23:59555/api/Pet', {
       email: email,

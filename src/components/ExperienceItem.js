@@ -77,9 +77,15 @@ export const SwipeImage = styled.Image`
     height: 200px;
 `;
 
+const Line = styled.View`
+    width: 100%;
+    border: 1px solid rgba(230, 230, 230, 1);
+    margin-bottom: 10px;
+`;
+
 export default ({data}) => {
     return (
-        <ExperienceArea>
+        <><ExperienceArea>
             <OrganizationArea>
                 <OrganizationTitle>
                     <BigBall>
@@ -90,17 +96,17 @@ export default ({data}) => {
             </OrganizationArea>
             <ExperienceDescription>{data.descricao}</ExperienceDescription>
             <Swiper
-                style={{height: 200}}
+                style={{ height: 200 }}
                 dot={<SwipeDot />}
                 activeDot={<SwipeDotActive />}
-                paginationStyle={{top: 15, right: 15, bottom: null, left: null}}
+                paginationStyle={{ top: 15, right: 15, bottom: null, left: null }}
                 autoplay={true}
             >
                 {/* {userInfo.photos.map((item, key) => {
-                    <SwiperItem key={key}>
-                        <SwiperImage source={{uri: item.url}} resizeMode="cover" />
-                    </SwiperItem>
-                })} */}
+        <SwiperItem key={key}>
+            <SwiperImage source={{uri: item.url}} resizeMode="cover" />
+        </SwiperItem>
+    })} */}
 
                 <SwipeItem>
                     <SwipeImage source={require('../images/fundo.png')} resizeMode="cover" />
@@ -110,6 +116,6 @@ export default ({data}) => {
                     <SwipeImage source={require('../images/fundo.png')} resizeMode="cover" />
                 </SwipeItem>
             </Swiper>
-        </ExperienceArea>
+        </ExperienceArea><Line /></>
     );
 }

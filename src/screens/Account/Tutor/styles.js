@@ -4,7 +4,7 @@ export const Container = styled.SafeAreaView`
     flex: 1;
     justify-content: center;
     align-items: center;
-    background-color: #fcfcfc;
+    background-color: #FFFFFF;
 `;
 
 export const Scroller = styled.ScrollView`
@@ -12,11 +12,13 @@ export const Scroller = styled.ScrollView`
 `;
 
 export const HeaderArea = styled.View`
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     height: 60px;
     background-color: #FFFFFF;
     border: 1px solid rgba(230, 230, 230, 0.8);
+    flex-direction: row;
+    padding: 0 20px;
 `;
 
 export const HeaderTitle = styled.Text`
@@ -29,19 +31,19 @@ export const PageBody = styled.View`
     background-color: white;
     margin-top: -50px;
     height: 100%;
+    padding: 0 20px;
     border: 1px solid rgba(230, 230, 230, 0.6);
 `;
 
 export const UserInfoArea = styled.View`
     flex-direction: row;
     margin-top: -40px;
-    padding: 0 10px;
 `;
 
 export const Avatar = styled.Image`
     width: 112px;
     height: 145px;
-    margin: 0 15px 0 8px;
+    margin: 0 15px 0 0;
     border-radius: 8px;
     border: 1px solid rgba(230, 230, 230, 0.6);
 `;
@@ -71,18 +73,18 @@ export const UserInfoBirth = styled.Text`
 `;
 
 export const UserButton = styled.TouchableOpacity`
-    width: 38px;
-    height: 38px;
+    width: 35px;
+    height: 35px;
     background-color: white;
     border-radius: 20px;
     border: 1px solid rgba(230, 230, 230, 1);
     justify-content: center;
     align-items: center;
-    margin: 20px 0 0 2px;
+    margin: 22px 0 0 8px;
 `;
 
 export const PetArea = styled.View`
-    padding: 25px 18px;
+    padding: 25px 0;
 `;
 
 export const PetTitle = styled.Text`
@@ -105,4 +107,10 @@ export const BackButton = styled.TouchableOpacity`
     position: absolute;
     left: 0;
     z-index: 9;
+`;
+
+export const Name = styled.Text`
+    font-weight: 500;
+    font-size: 14px;
+    color: #20283D;
 `;

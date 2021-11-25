@@ -12,11 +12,13 @@ export const Scroller = styled.ScrollView`
 `;
 
 export const HeaderArea = styled.View`
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     height: 60px;
     background-color: #FFFFFF;
     border: 1px solid rgba(230, 230, 230, 0.8);
+    flex-direction: row;
+    padding: 0 20px;
 `;
 
 export const HeaderTitle = styled.Text`
@@ -64,7 +66,7 @@ export const Services = styled.View`
 `;
 
 export const LoadingIcon = styled.ActivityIndicator`
-    margin-top: 50px;
+    margin: 20px 0;
 `;
 
 export const ServicesArea = styled.TouchableOpacity`
@@ -91,6 +93,12 @@ export const ServiceName = styled.Text`
 export const ServiceImage = styled.Image`
     width: 100px;
     height: 100px;
+`;
+
+export const Name = styled.Text`
+    font-weight: 500;
+    font-size: 14px;
+    color: #20283D;
 `;
 
 

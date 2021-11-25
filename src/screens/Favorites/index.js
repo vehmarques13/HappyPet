@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Scroller, HeaderArea, HeaderTitle, PageBody, LoadingIcon, ListArea, BackButton, FilterFull, OrganizationFilter } from './styles';
+import { Container, Scroller, HeaderArea, HeaderTitle, Name, PageBody, LoadingIcon, ListArea, BackButton, FilterFull, OrganizationFilter } from './styles';
 import { RefreshControl, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -17,6 +17,7 @@ export default () => {
     const [list, setList] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
     const [animals, setAnimals] = useState({"animals": [{"id": 0, "value": "Canino"}, {"id": 1, "value": "Felino"}, {"id": 2, "value": "Pássaro"}, {"id": 3, "value": "Roedor"}]});
+    const [name, setName] = useState("");
 
     const getFavorites = async () => {
         setList([]);
@@ -40,8 +41,13 @@ export default () => {
         setLoading(false);
     }
 
+    const pegarNome = async () => {
+        setName(await AsyncStorage.getItem('nome'));
+    }
+
     useEffect(() => {
         getFavorites();
+        pegarNome();
     }, []);
 
     const onRefresh = () => {
@@ -55,16 +61,10 @@ export default () => {
             }>
                 <HeaderArea>
                     <HeaderTitle>HAPPY PET</HeaderTitle>
+                    <Name>Olá, {name.substring(0, name.indexOf(' ') == -1 ? name.length : name.indexOf(' '))}!</Name>
                 </HeaderArea>
 
                 <PageBody>
-                    {loading &&
-                        <LoadingIcon 
-                            size='large'
-                            color='#20283D'
-                        />
-                    }
-
                     <OrganizationFilter>
                         <FlatList
                             horizontal
@@ -76,6 +76,13 @@ export default () => {
                             renderItem={ ({item}) => <Filter data={item} funcRefresh={getFavorites}/>}
                         />
                     </OrganizationFilter>
+
+                    {loading &&
+                        <LoadingIcon 
+                            size='large'
+                            color='#20283D'
+                        />
+                    }
 
                     <ListArea>
                         {list.map((item, k) => (

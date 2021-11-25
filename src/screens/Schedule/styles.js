@@ -12,11 +12,13 @@ export const Scroller = styled.ScrollView`
 `;
 
 export const HeaderArea = styled.View`
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     height: 60px;
     background-color: #FFFFFF;
     border: 1px solid rgba(230, 230, 230, 0.8);
+    flex-direction: row;
+    padding: 0 20px;
 `;
 
 export const HeaderTitle = styled.Text`
@@ -74,6 +76,12 @@ export const Line = styled.View`
     height: 1px;
     background-color: rgba(230, 230, 230, 1);
     margin: 20px 0;
+`;
+
+export const Name = styled.Text`
+    font-weight: 500;
+    font-size: 14px;
+    color: #20283D;
 `;
 
 

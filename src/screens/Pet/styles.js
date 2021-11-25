@@ -25,6 +25,41 @@ export const HeaderTitle = styled.Text`
     font-weight: bold;
     font-size: 23px;
     color: #20283D;
+    margin-left: 30px;
+`;
+
+export const Background = styled.Image`
+    width: 100%;
+    height: 150px;
+`;
+
+export const SwipeDot = styled.View`
+    width: 10px;
+    height: 10px;
+    background-color: #00B1E1;
+    border-radius: 5px;
+    margin: 2px;
+`;
+
+export const SwipeDotActive = styled.View`
+    width: 10px;
+    height: 10px;
+    background-color: #1C263F;
+    border-radius: 5px;
+    margin: 2px;
+`;
+
+export const SwipeItem = styled.View`
+    flex: 1;
+    background-color: #00B1E1;
+`;
+
+export const SwipeImage = styled.Image`
+    width: 100%;
+    height: 200px;
+`;
+
+export const FakeSwiper = styled.View`
 `;
 
 export const PageBody = styled.View`
@@ -41,8 +76,8 @@ export const UserInfoArea = styled.View`
 `;
 
 export const Avatar = styled.Image`
-    width: 112px;
-    height: 145px;
+    width: 140px;
+    height: 135px;
     margin: 0 15px 0 0;
     border-radius: 8px;
     border: 1px solid rgba(230, 230, 230, 0.6);
@@ -57,7 +92,7 @@ export const UserInfoName = styled.Text`
     font-weight: bold;
     font-size: 17px;
     color: #1C263F;
-    margin-bottom: 2px;
+    margin: 0 5px 2px 0;
 `;
 
 export const UserInfoState = styled.Text`
@@ -66,27 +101,19 @@ export const UserInfoState = styled.Text`
     color: #858585;
 `;
 
-export const UserInfoBirth = styled.Text`
-    font-weight: 500;
-    font-size: 12px;
-    color: #b3b3b3;
-`;
-
 export const UserButton = styled.TouchableOpacity`
-    width: 35px;
-    height: 35px;
+    width: 38px;
+    height: 38px;
     background-color: white;
     border-radius: 20px;
     border: 1px solid rgba(230, 230, 230, 1);
     justify-content: center;
     align-items: center;
-    margin: 22px 0 0 2px;
+    margin: 20px 0 0 2px;
 `;
 
-export const Button = styled.TouchableOpacity``;
-
 export const ServiceArea = styled.View`
-    margin: 10px 0;
+    padding: 10px 0 25px 0;
 `;
 
 export const ServiceTitle = styled.Text`
@@ -96,9 +123,16 @@ export const ServiceTitle = styled.Text`
     margin-bottom: 6px;
 `;
 
-export const OrganizationArea = styled.View`
-    flex-direction: row;
-    justify-content: space-between;
+export const ServiceDescription = styled.Text`
+    font-size: 15px;
+    color: grey;
+`;
+
+export const Line = styled.View`
+    width: 100%;
+    height: 1px;
+    background-color: rgba(230, 230, 230, 1);
+    margin: 10px 0;
 `;
 
 export const LoadingIcon = styled.ActivityIndicator`
@@ -111,11 +145,34 @@ export const BackButton = styled.TouchableOpacity`
     z-index: 9;
 `;
 
-export const Line = styled.View`
-    width: 100%;
-    height: 1px;
-    background-color: rgba(230, 230, 230, 1);
-    margin: 10px 0;
+export const OrganizationArea = styled.View`
+    flex-direction: row;
+`;
+
+export const FavoriteArea = styled.View``;
+
+export const FavoriteView = styled.View``;
+
+export const UserServices = styled.Text`
+    font-weight: normal;
+    font-size: 12px;
+    color: #929292;
+`;
+
+export const FilterPet = styled.View`
+    width: 112px;
+    border-radius: 15px; 
+    background-color: white;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 5px;
+`;
+
+export const FilterText = styled.Text`
+    color: #b3b3b3;
+    font-weight: 500;
+    font-size: 13px;
+    margin-left: 8px;
 `;
 
 export const Name = styled.Text`
